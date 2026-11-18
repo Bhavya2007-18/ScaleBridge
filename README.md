@@ -1,80 +1,108 @@
-# 02 — Problem and Solution
+# ScaleBridge Bio — Technical Documentation Repository
 
-**Purpose:** Explain the scale-up problem in engineering terms precise enough that developers understand *why* each module exists.
-**Related:** [01_PROJECT_OVERVIEW.md](01_PROJECT_OVERVIEW.md) · [10_SCIENTIFIC_ENGINE.md](10_SCIENTIFIC_ENGINE.md) · [11_SCALE_UP_CALCULATIONS.md](11_SCALE_UP_CALCULATIONS.md) · [12_RISK_ENGINE.md](12_RISK_ENGINE.md)
+> **Bioprocess scale-up & intelligence platform.**
+> A vendor-agnostic, process-aware decision-support layer that compares lab-scale process data with target-vessel capabilities, surfaces scale-up trade-offs, and creates an evidence-linked validation plan.
+> — *ScaleBridge Bio Startup Blueprint, 16 Nov 2026 (Confidential Working Draft)*
+
+This repository is the **single technical reference** for building the ScaleBridge Bio MVP. It is written for human developers and AI coding agents. It contains **no application code**.
 
 ---
 
-## 1. Formal problem statement (CONFIRMED, verbatim `[BP p.3]`)
-> Biotechnology startups and small-to-medium biomanufacturers need a more structured way to transfer fermentation processes between laboratories and production facilities. Process data, vessel specifications, engineering calculations and validation evidence are often distributed across separate tools and workflows. ScaleBridge aims to connect these elements into an explainable, auditable scale-up readiness workflow.
+## 1. Source of truth and labelling convention
 
-## 2. Why scale-up is not a volume conversion (CONFIRMED `[BP p.3]`)
+The primary source is `ScaleBridge_Bio_Startup_Blueprint.pdf` (17 pages, "the Blueprint"). Page references are written `[BP p.N]`. Blueprint citations `[S1]…[S14]` are preserved as given.
 
-A process working in a 2 L lab vessel may behave differently at 20 L, 200 L or larger. Increasing volume changes the engineering environment: **oxygen transfer, mixing, heat removal, gas dispersion, pressure, shear and feed distribution** can all shift.
+Every requirement or decision in these documents is labelled:
 
-### 2.1 Physical intuition (explanatory, for developers)
-- Volume grows with the cube of vessel diameter; surface area and impeller-driven circulation do not scale the same way. So a vessel that is geometrically similar but larger cannot keep every hydrodynamic descriptor constant at once.
-- Holding **tip speed** constant lowers power per volume at larger scale; holding **P/V** constant raises tip speed; holding **vvm** constant raises superficial gas velocity. This is why the Blueprint insists on **reporting trade-offs** rather than "the answer" `[BP p.6]` (CONFIRMED principle; specific directions of change derive from the equations in [11](11_SCALE_UP_CALCULATIONS.md) under geometric similarity — PROPOSED explanation).
+| Label | Meaning | Who may change it |
+|---|---|---|
+| **CONFIRMED** | Explicitly stated or directly supported by the Blueprint. | Founders only. |
+| **PROPOSED** | A technical recommendation made by the documentation author to make the Blueprint implementable. Not in the Blueprint. | Owning lead (see [20_TEAM_RESPONSIBILITIES.md](docs/20_TEAM_RESPONSIBILITIES.md)); scientific items also need Person 1 + advisor. |
+| **OPEN QUESTION** | Requires founder or domain-expert confirmation. Tracked as `OQ-NNN` in [22_OPEN_QUESTIONS.md](docs/22_OPEN_QUESTIONS.md). | Resolved by named owner; resolution recorded in doc 22. |
 
-### 2.2 Change → consequence → evidence (CONFIRMED `[BP p.3]`)
+> [!IMPORTANT]
+> No scientific threshold, correlation or numeric heuristic is invented in these documents. Where the Blueprint names a check but gives no threshold, the threshold is a **configuration value owned by the scientific lead** and the rule returns `not_configured` until it is set. See [12_RISK_ENGINE.md](docs/12_RISK_ENGINE.md).
 
-| Change at larger scale | Possible consequence | Evidence the team may need | Where handled |
-|---|---|---|---|
-| Different vessel geometry / impeller | Changed flow pattern, mixing time, local gradients | Vessel dimensions, impeller geometry, mixing data | Vessel profiles ([13](13_EQUIPMENT_COMPATIBILITY.md)); R-MIX rules ([12](12_RISK_ENGINE.md)) |
-| Oxygen transfer limitations | DO may fall below process needs; productivity can change | kLa / OTR evidence, DO profile, gas flow, OUR estimates | F-OTR, F-VVM ([11](11_SCALE_UP_CALCULATIONS.md)); R-OXY rules |
-| Heat transfer constraints | Temperature control less responsive | Heat balance, cooling capacity, temperature trends | R-THM rules |
-| Feed & nutrient distribution | Local substrate/pH gradients affect growth and yield | Feed strategy, mixing and sampling evidence | Passport feed strategy; R-MIX / R-DAT rules |
-| Equipment variation | Target vessel may not support required agitation, aeration or controls | Equipment capability envelope, operating limits | Equipment Compatibility Engine ([13](13_EQUIPMENT_COMPATIBILITY.md)) |
+---
 
-## 3. Current-state pain (CONFIRMED premise; to be validated by interviews)
-Data, vessel specs, calculations and validation evidence live in **separate tools** (spreadsheets, controller exports, vendor PDFs, consultants). Consequences hypothesised in the Blueprint: engineering rework, wasted pilot runs from incorrect scale-up advice, incomplete handoffs to pilot facilities/CDMOs `[BP p.7, p.15]`.
+## 2. What we are building (one paragraph)
 
-Interview questions to validate the pain are listed in [18_TESTING_AND_VALIDATION.md](18_TESTING_AND_VALIDATION.md) §7.
+A **web-based scale-up readiness and technology-transfer decision-support workspace** for microbial batch / fed-batch fermentation (initial wedge: aerobic microbial fermentation for industrial enzymes and fermentation-derived ingredients). A bioprocess scientist creates a **Process Passport**, imports batch data (CSV/XLSX), describes a lab vessel and a target vessel, selects a scale-up scenario, and receives side-by-side engineering calculations (OTR, P/V, tip speed, Reynolds number, vvm, kLa where supported), an explainable **risk register**, an **equipment compatibility** assessment, a **validation plan**, and a PDF **Transfer Report**. The system is **not** a controller, **not** a validated digital twin, and **never** turns missing information into a confident prediction — *"Insufficient evidence" is a valid and valuable output* `[BP p.4]` (CONFIRMED).
 
-## 4. Why India, why now (CONFIRMED `[BP p.2–3]`)
-- BioE3 policy names high-performance biomanufacturing as a national priority and describes Biofoundries and Biomanufacturing Hubs as shared infrastructure for startups, SMEs, industry and academia [S3, S4].
-- DBT programmes support moving bio-based products from proof of concept to pilot-scale demonstration, including shared infrastructure and scale-up support [S5].
-- Implication: more teams will move processes **into unfamiliar shared facilities** — exactly the cross-vendor transfer case ScaleBridge targets.
+---
 
-## 5. Solution concept (CONFIRMED `[BP p.4]`)
+## 3. Repository map
 
-ScaleBridge behaves like a **process engineer's decision-support workspace, not an autonomous process controller**. It shows inputs, units, assumptions, model limits and evidence behind every conclusion.
-
-```mermaid
-flowchart TD
-  P["Process Passport<br/>(process, organism, recipe, provenance)"] --> I["Batch data import<br/>(CSV/XLSX, mapping, units, quality)"]
-  I --> V["Vessel Profiles<br/>(lab + target)"]
-  V --> S["Scenario<br/>(target volume, criteria, constraints)"]
-  S --> E["Scientific Engine<br/>(deterministic formulas + provenance)"]
-  E --> R["Readiness Engine<br/>(risk flags, compatibility, gaps)"]
-  R --> VP["Validation Planner<br/>(measurements, experiments, reviews)"]
-  VP --> T["Transfer Report (PDF)"]
+```
+ScaleBridge-Bio/
+├── README.md                          ← you are here
+├── docs/
+│   ├── 01_PROJECT_OVERVIEW.md         Vision, thesis, wedge, users, positioning
+│   ├── 02_PROBLEM_AND_SOLUTION.md     Problem statement, scale-up physics context, solution concept
+│   ├── 03_PRODUCT_REQUIREMENTS.md     Functional (FR-*) & non-functional (NFR-*) requirements
+│   ├── 04_MVP_SCOPE.md                In/out of scope, acceptance tests, demo vs incubation data
+│   ├── 05_SYSTEM_ARCHITECTURE.md      Components, boundaries, data flow, module contracts
+│   ├── 06_TECH_STACK.md               Confirmed vs proposed libraries and versions policy
+│   ├── 07_DATABASE_SCHEMA.md          Entities, columns, relationships, immutability rules
+│   ├── 08_API_SPECIFICATION.md        REST endpoints, request/response contracts, errors
+│   ├── 09_DATA_INGESTION.md           Upload, mapping, unit normalization, data-quality checks
+│   ├── 10_SCIENTIFIC_ENGINE.md        Formula library design, units, provenance, versioning
+│   ├── 11_SCALE_UP_CALCULATIONS.md    Every equation, variable, unit, assumption, test vector
+│   ├── 12_RISK_ENGINE.md              Rule registry, severities, outcomes, explanations
+│   ├── 13_EQUIPMENT_COMPATIBILITY.md  Vessel profile schema, capability envelope checks
+│   ├── 14_VALIDATION_PLANNER.md       Gap → task mapping, prioritization
+│   ├── 15_UI_UX_SPECIFICATION.md      Screens, components, states, labelling rules
+│   ├── 16_USER_WORKFLOWS.md           End-to-end workflows and sequence diagrams
+│   ├── 17_SECURITY_AND_PRIVACY.md     Tenant isolation, RBAC, encryption, audit, retention
+│   ├── 18_TESTING_AND_VALIDATION.md   Software, engineering and user-value validation layers
+│   ├── 19_DEVELOPMENT_ROADMAP.md      12-week build plan and 12-month company roadmap
+│   ├── 20_TEAM_RESPONSIBILITIES.md    Four-person ownership, reviewers, operating rhythm
+│   ├── 21_DEPLOYMENT.md               Environments, Docker, CI/CD, backup, on-prem path
+│   ├── 22_OPEN_QUESTIONS.md           OQ register (decisions needed)
+│   └── 23_DOCUMENTATION_AUDIT.md      Consistency audit & completeness report
+└── ai-context/
+    ├── PROJECT_CONTEXT.md             Read first — compressed full context for coding agents
+    ├── CODING_RULES.md                Code quality, naming, folders, tests
+    ├── ARCHITECTURE_RULES.md          Boundaries, data flow, contracts
+    └── DEVELOPMENT_INSTRUCTIONS.md    How agents approach, implement and verify tasks
 ```
 
-### 5.1 What the solution is NOT (CONFIRMED `[BP p.5, p.9]`)
-Not a live controller; not a universal "AI optimal recipe"; not a validated digital twin or yield predictor; not GMP execution / EBR / 21 CFR Part 11; not a facility marketplace; not a generic dashboard or chatbot.
+## 4. Reading order
 
-### 5.2 Value delivered per user action (CONFIRMED `[BP p.4]`)
+| Reader | Read in this order |
+|---|---|
+| **AI coding agent** | `ai-context/PROJECT_CONTEXT.md` → `ai-context/ARCHITECTURE_RULES.md` → `ai-context/CODING_RULES.md` → `ai-context/DEVELOPMENT_INSTRUCTIONS.md` → the doc(s) for the module being built |
+| Backend developer | 05 → 06 → 07 → 08 → 09 → 17 → 21 |
+| Scientific / modelling developer | 10 → 11 → 12 → 13 → 14 → 18 |
+| Frontend developer | 03 → 15 → 16 → 08 |
+| Founders / advisors | 01 → 02 → 04 → 19 → 20 → 22 → 23 |
 
-| Stage | User action | Output |
+## 5. Canonical glossary (use these exact terms in code and UI)
+
+| Term | Definition | Code identifier |
 |---|---|---|
-| 1 Create process passport | Describe organism/process family, recipe context, batch metadata | Structured process profile + data checklist |
-| 2 Import experiment | Upload CSV/XLSX or structured measurements | Mapped time-series, unit normalization, data-quality report |
-| 3 Describe equipment | Enter lab & target geometry, impellers, working volume, motors, gas capabilities | Comparable equipment profiles + missing-spec warnings |
-| 4 Select scale-up scenario | Choose target volume & constraints | Side-by-side calculations + criterion trade-offs |
-| 5 Review readiness | Review risk flags, confidence, missing evidence | Explainable risk register + validation questions |
-| 6 Transfer and share | Generate report for pilot facility/partner | Process-transfer passport, assumptions, proposed test plan |
+| **Process Passport** | Structured, versioned record of process parameters, batch data, vessel characteristics, material context and provenance `[BP p.4]`. | `project`, `passport_version` |
+| **Batch / Run** | One fermentation run with metadata and time-series measurements. | `batch` |
+| **Measurement** | One time-stamped value of one variable with unit, source and quality flag. | `measurement` |
+| **Sample / Assay** | Offline sample result (biomass, substrate, titre…). | `sample` |
+| **Vessel Profile** | Versioned geometry + capability envelope of a bioreactor. | `vessel`, `vessel_version` |
+| **Scenario** | A user-configured comparison: source batch(es) + source vessel → target vessel + target volume + selected scale-up criteria + constraints. | `scenario` |
+| **Assessment** | An immutable, reproducible execution of a Scenario producing calculations, risk flags, compatibility checks and validation tasks. | `assessment` |
+| **Scale-up Risk Engine** | Rule-based comparison of engineering constraints; flags conflicts and unevaluable criteria `[BP p.4]`. | `readiness.risk` |
+| **Equipment Compatibility Engine** | Checks whether a target vessel's documented capability envelope supports the process requirements `[BP p.4]`. | `readiness.compatibility` |
+| **Validation Planner** | Converts gaps into a prioritized list of measurements, experiments and expert reviews `[BP p.4]`. | `readiness.validation` |
+| **Readiness Engine** | Umbrella component containing the three engines above `[BP p.10]`. | `readiness` |
+| **Transfer Report** | PDF process-transfer passport: summary, vessel comparison, calculations, flags, missing data, validation plan `[BP p.5]`. | `report` |
+| **Provenance** | Where a value came from: `sensor`, `manual_entry`, `lab_assay`, `vendor_datasheet`, `published_correlation`, `user_assumption` `[BP p.6]` (+ `calculated`, PROPOSED). | `provenance` |
+| **Value nature** | `measured`, `estimated`, `assumed`, `calculated` — measured and estimated must never be confused `[BP p.6]`. | `value_nature` |
+| **Insufficient evidence** | First-class outcome when inputs are missing or unvalidated. | `insufficient_evidence` |
 
-## 6. Key product principle (CONFIRMED `[BP p.4]`)
-> The system should never turn missing information into a confident prediction. "Insufficient evidence" is a valid and valuable output.
+## 6. Non-negotiable product principles (CONFIRMED)
 
-Engineering consequence: every calculation, rule and check has an explicit `insufficient_evidence` outcome (see [10](10_SCIENTIFIC_ENGINE.md) §6, [12](12_RISK_ENGINE.md) §3).
-
-## 7. Scientific assumptions underlying the solution (to be validated)
-
-| ID | Assumption | Label | Validation |
-|---|---|---|---|
-| SA-1 | Deck-listed descriptors (OTR, P/V, tip speed, Re, vvm, kLa) are sufficient to frame first-pass scale-up readiness for aerobic microbial batch/fed-batch | CONFIRMED as MVP set; adequacy is OPEN (**OQ-010**) | Advisor review |
-| SA-2 | Rule-based flags with expert-set thresholds are more trustworthy than ML at MVP stage | CONFIRMED `[BP p.10, p.15]` | — |
-| SA-3 | Vendor datasheets give enough capability-envelope data for compatibility checks | OPEN (**OQ-020**) | Partner facility comparison |
-| SA-4 | Users can supply or obtain kLa evidence for target vessels | OPEN (**OQ-011**) | Interviews |
+1. Decision support, **not** an autonomous process controller; no writing setpoints to live controllers `[BP p.4, p.5, p.10]`.
+2. Show inputs, units, assumptions, model limits and evidence behind every conclusion `[BP p.4]`.
+3. Missing information never becomes a confident prediction `[BP p.4]`.
+4. Deterministic, unit-tested calculations first; ML only after sufficient real, governed data `[BP p.6, p.10]`.
+5. No claim that constant kLa, P/V, tip speed and mixing time can be preserved simultaneously `[BP p.6]`.
+6. No claims of novelty ("first"), validated digital twin, guaranteed yield, GMP or 21 CFR Part 11 compliance `[BP p.2, p.5, p.15]`.
+7. Synthetic/demo data must be clearly labelled `[BP p.5]`.
