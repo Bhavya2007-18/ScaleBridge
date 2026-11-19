@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: scalebridge-backend
+    env: python
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: scalebridge-db
+          property: connectionString
+      - key: STORAGE_BACKEND
+        value: local
+      - key: LOCAL_STORAGE_PATH
+        value: "./var/storage"
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: "https://scalebridge-frontend.vercel.app,http://localhost:3000"
+      - key: SEED_DEMO_ON_STARTUP
+        value: "true"
+
+databases:
+  - name: scalebridge-db
+    databaseName: scalebridge
+    user: scalebridge
+    plan: standard
