@@ -1,0 +1,20 @@
+{
+  "test_cases": [
+    {
+      "name": "Benchmark CHO Scale-up from 5L to 200L",
+      "inputs": {
+        "source_volume_l": 5.0,
+        "source_rpm": 300,
+        "source_d_m": 0.08,
+        "target_volume_l": 200.0,
+        "target_rpm": 120,
+        "target_d_m": 0.28
+      },
+      "expected_outputs": {
+        "source_tip_speed_m_s": 1.2566,
+        "target_tip_speed_m_s": 1.7593,
+        "turbulent_reynolds_target": true
+      }
+    }
+  ]
+}

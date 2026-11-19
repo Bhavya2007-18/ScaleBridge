@@ -1,0 +1,9 @@
+# ScaleBridge Bio Codeowners
+# Primary technical leads per module (doc 20_TEAM_RESPONSIBILITIES.md)
+
+* @scalebridge-core-team
+/backend/app/science/ @bioprocess-lead @modelling-lead
+/backend/app/readiness/ @bioprocess-lead @modelling-lead
+/backend/ @backend-lead
+/frontend/ @frontend-lead
+/docs/ @founder-team

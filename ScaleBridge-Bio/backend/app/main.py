@@ -1,43 +1,37 @@
-"""FastAPI application entrypoint for ScaleBridge Bio."""
-
-from __future__ import annotations
-
-from contextlib import asynccontextmanager
-from typing import AsyncGenerator
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.api.router import router as api_router
 from app.core.config import settings
-from app.db.models import Organization  # noqa: F401 - register all ORM models
-from app.db.session import Base, SessionLocal, engine
-from app.modules.seed_service import seed_demo_workspace
+from app.core.logging import setup_logging
+from app.db.base import Base
+from app.db.session import engine
+from app.api.v1.router import router as api_v1_router
+from app.seed.demo_data import seed_demo_data
+from app.db.session import SessionLocal
 
+# Setup logging
+setup_logging()
 
-@asynccontextmanager
-async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
-    Base.metadata.create_all(bind=engine)
-    if settings.seed_demo_on_startup:
-        with SessionLocal() as db:
-            seed_demo_workspace(db)
-    yield
+# Initialize tables
+Base.metadata.create_all(bind=engine)
 
+# Seed synthetic demo data
+with SessionLocal() as db:
+    seed_demo_data(db)
 
 app = FastAPI(
-    title=settings.app_name,
-    version="0.1.0",
-    description="ScaleBridge Bio — Bioprocess scale-up & intelligence decision-support API",
-    lifespan=lifespan,
+    title=settings.PROJECT_NAME,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    docs_url=f"{settings.API_V1_STR}/docs"
 )
 
-origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins or ["*"],
+    allow_origins=[str(origin) for origin in settings.CORS_ORIGINS],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(api_router, prefix=settings.api_v1_prefix)
+# Include v1 router
+app.include_router(api_v1_router, prefix=settings.API_V1_STR)
