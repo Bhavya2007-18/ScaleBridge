@@ -1749,6 +1749,7 @@ def create_scenario(
         created_by=ctx.user.id,
     )
     db.add(scen)
+    db.flush()
     record_audit(
         db,
         ctx.organization.id,
@@ -2464,6 +2465,7 @@ def create_assessment_review(
         comment=req.comment.strip(),
     )
     db.add(rev)
+    db.flush()
     record_audit(
         db,
         ctx.organization.id,
@@ -2548,6 +2550,7 @@ def generate_assessment_report(
         generated_by=ctx.user.id,
     )
     db.add(rep)
+    db.flush()
     record_audit(
         db,
         ctx.organization.id,

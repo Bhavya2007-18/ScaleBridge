@@ -13,7 +13,9 @@ from scalebridge_science.contracts import (
     TradeOffRow,
 )
 from scalebridge_science.formulas import (
+    calc_d_over_t,
     calc_do_concentration,
+    calc_hl_over_t,
     calc_otr,
     calc_otr_max,
     calc_power_per_volume,

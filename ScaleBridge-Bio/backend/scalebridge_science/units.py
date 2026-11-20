@@ -20,7 +20,7 @@ class AmbiguousUnitError(ValueError):
 
 
 ureg = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
-ureg.define("percent_air_saturation = [do_saturation] = pct_air_sat = %_air_sat")
+ureg.define("percent_air_saturation = [do_saturation] = pct_air_sat")
 ureg.define("vvm = 1 / minute")
 ureg.define("SLPM = liter / minute = slpm")
 ureg.define("pH_unit = [] = pH")
