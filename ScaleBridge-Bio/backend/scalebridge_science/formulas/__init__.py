@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import math
 from typing import Literal
+
 from pydantic import BaseModel
 
 from scalebridge_science.contracts import CalculationResult, Quantity
@@ -89,7 +90,9 @@ FORMULA_REGISTRY: dict[str, FormulaMetadata] = {
         assumptions=[
             "Volume-averaged power dissipation; local energy dissipation near the impeller is significantly higher."
         ],
-        validity_limits=["Requires either measured shaft power P or an ungassed power estimate P₀."],
+        validity_limits=[
+            "Requires either measured shaft power P or an ungassed power estimate P₀."
+        ],
         required_inputs=["P", "V_w"],
     ),
     "F-PWR-001": FormulaMetadata(
@@ -115,7 +118,9 @@ FORMULA_REGISTRY: dict[str, FormulaMetadata] = {
             "Ungassed power estimate; aeration typically reduces actual gassed power draw.",
             "Multiple impellers treated as additive without hydrodynamic interaction.",
         ],
-        validity_limits=["Valid only in fully turbulent flow regime for the specified impeller geometry."],
+        validity_limits=[
+            "Valid only in fully turbulent flow regime for the specified impeller geometry."
+        ],
         required_inputs=["N_p", "rho", "N", "D"],
     ),
     "F-VVM-001": FormulaMetadata(
@@ -147,7 +152,9 @@ FORMULA_REGISTRY: dict[str, FormulaMetadata] = {
         review_status="pending_review",
         source_basis="ScaleBridge Bio Startup Blueprint p.5 ('gas flow descriptors')",
         assumptions=["Uniform cylindrical vessel cross-section A = π·T²/4."],
-        validity_limits=["High superficial gas velocity can induce impeller flooding or excessive foaming."],
+        validity_limits=[
+            "High superficial gas velocity can induce impeller flooding or excessive foaming."
+        ],
         required_inputs=["Q_g", "T"],
     ),
     "F-DOC-001": FormulaMetadata(
@@ -166,7 +173,9 @@ FORMULA_REGISTRY: dict[str, FormulaMetadata] = {
         review_status="pending_review",
         source_basis="Proposed auxiliary conversion for OTR = kLa(C* - C_L) (Blueprint p.6)",
         assumptions=["DO probe calibrated to 100% air saturation at conditions matching C*."],
-        validity_limits=["Requires process-relevant C* accounting for temperature, pressure, and medium salinity."],
+        validity_limits=[
+            "Requires process-relevant C* accounting for temperature, pressure, and medium salinity."
+        ],
         required_inputs=["DO", "C_star"],
     ),
     "F-OTR-001": FormulaMetadata(

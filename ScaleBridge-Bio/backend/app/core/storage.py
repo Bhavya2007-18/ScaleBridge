@@ -9,7 +9,9 @@ from app.core.config import settings
 
 
 class ObjectStore:
-    def put_bytes(self, storage_key: str, data: bytes, content_type: str = "application/octet-stream") -> str:
+    def put_bytes(
+        self, storage_key: str, data: bytes, content_type: str = "application/octet-stream"
+    ) -> str:
         sha256 = hashlib.sha256(data).hexdigest()
         if settings.storage_backend == "s3":
             import boto3

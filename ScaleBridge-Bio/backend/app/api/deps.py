@@ -70,7 +70,9 @@ def get_current_user(
 
     user = db.query(User).filter(User.id == str(user_id), User.is_active.is_(True)).first()
     if not user:
-        raise ApiError(status.HTTP_401_UNAUTHORIZED, "UNAUTHENTICATED", "User not found or inactive")
+        raise ApiError(
+            status.HTTP_401_UNAUTHORIZED, "UNAUTHENTICATED", "User not found or inactive"
+        )
     return user
 
 

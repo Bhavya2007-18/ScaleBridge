@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Iterable
+
 from scalebridge_science.contracts import EvidenceLevel, Quantity
 
 

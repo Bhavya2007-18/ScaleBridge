@@ -19,7 +19,6 @@ from scalebridge_science.contracts import (
 from scalebridge_science.criteria import check_kla_mismatch_warnings, find_kla_point
 from scalebridge_science.units import convert_value
 
-
 REQUIRED_VESSEL_SPEC_KEYS: list[tuple[str, list[str], list[str]]] = [
     ("working_volume_min", [], ["C-VOLUME-RANGE"]),
     ("working_volume_max", ["F-PV-001", "F-VVM-001"], ["C-VOLUME-RANGE"]),
@@ -652,7 +651,10 @@ def evaluate_risk_rules(
                 title=RULE_REGISTRY["R-DAT-001"].title,
                 explanation=f"{len(missing_calcs)} calculation(s) ({', '.join(formula_ids)}) could not be evaluated due to missing inputs: {', '.join(all_missing)}.",
                 input_refs=[
-                    InputRef(kind="calculation", key=f"{c.formula_id}:{c.scale}:{c.criterion_id or 'baseline'}")
+                    InputRef(
+                        kind="calculation",
+                        key=f"{c.formula_id}:{c.scale}:{c.criterion_id or 'baseline'}",
+                    )
                     for c in missing_calcs
                 ],
                 evidence_gap=f"Provide measured or documented values for: {', '.join(all_missing)}",
@@ -794,7 +796,13 @@ def evaluate_risk_rules(
         )
 
     # --- R-DAT-006: Pending review formulas ---
-    pending_fids = sorted({c.formula_id for c in calcs if c.review_status == "pending_review" and c.status == "computed"})
+    pending_fids = sorted(
+        {
+            c.formula_id
+            for c in calcs
+            if c.review_status == "pending_review" and c.status == "computed"
+        }
+    )
     if pending_fids:
         flags.append(
             RiskFlag(
@@ -950,7 +958,10 @@ def evaluate_risk_rules(
     otr_targets = [
         c
         for c in calcs
-        if c.formula_id == "F-OTR-001" and c.scale == "target" and c.status == "computed" and c.output is not None
+        if c.formula_id == "F-OTR-001"
+        and c.scale == "target"
+        and c.status == "computed"
+        and c.output is not None
     ]
     if our_max is None or not otr_targets:
         missing_oxy: list[str] = []
@@ -982,7 +993,9 @@ def evaluate_risk_rules(
             our_max.value, "mol / (m**3 * second)", "mmol/(L*h)"
         )
         req_disp = convert_value(required_otr_si, "mol / (m**3 * second)", "mmol/(L*h)")
-        failing = [c for c in otr_targets if c.output is not None and c.output.value < required_otr_si]
+        failing = [
+            c for c in otr_targets if c.output is not None and c.output.value < required_otr_si
+        ]
         if failing:
             c0 = failing[0]
             assert c0.output is not None
@@ -997,7 +1010,7 @@ def evaluate_risk_rules(
                     severity="high",
                     outcome="triggered",
                     title=RULE_REGISTRY["R-OXY-003"].title,
-                    explanation=f"Target OTR at required DO ({otr_disp:.2f} mmol/(L·h)) is below required oxygen demand ({req_disp:.2f} mmol/(L·h), based on peak OUR {our_disp:.2f} mmol/(L·h) and margin {margin*100:.0f}%).",
+                    explanation=f"Target OTR at required DO ({otr_disp:.2f} mmol/(L·h)) is below required oxygen demand ({req_disp:.2f} mmol/(L·h), based on peak OUR {our_disp:.2f} mmol/(L·h) and margin {margin * 100:.0f}%).",
                     input_refs=[
                         InputRef(kind="calculation", key=f"F-OTR-001:target:{c0.criterion_id}"),
                         InputRef(kind="measurement_summary", key="our_max"),
@@ -1120,7 +1133,12 @@ def evaluate_risk_rules(
                 validation_task_codes=["VT-REVIEW-CRITERIA"],
             )
         )
-    elif max_tip_c is None and max_pv_c is None and max_vvm_c is None and not thresh.descriptor_ratio_band:
+    elif (
+        max_tip_c is None
+        and max_pv_c is None
+        and max_vvm_c is None
+        and not thresh.descriptor_ratio_band
+    ):
         flags.append(
             RiskFlag(
                 rule_id="R-MIX-001",
@@ -1190,7 +1208,11 @@ def evaluate_risk_rules(
         )
 
     # --- R-MIX-003: Reynolds number turbulent check ---
-    re_calcs = [c for c in calcs if c.formula_id == "F-RE-001" and c.status == "computed" and c.output is not None]
+    re_calcs = [
+        c
+        for c in calcs
+        if c.formula_id == "F-RE-001" and c.status == "computed" and c.output is not None
+    ]
     if not re_calcs:
         flags.append(
             RiskFlag(
@@ -1222,7 +1244,9 @@ def evaluate_risk_rules(
             )
         )
     else:
-        low_re = [c for c in re_calcs if c.output is not None and c.output.value < thresh.re_turbulent_min]
+        low_re = [
+            c for c in re_calcs if c.output is not None and c.output.value < thresh.re_turbulent_min
+        ]
         if low_re:
             c0 = low_re[0]
             assert c0.output is not None
@@ -1267,13 +1291,27 @@ def evaluate_risk_rules(
             f"Impeller count changes from {src.impeller_count} (source) to {tgt.impeller_count} (target)"
         )
 
-    dt_src = next((c.output.value for c in calcs if c.formula_id == "F-GEO-001" and c.scale == "source" and c.output), None)
-    dt_tgt = next((c.output.value for c in calcs if c.formula_id == "F-GEO-001" and c.scale == "target" and c.output), None)
+    dt_src = next(
+        (
+            c.output.value
+            for c in calcs
+            if c.formula_id == "F-GEO-001" and c.scale == "source" and c.output
+        ),
+        None,
+    )
+    dt_tgt = next(
+        (
+            c.output.value
+            for c in calcs
+            if c.formula_id == "F-GEO-001" and c.scale == "target" and c.output
+        ),
+        None,
+    )
     if dt_src is not None and dt_tgt is not None and thresh.d_over_t_rel_tol is not None:
         rel_dt = abs(dt_tgt - dt_src) / dt_src if dt_src > 0 else 0.0
         if rel_dt > thresh.d_over_t_rel_tol:
             geo_diffs.append(
-                f"D/T ratio differs by {rel_dt*100:.1f}% ({dt_src:.2f} vs {dt_tgt:.2f})"
+                f"D/T ratio differs by {rel_dt * 100:.1f}% ({dt_src:.2f} vs {dt_tgt:.2f})"
             )
 
     if geo_diffs:
@@ -1285,7 +1323,8 @@ def evaluate_risk_rules(
                 severity="medium",
                 outcome="triggered",
                 title=RULE_REGISTRY["R-MIX-004"].title,
-                explanation="; ".join(geo_diffs) + ". Flow patterns and shear profiles may shift independently of bulk scale-up criteria.",
+                explanation="; ".join(geo_diffs)
+                + ". Flow patterns and shear profiles may shift independently of bulk scale-up criteria.",
                 input_refs=[
                     InputRef(kind="vessel_parameter", ref_id=src.vessel_version_id, key="geometry"),
                     InputRef(kind="vessel_parameter", ref_id=tgt.vessel_version_id, key="geometry"),
@@ -1445,7 +1484,9 @@ def evaluate_risk_rules(
         rmeta = RULE_REGISTRY[rid]
         if chk.outcome == "incompatible":
             is_prim = chk.criterion_id is None or chk.criterion_id in primary_cids
-            sev: Severity = "critical" if is_prim and rmeta.default_severity == "critical" else "high"
+            sev: Severity = (
+                "critical" if is_prim and rmeta.default_severity == "critical" else "high"
+            )
             flags.append(
                 RiskFlag(
                     rule_id=rid,
@@ -1474,8 +1515,7 @@ def evaluate_risk_rules(
                 title=RULE_REGISTRY["R-EQP-006"].title,
                 explanation=f"Equipment compatibility check(s) ({c_names}) could not be evaluated due to missing vessel capability limits or missing operating point inputs.",
                 input_refs=[
-                    InputRef(kind="compatibility_check", key=c.check_id)
-                    for c in cannot_eval_checks
+                    InputRef(kind="compatibility_check", key=c.check_id) for c in cannot_eval_checks
                 ],
                 evidence_gap="Complete target vessel capability envelope (min/max agitation, motor power, gas flow, cooling, instrumentation).",
                 validation_task_codes=["VT-DATA-VESSEL-SPEC"],

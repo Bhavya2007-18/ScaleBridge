@@ -8,6 +8,7 @@ risk explanation and report generation.'
 from __future__ import annotations
 
 import math
+
 from sqlalchemy.orm import Session
 
 from app.core.security import hash_password
@@ -67,7 +68,9 @@ def generate_synthetic_batch_csv(run_variant: int = 1) -> str:
 
 
 def seed_demo_workspace(db: Session) -> None:
-    existing_org = db.query(Organization).filter(Organization.slug == "scalebridge-demo-bio").first()
+    existing_org = (
+        db.query(Organization).filter(Organization.slug == "scalebridge-demo-bio").first()
+    )
     if existing_org:
         return
 
@@ -169,7 +172,10 @@ def seed_demo_workspace(db: Session) -> None:
                 "note": "Maintained by agitation cascade 400-650 rpm",
             },
         ],
-        material_context={"carbon_source": "Glucose 500 g/L sterile feed", "antifoam": "Silicone food-grade"},
+        material_context={
+            "carbon_source": "Glucose 500 g/L sterile feed",
+            "antifoam": "Silicone food-grade",
+        },
         change_note="Seeded synthetic demonstration Process Passport",
         created_by=scientist.id,
     )
@@ -203,12 +209,29 @@ def seed_demo_workspace(db: Session) -> None:
         impeller_type="rushton_turbine",
         impeller_count=2,
         sparger_type="ring",
-        instrumentation=["ph_probe", "do_probe", "temperature_probe", "offgas_analyzer", "balance_feed"],
-        controls=["ph_control", "do_cascade_agitation", "do_cascade_airflow", "temperature_control", "feed_pump"],
+        instrumentation=[
+            "ph_probe",
+            "do_probe",
+            "temperature_probe",
+            "offgas_analyzer",
+            "balance_feed",
+        ],
+        controls=[
+            "ph_control",
+            "do_cascade_agitation",
+            "do_cascade_airflow",
+            "temperature_control",
+            "feed_pump",
+        ],
         kla_evidence=[
             {
                 "id": "kla-lab-1",
-                "kla": {"value": 145.0, "unit": "1/h", "provenance": "lab_assay", "value_nature": "measured"},
+                "kla": {
+                    "value": 145.0,
+                    "unit": "1/h",
+                    "provenance": "lab_assay",
+                    "value_nature": "measured",
+                },
                 "agitation_speed": {"value": 650.0, "unit": "rpm", "provenance": "lab_assay"},
                 "gas_flow": {"value": 1.5, "unit": "L/min", "provenance": "lab_assay"},
                 "working_volume": {"value": 2.0, "unit": "L", "provenance": "lab_assay"},
@@ -235,12 +258,27 @@ def seed_demo_workspace(db: Session) -> None:
         impeller_count=2,
         sparger_type="ring",
         instrumentation=["ph_probe", "do_probe", "temperature_probe", "pressure_sensor"],
-        controls=["ph_control", "do_cascade_agitation", "do_cascade_airflow", "temperature_control", "feed_pump"],
+        controls=[
+            "ph_control",
+            "do_cascade_agitation",
+            "do_cascade_airflow",
+            "temperature_control",
+            "feed_pump",
+        ],
         kla_evidence=[
             {
                 "id": "kla-pilot-water",
-                "kla": {"value": 92.0, "unit": "1/h", "provenance": "vendor_datasheet", "value_nature": "measured"},
-                "agitation_speed": {"value": 250.0, "unit": "rpm", "provenance": "vendor_datasheet"},
+                "kla": {
+                    "value": 92.0,
+                    "unit": "1/h",
+                    "provenance": "vendor_datasheet",
+                    "value_nature": "measured",
+                },
+                "agitation_speed": {
+                    "value": 250.0,
+                    "unit": "rpm",
+                    "provenance": "vendor_datasheet",
+                },
                 "gas_flow": {"value": 100.0, "unit": "L/min", "provenance": "vendor_datasheet"},
                 "working_volume": {"value": 150.0, "unit": "L", "provenance": "vendor_datasheet"},
                 "medium_description": "Deionized water factory acceptance test at 25 °C",
@@ -329,17 +367,69 @@ def seed_demo_workspace(db: Session) -> None:
         "timestamp": {"column": "Elapsed_h", "kind": "elapsed", "elapsed_unit": "h"},
         "batch_start": "2026-11-10T08:00:00Z",
         "columns": [
-            {"source": "pH", "variable": "ph", "unit": "pH", "provenance": "sensor", "calibration_status": "calibrated_pre_run"},
-            {"source": "DO_pct_air_sat", "variable": "dissolved_oxygen", "unit": "percent_air_saturation", "provenance": "sensor", "calibration_status": "calibrated_pre_run"},
-            {"source": "Temperature_C", "variable": "temperature", "unit": "degC", "provenance": "sensor"},
-            {"source": "Agitation_rpm", "variable": "agitation_speed", "unit": "rpm", "provenance": "sensor"},
-            {"source": "Airflow_L_min", "variable": "airflow", "unit": "L/min", "provenance": "sensor"},
-            {"source": "Feed_Rate_mL_h", "variable": "feed_rate", "unit": "mL/h", "provenance": "sensor"},
-            {"source": "Working_Volume_L", "variable": "working_volume", "unit": "L", "provenance": "sensor"},
-            {"source": "OUR_mmol_L_h", "variable": "our", "unit": "mmol/(L*h)", "provenance": "lab_assay"},
+            {
+                "source": "pH",
+                "variable": "ph",
+                "unit": "pH",
+                "provenance": "sensor",
+                "calibration_status": "calibrated_pre_run",
+            },
+            {
+                "source": "DO_pct_air_sat",
+                "variable": "dissolved_oxygen",
+                "unit": "percent_air_saturation",
+                "provenance": "sensor",
+                "calibration_status": "calibrated_pre_run",
+            },
+            {
+                "source": "Temperature_C",
+                "variable": "temperature",
+                "unit": "degC",
+                "provenance": "sensor",
+            },
+            {
+                "source": "Agitation_rpm",
+                "variable": "agitation_speed",
+                "unit": "rpm",
+                "provenance": "sensor",
+            },
+            {
+                "source": "Airflow_L_min",
+                "variable": "airflow",
+                "unit": "L/min",
+                "provenance": "sensor",
+            },
+            {
+                "source": "Feed_Rate_mL_h",
+                "variable": "feed_rate",
+                "unit": "mL/h",
+                "provenance": "sensor",
+            },
+            {
+                "source": "Working_Volume_L",
+                "variable": "working_volume",
+                "unit": "L",
+                "provenance": "sensor",
+            },
+            {
+                "source": "OUR_mmol_L_h",
+                "variable": "our",
+                "unit": "mmol/(L*h)",
+                "provenance": "lab_assay",
+            },
             {"source": "OD600", "variable": "od600", "unit": "OD600", "provenance": "lab_assay"},
-            {"source": "Biomass_DCW_g_L", "variable": "biomass_dcw", "unit": "g/L", "provenance": "lab_assay"},
-            {"source": "Product_Titre_g_L", "variable": "product_titre", "unit": "g/L", "provenance": "lab_assay"},
+            {
+                "source": "Biomass_DCW_g_L",
+                "variable": "biomass_dcw",
+                "unit": "g/L",
+                "provenance": "lab_assay",
+            },
+            {
+                "source": "Product_Titre_g_L",
+                "variable": "product_titre",
+                "unit": "g/L",
+                "provenance": "lab_assay",
+            },
         ],
     }
 

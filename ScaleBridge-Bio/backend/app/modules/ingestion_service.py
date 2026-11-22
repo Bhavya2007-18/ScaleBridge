@@ -2,19 +2,19 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
 import io
 import math
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import numpy as np
 import pandas as pd
 
 from scalebridge_science.units import (
-    AmbiguousUnitError,
     PINT_VERSION,
-    UnitDimensionError,
     VARIABLE_UNIT_SPECS,
+    AmbiguousUnitError,
+    UnitDimensionError,
     convert_value,
 )
 
@@ -305,7 +305,11 @@ def validate_and_normalize_dataframe(
 
         # Check timestamp gaps (> 10x median interval)
         if len(el_series) >= 3:
-            diffs = [el_series[i] - el_series[i - 1] for i in range(1, len(el_series)) if el_series[i] > el_series[i - 1]]
+            diffs = [
+                el_series[i] - el_series[i - 1]
+                for i in range(1, len(el_series))
+                if el_series[i] > el_series[i - 1]
+            ]
             if diffs:
                 med_dt = float(np.median(diffs))
                 if med_dt > 0:

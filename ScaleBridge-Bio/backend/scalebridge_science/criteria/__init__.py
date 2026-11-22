@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import math
+from typing import Literal
+
 from pydantic import BaseModel
 
 from scalebridge_science.contracts import (
@@ -13,7 +15,9 @@ from scalebridge_science.contracts import (
     TradeOffRow,
 )
 from scalebridge_science.formulas import (
+    calc_d_over_t,
     calc_do_concentration,
+    calc_hl_over_t,
     calc_otr,
     calc_otr_max,
     calc_power_per_volume,
@@ -132,7 +136,11 @@ def evaluate_criteria_and_calculations(
     Q_g_s = proc.operating.get("airflow") or proc.operating.get("gas_flow_total")
     V_s = proc.operating.get("working_volume") or src_v.parameters.get("working_volume_max")
     P_measured_s = proc.operating.get("power_draw")
-    DO_req = scen.constraints.get("min_do_required") or proc.operating.get("do_setpoint") or proc.extremes.get("do_min")
+    DO_req = (
+        scen.constraints.get("min_do_required")
+        or proc.operating.get("do_setpoint")
+        or proc.extremes.get("do_min")
+    )
 
     D_s = src_v.parameters.get("impeller_diameter")
     T_s = src_v.parameters.get("vessel_inner_diameter")
@@ -167,15 +175,11 @@ def evaluate_criteria_and_calculations(
 
     src_kla_pt = find_kla_point(src_v.kla_evidence, scen.source_kla_point_id)
     src_kla_qty = src_kla_pt.kla if src_kla_pt else None
-    src_kla_warns = (
-        check_kla_mismatch_warnings(src_kla_pt, N_s, Q_g_s, V_s) if src_kla_pt else []
-    )
+    src_kla_warns = check_kla_mismatch_warnings(src_kla_pt, N_s, Q_g_s, V_s) if src_kla_pt else []
     res_otr_s = calc_otr(
         src_kla_qty, C_star, res_doc_s.output, scale="source", extra_warnings=src_kla_warns
     )
-    res_otr_max_s = calc_otr_max(
-        src_kla_qty, C_star, scale="source", extra_warnings=src_kla_warns
-    )
+    res_otr_max_s = calc_otr_max(src_kla_qty, C_star, scale="source", extra_warnings=src_kla_warns)
 
     calcs.extend(
         [
@@ -236,11 +240,7 @@ def evaluate_criteria_and_calculations(
 
     # Helper to compute ratio safely
     def _ratio(tgt_res: CalculationResult, src_res: CalculationResult) -> float | None:
-        if (
-            tgt_res.output is not None
-            and src_res.output is not None
-            and src_res.output.value != 0
-        ):
+        if tgt_res.output is not None and src_res.output is not None and src_res.output.value != 0:
             return tgt_res.output.value / src_res.output.value
         return None
 
@@ -275,7 +275,9 @@ def evaluate_criteria_and_calculations(
                 )
         elif cid == "S-PV":
             if res_pv_s.output is None:
-                crit_missing.extend(res_pv_s.missing_inputs or ["(P/V)_s (source power per volume)"])
+                crit_missing.extend(
+                    res_pv_s.missing_inputs or ["(P/V)_s (source power per volume)"]
+                )
             if V_t is None:
                 crit_missing.append("V_t (target_working_volume)")
             if Np_t is None:
@@ -389,7 +391,9 @@ def evaluate_criteria_and_calculations(
             "OTR": _ratio(res_otr_t, res_otr_s),
         }
 
-        row_status = "insufficient_evidence" if crit_missing else "computed"
+        row_status: Literal["computed", "insufficient_evidence", "not_applicable", "error"] = (
+            "insufficient_evidence" if crit_missing else "computed"
+        )
         trade_offs.append(
             TradeOffRow(
                 criterion_id=cid,

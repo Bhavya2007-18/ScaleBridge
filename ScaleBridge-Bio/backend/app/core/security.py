@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
 import hashlib
 import secrets
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
+import jwt
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
-import jwt
 
 from app.core.config import settings
 

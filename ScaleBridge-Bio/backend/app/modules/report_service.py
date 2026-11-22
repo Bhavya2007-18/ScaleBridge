@@ -1,14 +1,24 @@
-"""PDF Process-Transfer Report generator using ReportLab (docs/04_MVP_SCOPE.md, docs/08_API_SPECIFICATION.md)."""
+"""PDF Process-Transfer Report generator using ReportLab (docs/04_MVP_SCOPE.md, docs/08_API_SPECIFICATION.md).
+
+Domain E Deliverable (Owner: Person 4 - Reporting, DevOps and Quality Lead).
+Includes:
+- Full structured layout (Executive summary, vessel comparison, calculations, compatibility, risk register, validation plan, reviewer sign-offs).
+- Prominent diagonal canvas watermark for synthetic/demonstration datasets.
+- Running header and page numbering ('Page X of Y') via custom two-pass NumberedWatermarkCanvas.
+- Mandatory scientific and regulatory disclaimers.
+- Deterministic reproduction from immutable stored assessments.
+"""
 
 from __future__ import annotations
 
 import io
-from typing import Any
+from typing import Any, Type
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
+from reportlab.pdfgen import canvas
 from reportlab.platypus import (
     Paragraph,
     SimpleDocTemplate,
@@ -18,6 +28,71 @@ from reportlab.platypus import (
 )
 
 
+def get_canvas_class(is_synthetic: bool) -> Type[canvas.Canvas]:
+    """Factory creating a two-pass Canvas that renders dynamic page counts, running headers/footers, and watermarks."""
+
+    class NumberedWatermarkCanvas(canvas.Canvas):
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
+            super().__init__(*args, **kwargs)
+            self._saved_page_states: list[dict[str, Any]] = []
+
+        def showPage(self) -> None:
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
+
+        def save(self) -> None:
+            num_pages = len(self._saved_page_states)
+            for state in self._saved_page_states:
+                self.__dict__.update(state)
+                self._draw_decorations(num_pages)
+                super().showPage()
+            super().save()
+
+        def _draw_decorations(self, total_pages: int) -> None:
+            self.saveState()
+
+            # 1. Diagonal Watermark on every page when using synthetic / demo data
+            if is_synthetic:
+                self.saveState()
+                self.setFont("Helvetica-Bold", 32)
+                # Subtle semi-transparent amber/rose watermark
+                self.setFillColor(colors.HexColor("#DC2626"), alpha=0.10)
+                self.translate(A4[0] / 2.0, A4[1] / 2.0)
+                self.rotate(45)
+                self.drawCentredString(0, 0, "DEMO / SYNTHETIC DATA — NOT FOR PILOT EXECUTION")
+                self.restoreState()
+
+            # 2. Running Header (Top)
+            self.setFont("Helvetica-Bold", 7.5)
+            self.setFillColor(colors.HexColor("#0D9488"))
+            self.drawString(
+                16 * mm, A4[1] - 12 * mm, "SCALEBRIDGE BIO — PROCESS-TRANSFER READINESS REPORT"
+            )
+            self.setFont("Helvetica", 7.5)
+            self.setFillColor(colors.HexColor("#64748B"))
+            self.drawRightString(A4[0] - 16 * mm, A4[1] - 12 * mm, "DECISION SUPPORT WORKSPACE")
+            self.setStrokeColor(colors.HexColor("#CBD5E1"))
+            self.setLineWidth(0.5)
+            self.line(16 * mm, A4[1] - 13.5 * mm, A4[0] - 16 * mm, A4[1] - 13.5 * mm)
+
+            # 3. Running Footer (Bottom)
+            self.line(16 * mm, 14 * mm, A4[0] - 16 * mm, 14 * mm)
+            self.setFont("Helvetica", 7.5)
+            self.setFillColor(colors.HexColor("#64748B"))
+            self.drawString(
+                16 * mm,
+                10 * mm,
+                "ScaleBridge Bio Decision-Support Workspace — Not for live control or GMP execution",
+            )
+            self.setFont("Helvetica-Bold", 7.5)
+            self.drawRightString(
+                A4[0] - 16 * mm, 10 * mm, f"Page {self._pageNumber} of {total_pages}"
+            )
+            self.restoreState()
+
+    return NumberedWatermarkCanvas
+
+
 def render_transfer_report_pdf(
     project: dict[str, Any],
     passport: dict[str, Any] | None,
@@ -25,6 +100,7 @@ def render_transfer_report_pdf(
     assessment: dict[str, Any],
     report_version: int,
 ) -> bytes:
+    """Generate a high-fidelity PDF Process-Transfer Report from an immutable assessment snapshot."""
     buf = io.BytesIO()
     doc = SimpleDocTemplate(
         buf,
@@ -40,34 +116,43 @@ def render_transfer_report_pdf(
     title_style = ParagraphStyle(
         "SBTitle",
         parent=styles["Heading1"],
-        fontSize=16,
-        leading=20,
+        fontSize=15,
+        leading=19,
         textColor=colors.HexColor("#0B192C"),
         spaceAfter=4,
     )
     h2_style = ParagraphStyle(
         "SBH2",
         parent=styles["Heading2"],
-        fontSize=11,
-        leading=14,
+        fontSize=10.5,
+        leading=13.5,
         textColor=colors.HexColor("#0D9488"),
-        spaceBefore=10,
+        spaceBefore=9,
         spaceAfter=4,
     )
     body_style = ParagraphStyle(
         "SBBody",
         parent=styles["Normal"],
-        fontSize=8.5,
-        leading=11.5,
+        fontSize=8.0,
+        leading=11.0,
         textColor=colors.HexColor("#1E293B"),
     )
     warn_style = ParagraphStyle(
         "SBWarn",
         parent=body_style,
-        fontSize=8.5,
-        leading=11.5,
+        fontSize=8.0,
+        leading=11.0,
         textColor=colors.HexColor("#92400E"),
         backColor=colors.HexColor("#FEF3C7"),
+        borderPadding=5,
+    )
+    disclaimer_style = ParagraphStyle(
+        "SBDisclaimer",
+        parent=body_style,
+        fontSize=7.5,
+        leading=10.5,
+        textColor=colors.HexColor("#475569"),
+        backColor=colors.HexColor("#F1F5F9"),
         borderPadding=5,
     )
 
@@ -77,11 +162,12 @@ def render_transfer_report_pdf(
     if is_syn:
         story.append(
             Paragraph(
-                "<b>SYNTHETIC / DEMONSTRATION DATASET NOTICE:</b> This Process-Transfer Report includes synthetic or demonstration data. It is generated for workflow evaluation only and must not be used for physical pilot execution.",
+                "<b>SYNTHETIC / DEMONSTRATION DATASET NOTICE:</b> This Process-Transfer Report includes synthetic or demonstration data. "
+                "It is generated for workflow evaluation and system demonstration only and must not be used for physical pilot plant execution.",
                 warn_style,
             )
         )
-        story.append(Spacer(1, 4 * mm))
+        story.append(Spacer(1, 3 * mm))
 
     story.append(Paragraph("SCALEBRIDGE BIO — PROCESS-TRANSFER READINESS REPORT", title_style))
     story.append(
@@ -201,7 +287,9 @@ def render_transfer_report_pdf(
 
     # 3. Engineering Calculations
     story.append(Paragraph("3. Scale-Up Engineering Calculations & Provenance", h2_style))
-    calc_rows = [["Formula", "Scale / Criterion", "Equation", "Result (Display)", "Status / Evidence"]]
+    calc_rows = [
+        ["Formula", "Scale / Criterion", "Equation", "Result (Display)", "Status / Evidence"]
+    ]
     for c in assessment.get("calculations", []):
         out = c.get("output")
         if out and c.get("status") == "computed":
@@ -270,13 +358,17 @@ def render_transfer_report_pdf(
     for rf in assessment.get("risk_flags", []):
         if rf.get("outcome") == "not_triggered":
             continue
-        gap_txt = f"<br/><b>Evidence Gap:</b> {rf.get('evidence_gap')}" if rf.get("evidence_gap") else ""
+        gap_txt = (
+            f"<br/><b>Evidence Gap:</b> {rf.get('evidence_gap')}" if rf.get("evidence_gap") else ""
+        )
         risk_rows.append(
             [
                 f"{rf.get('rule_id')} v{rf.get('rule_version')}",
                 f"{rf.get('category')} / {str(rf.get('severity')).upper()}",
                 str(rf.get("outcome")),
-                Paragraph(f"<b>{rf.get('title')}:</b> {rf.get('explanation')}{gap_txt}", body_style),
+                Paragraph(
+                    f"<b>{rf.get('title')}:</b> {rf.get('explanation')}{gap_txt}", body_style
+                ),
             ]
         )
     if len(risk_rows) > 1:
@@ -349,9 +441,10 @@ def render_transfer_report_pdf(
     story.append(
         Paragraph(
             "<b>SCIENTIFIC & REGULATORY DISCLAIMER:</b> ScaleBridge Bio is a process-engineering decision-support workspace, not an autonomous controller, validated digital twin, or engineering design package. Calculations use deterministic relationships (such as OTR = kLa(C* − C_L)) whose validity depends on measured inputs and vessel-specific characterization. Not for GMP production execution or 21 CFR Part 11 compliance.",
-            warn_style,
+            disclaimer_style,
         )
     )
 
-    doc.build(story)
+    canvas_cls = get_canvas_class(is_synthetic=is_syn)
+    doc.build(story, canvasmaker=canvas_cls)
     return buf.getvalue()
