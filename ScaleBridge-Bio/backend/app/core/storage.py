@@ -32,7 +32,10 @@ class ObjectStore:
             )
             return sha256
 
-        dest = Path(settings.local_storage_path) / storage_key
+        base = Path(settings.local_storage_path).resolve()
+        dest = (base / storage_key).resolve()
+        if base not in dest.parents and dest != base:
+            raise ValueError("Invalid storage key: path traversal detected")
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(data)
         return sha256
@@ -50,7 +53,10 @@ class ObjectStore:
             resp = s3.get_object(Bucket=settings.s3_bucket, Key=storage_key)
             return bytes(resp["Body"].read())
 
-        src = Path(settings.local_storage_path) / storage_key
+        base = Path(settings.local_storage_path).resolve()
+        src = (base / storage_key).resolve()
+        if base not in src.parents and src != base:
+            raise ValueError("Invalid storage key: path traversal detected")
         if not src.exists():
             raise FileNotFoundError(f"Storage object not found: {storage_key}")
         return src.read_bytes()

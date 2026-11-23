@@ -1512,9 +1512,10 @@ def compare_vessels(
     if not ver_a or not ver_b:
         raise ApiError(status.HTTP_404_NOT_FOUND, "NOT_FOUND", "Vessel version not found")
 
-    ves_a = db.query(Vessel).filter(Vessel.id == ver_a.vessel_id).first()
-    ves_b = db.query(Vessel).filter(Vessel.id == ver_b.vessel_id).first()
-    assert ves_a and ves_b
+    ves_a = db.query(Vessel).filter(Vessel.id == ver_a.vessel_id, Vessel.organization_id == ctx.organization.id).first()
+    ves_b = db.query(Vessel).filter(Vessel.id == ver_b.vessel_id, Vessel.organization_id == ctx.organization.id).first()
+    if not ves_a or not ves_b:
+        raise ApiError(status.HTTP_404_NOT_FOUND, "NOT_FOUND", "Vessel not found")
 
     spec_a = _build_vessel_spec(ves_a, ver_a, db)
     spec_b = _build_vessel_spec(ves_b, ver_b, db)
@@ -1575,7 +1576,8 @@ def get_vessel(
         .order_by(VesselVersion.version.desc())
         .first()
     )
-    assert ver
+    if ver is None:
+        raise ApiError(status.HTTP_404_NOT_FOUND, "NOT_FOUND", "Vessel version not found")
     return _serialize_vessel(vessel, ver, db)
 
 
@@ -1825,9 +1827,10 @@ def execute_scenario_assessment(
             "Source or target vessel version not found",
         )
 
-    src_vessel_row = db.query(Vessel).filter(Vessel.id == src_ver.vessel_id).first()
-    tgt_vessel_row = db.query(Vessel).filter(Vessel.id == tgt_ver.vessel_id).first()
-    assert src_vessel_row and tgt_vessel_row
+    src_vessel_row = db.query(Vessel).filter(Vessel.id == src_ver.vessel_id, Vessel.organization_id == ctx.organization.id).first()
+    tgt_vessel_row = db.query(Vessel).filter(Vessel.id == tgt_ver.vessel_id, Vessel.organization_id == ctx.organization.id).first()
+    if not src_vessel_row or not tgt_vessel_row:
+        raise ApiError(status.HTTP_404_NOT_FOUND, "NOT_FOUND", "Vessel not found")
 
     src_spec = _build_vessel_spec(src_vessel_row, src_ver, db)
     tgt_spec = _build_vessel_spec(tgt_vessel_row, tgt_ver, db)
@@ -2506,10 +2509,12 @@ def generate_assessment_report(
     if not a:
         raise ApiError(status.HTTP_404_NOT_FOUND, "NOT_FOUND", "Assessment not found")
 
-    scen = db.query(Scenario).filter(Scenario.id == a.scenario_id).first()
-    assert scen
-    proj = db.query(Project).filter(Project.id == scen.project_id).first()
-    assert proj
+    scen = db.query(Scenario).filter(Scenario.id == a.scenario_id, Scenario.organization_id == ctx.organization.id).first()
+    if scen is None:
+        raise ApiError(status.HTTP_404_NOT_FOUND, "NOT_FOUND", "Scenario not found")
+    proj = db.query(Project).filter(Project.id == scen.project_id, Project.organization_id == ctx.organization.id).first()
+    if proj is None:
+        raise ApiError(status.HTTP_404_NOT_FOUND, "NOT_FOUND", "Project not found")
     latest_pv = (
         db.query(PassportVersion)
         .filter(PassportVersion.project_id == proj.id)
