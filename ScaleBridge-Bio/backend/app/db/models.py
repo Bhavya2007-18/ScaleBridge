@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import uuid
 from datetime import datetime, timezone
 from typing import Any
-import uuid
 
 from sqlalchemy import (
     JSON,
@@ -183,9 +183,7 @@ class VesselVersion(Base):
 
 class VesselParameter(Base):
     __tablename__ = "vessel_parameters"
-    __table_args__ = (
-        UniqueConstraint("vessel_version_id", "key", name="uq_vessel_ver_param_key"),
-    )
+    __table_args__ = (UniqueConstraint("vessel_version_id", "key", name="uq_vessel_ver_param_key"),)
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=_uuid)
     organization_id: Mapped[str] = mapped_column(

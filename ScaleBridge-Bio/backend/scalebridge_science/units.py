@@ -8,6 +8,7 @@ NOT via radians (`2*pi` error in tip speed and Reynolds number).
 from __future__ import annotations
 
 import pint
+
 from scalebridge_science.contracts import Provenance, Quantity, ValueNature
 
 
@@ -20,7 +21,7 @@ class AmbiguousUnitError(ValueError):
 
 
 ureg = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
-ureg.define("percent_air_saturation = [do_saturation] = pct_air_sat = %_air_sat")
+ureg.define("percent_air_saturation = [do_saturation] = pct_air_sat")
 ureg.define("vvm = 1 / minute")
 ureg.define("SLPM = liter / minute = slpm")
 ureg.define("pH_unit = [] = pH")
@@ -55,17 +56,47 @@ VARIABLE_UNIT_SPECS: dict[str, dict[str, str | list[str]]] = {
     "airflow": {
         "si": "m**3 / second",
         "display": "L/min",
-        "accepted": ["L/min", "l/min", "mL/min", "m^3/h", "m**3/h", "m^3/s", "m**3/s", "SLPM", "slpm"],
+        "accepted": [
+            "L/min",
+            "l/min",
+            "mL/min",
+            "m^3/h",
+            "m**3/h",
+            "m^3/s",
+            "m**3/s",
+            "SLPM",
+            "slpm",
+        ],
     },
     "oxygen_flow": {
         "si": "m**3 / second",
         "display": "L/min",
-        "accepted": ["L/min", "l/min", "mL/min", "m^3/h", "m**3/h", "m^3/s", "m**3/s", "SLPM", "slpm"],
+        "accepted": [
+            "L/min",
+            "l/min",
+            "mL/min",
+            "m^3/h",
+            "m**3/h",
+            "m^3/s",
+            "m**3/s",
+            "SLPM",
+            "slpm",
+        ],
     },
     "gas_flow_total": {
         "si": "m**3 / second",
         "display": "L/min",
-        "accepted": ["L/min", "l/min", "mL/min", "m^3/h", "m**3/h", "m^3/s", "m**3/s", "SLPM", "slpm"],
+        "accepted": [
+            "L/min",
+            "l/min",
+            "mL/min",
+            "m^3/h",
+            "m**3/h",
+            "m^3/s",
+            "m**3/s",
+            "SLPM",
+            "slpm",
+        ],
     },
     "headspace_pressure": {
         "si": "pascal",
@@ -120,9 +151,21 @@ VARIABLE_UNIT_SPECS: dict[str, dict[str, str | list[str]]] = {
     },
     # Vessel & medium parameters
     "total_volume": {"si": "m**3", "display": "L", "accepted": ["L", "l", "mL", "m^3", "m**3"]},
-    "working_volume_min": {"si": "m**3", "display": "L", "accepted": ["L", "l", "mL", "m^3", "m**3"]},
-    "working_volume_max": {"si": "m**3", "display": "L", "accepted": ["L", "l", "mL", "m^3", "m**3"]},
-    "vessel_inner_diameter": {"si": "meter", "display": "m", "accepted": ["m", "meter", "mm", "cm"]},
+    "working_volume_min": {
+        "si": "m**3",
+        "display": "L",
+        "accepted": ["L", "l", "mL", "m^3", "m**3"],
+    },
+    "working_volume_max": {
+        "si": "m**3",
+        "display": "L",
+        "accepted": ["L", "l", "mL", "m^3", "m**3"],
+    },
+    "vessel_inner_diameter": {
+        "si": "meter",
+        "display": "m",
+        "accepted": ["m", "meter", "mm", "cm"],
+    },
     "vessel_height": {"si": "meter", "display": "m", "accepted": ["m", "meter", "mm", "cm"]},
     "liquid_height_at_working_volume": {
         "si": "meter",
@@ -145,16 +188,40 @@ VARIABLE_UNIT_SPECS: dict[str, dict[str, str | list[str]]] = {
         "display": "rpm",
         "accepted": ["rpm", "1/min", "1/s", "1/second", "rps"],
     },
-    "motor_power_limit": {"si": "watt", "display": "W", "accepted": ["W", "watt", "kW", "kilowatt"]},
+    "motor_power_limit": {
+        "si": "watt",
+        "display": "W",
+        "accepted": ["W", "watt", "kW", "kilowatt"],
+    },
     "gas_flow_min": {
         "si": "m**3 / second",
         "display": "L/min",
-        "accepted": ["L/min", "l/min", "mL/min", "m^3/h", "m**3/h", "m^3/s", "m**3/s", "SLPM", "slpm"],
+        "accepted": [
+            "L/min",
+            "l/min",
+            "mL/min",
+            "m^3/h",
+            "m**3/h",
+            "m^3/s",
+            "m**3/s",
+            "SLPM",
+            "slpm",
+        ],
     },
     "gas_flow_max": {
         "si": "m**3 / second",
         "display": "L/min",
-        "accepted": ["L/min", "l/min", "mL/min", "m^3/h", "m**3/h", "m^3/s", "m**3/s", "SLPM", "slpm"],
+        "accepted": [
+            "L/min",
+            "l/min",
+            "mL/min",
+            "m^3/h",
+            "m**3/h",
+            "m^3/s",
+            "m**3/s",
+            "SLPM",
+            "slpm",
+        ],
     },
     "max_headspace_pressure": {
         "si": "pascal",
@@ -262,7 +329,7 @@ def to_si_quantity(
     value: float,
     unit: str,
     variable_key: str,
-    provenance: Provenance = "manual_entry",
+    provenance: str | Provenance = Provenance.manual_entry,
     value_nature: ValueNature | None = None,
     source_ref: str | None = None,
     note: str | None = None,
@@ -277,19 +344,22 @@ def to_si_quantity(
     val_si = convert_value(value, unit, si_unit)
     val_display = convert_value(val_si, si_unit, display_unit)
 
+    if isinstance(provenance, str):
+        provenance = Provenance(provenance)
+
     resolved_nature: ValueNature
     if value_nature is not None:
         resolved_nature = value_nature
-    elif provenance in ("sensor", "lab_assay"):
-        resolved_nature = "measured"
-    elif provenance == "published_correlation":
-        resolved_nature = "estimated"
-    elif provenance == "user_assumption":
-        resolved_nature = "assumed"
-    elif provenance == "calculated":
-        resolved_nature = "calculated"
+    elif provenance in (Provenance.sensor, Provenance.lab_assay):
+        resolved_nature = ValueNature.measured
+    elif provenance == Provenance.published_correlation:
+        resolved_nature = ValueNature.estimated
+    elif provenance == Provenance.user_assumption:
+        resolved_nature = ValueNature.assumed
+    elif provenance == Provenance.calculated:
+        resolved_nature = ValueNature.calculated
     else:
-        resolved_nature = "measured"
+        resolved_nature = ValueNature.measured
 
     return Quantity(
         value=val_si,
