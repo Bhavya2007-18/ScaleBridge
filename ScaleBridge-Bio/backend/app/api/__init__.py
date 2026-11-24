@@ -1,1 +1,1 @@
-"""ScaleBridge Bio API package."""
+"""API package."""

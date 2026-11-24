@@ -1,1 +1,1 @@
-"""ScaleBridge Bio database package."""
+"""Database package."""

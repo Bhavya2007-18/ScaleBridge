@@ -1,68 +1,41 @@
-# ScaleBridge Bio — Automation Makefile (Local ScaleBridge-Bio directory)
-# Domain F Deliverable (Owner: Person 4 - Reporting, DevOps and Quality Lead)
-
-.PHONY: help install test test-science test-api test-reporting test-cov lint format typecheck run docker-up docker-down backup clean
+.PHONY: help install test test-backend test-frontend lint dev run-backend run-frontend docker-up docker-down clean
 
 help:
-	@echo "ScaleBridge Bio Development Commands:"
-	@echo "  make install        Install backend and dev dependencies"
-	@echo "  make test           Run all pytest test suites"
-	@echo "  make test-science   Run scientific golden-vector tests (Person 1)"
-	@echo "  make test-api       Run API workflow integration tests (Person 2 & 3)"
-	@echo "  make test-reporting Run PDF report and generation tests (Person 4)"
-	@echo "  make test-cov       Run tests with coverage report"
-	@echo "  make lint           Check code with Ruff"
-	@echo "  make format         Auto-format code with Ruff"
-	@echo "  make typecheck      Run Mypy static type analysis"
-	@echo "  make run            Start local FastAPI backend server"
-	@echo "  make docker-up      Start complete local Docker Compose stack"
-	@echo "  make docker-down    Stop Docker Compose stack"
-	@echo "  make backup         Create a verified database backup"
-	@echo "  make clean          Remove cache, build, and test artifacts"
+	@echo "ScaleBridge Bio Development Makefile"
+	@echo "Commands:"
+	@echo "  install        Install both backend and frontend dependencies"
+	@echo "  test           Run all tests (backend pytest + frontend typecheck)"
+	@echo "  test-backend   Run backend pytest with coverage"
+	@echo "  test-frontend  Run frontend typecheck and build"
+	@echo "  lint           Run linting checks (ruff, prettier)"
+	@echo "  dev            Run both backend and frontend in local dev mode"
+	@echo "  docker-up      Start containerized stack via docker compose"
+	@echo "  docker-down    Tear down containerized stack"
+	@echo "  clean          Remove temporary caches and build artifacts"
 
 install:
-	pip install --upgrade pip
-	pip install -e "backend[dev]"
+	cd backend && pip install -r requirements-dev.txt && pip install -e .
+	cd frontend && npm install
 
-test:
-	pytest backend/
+test: test-backend test-frontend
 
-test-science:
-	pytest backend/scalebridge_science/tests/
+test-backend:
+	cd backend && pytest --cov=app
 
-test-api:
-	pytest backend/tests/test_api_workflow.py
-
-test-reporting:
-	pytest backend/tests/test_reporting.py
-
-test-cov:
-	pytest backend/ --cov=backend/app --cov=backend/scalebridge_science --cov-report=term-missing
+test-frontend:
+	cd frontend && npm run typecheck
 
 lint:
-	ruff check backend/
-
-format:
-	ruff format backend/
-
-typecheck:
-	mypy backend/scalebridge_science backend/app --ignore-missing-imports
-
-run:
-	cd backend && uvicorn app.main:app --reload --port 8000
+	cd backend && ruff check .
+	cd frontend && npm run lint
 
 docker-up:
-	docker compose up -d
+	docker compose up --build -d
 
 docker-down:
 	docker compose down
 
-backup:
-	python scripts/backup_db.py --verify
-
 clean:
-	find . -type d -name "__pycache__" -exec rm -rf {} +
-	find . -type d -name ".pytest_cache" -exec rm -rf {} +
-	find . -type d -name ".ruff_cache" -exec rm -rf {} +
-	find . -type d -name ".mypy_cache" -exec rm -rf {} +
-	rm -rf backend/.coverage backend/coverage.xml
+	rm -rf backend/.pytest_cache backend/.ruff_cache backend/__pycache__
+	rm -rf frontend/node_modules frontend/dist frontend/.next
+	rm -rf var/

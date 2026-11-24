@@ -1,1 +1,1 @@
-"""ScaleBridge Bio application package."""
+"""Top-level backend application package."""

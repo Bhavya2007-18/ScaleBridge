@@ -1,1 +1,1 @@
-"""ScaleBridge Bio core configuration, security, and storage."""
+"""Core application package."""

@@ -329,7 +329,7 @@ def to_si_quantity(
     value: float,
     unit: str,
     variable_key: str,
-    provenance: Provenance = "manual_entry",
+    provenance: str | Provenance = Provenance.manual_entry,
     value_nature: ValueNature | None = None,
     source_ref: str | None = None,
     note: str | None = None,
@@ -344,19 +344,22 @@ def to_si_quantity(
     val_si = convert_value(value, unit, si_unit)
     val_display = convert_value(val_si, si_unit, display_unit)
 
+    if isinstance(provenance, str):
+        provenance = Provenance(provenance)
+
     resolved_nature: ValueNature
     if value_nature is not None:
         resolved_nature = value_nature
-    elif provenance in ("sensor", "lab_assay"):
-        resolved_nature = "measured"
-    elif provenance == "published_correlation":
-        resolved_nature = "estimated"
-    elif provenance == "user_assumption":
-        resolved_nature = "assumed"
-    elif provenance == "calculated":
-        resolved_nature = "calculated"
+    elif provenance in (Provenance.sensor, Provenance.lab_assay):
+        resolved_nature = ValueNature.measured
+    elif provenance == Provenance.published_correlation:
+        resolved_nature = ValueNature.estimated
+    elif provenance == Provenance.user_assumption:
+        resolved_nature = ValueNature.assumed
+    elif provenance == Provenance.calculated:
+        resolved_nature = ValueNature.calculated
     else:
-        resolved_nature = "measured"
+        resolved_nature = ValueNature.measured
 
     return Quantity(
         value=val_si,

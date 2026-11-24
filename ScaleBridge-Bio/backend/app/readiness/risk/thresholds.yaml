@@ -1,0 +1,21 @@
+tip_speed:
+  warning_m_s: 3.5
+  critical_m_s: 5.0
+  shear_sensitive_limit_m_s: 2.2
+
+power_per_volume:
+  warning_w_m3: 3500.0
+  critical_w_m3: 6000.0
+  insufficient_mixing_w_m3: 150.0
+
+reynolds_number:
+  laminar_max: 20.0
+  turbulent_min: 10000.0
+
+kla:
+  minimum_acceptable_per_h: 20.0
+  high_demand_per_h: 120.0
+
+vvm:
+  maximum_sparging_vvm: 2.0
+  minimum_sparging_vvm: 0.1

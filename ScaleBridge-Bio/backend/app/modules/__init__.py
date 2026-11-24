@@ -1,1 +1,1 @@
-"""ScaleBridge Bio domain modules and application services."""
+"""Service modules package."""

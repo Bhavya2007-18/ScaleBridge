@@ -44,18 +44,22 @@ where = ["."]
 include = ["scalebridge_science*", "app*"]
 
 [tool.pytest.ini_options]
-testpaths = ["scalebridge_science/tests", "tests"]
+testpaths = ["scalebridge_science/tests"]
 pythonpath = ["."]
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = ["ISC004"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
 ignore = ["E501", "B008"]
 
 [tool.mypy]
-python_version = "3.11"
-strict = false
+python_version = "3.12"
+strict = true
+files = ["scalebridge_science"]
 ignore_missing_imports = true

@@ -35,36 +35,31 @@ A **web-based scale-up readiness and technology-transfer decision-support worksp
 
 ```
 ScaleBridge-Bio/
-├── README.md                          ← you are here
-├── docs/
-│   ├── 01_PROJECT_OVERVIEW.md         Vision, thesis, wedge, users, positioning
-│   ├── 02_PROBLEM_AND_SOLUTION.md     Problem statement, scale-up physics context, solution concept
-│   ├── 03_PRODUCT_REQUIREMENTS.md     Functional (FR-*) & non-functional (NFR-*) requirements
-│   ├── 04_MVP_SCOPE.md                In/out of scope, acceptance tests, demo vs incubation data
-│   ├── 05_SYSTEM_ARCHITECTURE.md      Components, boundaries, data flow, module contracts
-│   ├── 06_TECH_STACK.md               Confirmed vs proposed libraries and versions policy
-│   ├── 07_DATABASE_SCHEMA.md          Entities, columns, relationships, immutability rules
-│   ├── 08_API_SPECIFICATION.md        REST endpoints, request/response contracts, errors
-│   ├── 09_DATA_INGESTION.md           Upload, mapping, unit normalization, data-quality checks
-│   ├── 10_SCIENTIFIC_ENGINE.md        Formula library design, units, provenance, versioning
-│   ├── 11_SCALE_UP_CALCULATIONS.md    Every equation, variable, unit, assumption, test vector
-│   ├── 12_RISK_ENGINE.md              Rule registry, severities, outcomes, explanations
-│   ├── 13_EQUIPMENT_COMPATIBILITY.md  Vessel profile schema, capability envelope checks
-│   ├── 14_VALIDATION_PLANNER.md       Gap → task mapping, prioritization
-│   ├── 15_UI_UX_SPECIFICATION.md      Screens, components, states, labelling rules
-│   ├── 16_USER_WORKFLOWS.md           End-to-end workflows and sequence diagrams
-│   ├── 17_SECURITY_AND_PRIVACY.md     Tenant isolation, RBAC, encryption, audit, retention
-│   ├── 18_TESTING_AND_VALIDATION.md   Software, engineering and user-value validation layers
-│   ├── 19_DEVELOPMENT_ROADMAP.md      12-week build plan and 12-month company roadmap
-│   ├── 20_TEAM_RESPONSIBILITIES.md    Four-person ownership, reviewers, operating rhythm
-│   ├── 21_DEPLOYMENT.md               Environments, Docker, CI/CD, backup, on-prem path
-│   ├── 22_OPEN_QUESTIONS.md           OQ register (decisions needed)
-│   └── 23_DOCUMENTATION_AUDIT.md      Consistency audit & completeness report
-└── ai-context/
-    ├── PROJECT_CONTEXT.md             Read first — compressed full context for coding agents
-    ├── CODING_RULES.md                Code quality, naming, folders, tests
-    ├── ARCHITECTURE_RULES.md          Boundaries, data flow, contracts
-    └── DEVELOPMENT_INSTRUCTIONS.md    How agents approach, implement and verify tasks
+├── .github/
+│   └── workflows/
+│       ├── ci.yml                     ← Automated test & typecheck pipeline
+│       └── deploy.yml                 ← Container build & release workflow
+├── docs/                              ← Architecture & scientific specs (01..23)
+├── ai-context/                        ← Agent guidelines & coding rules
+├── sample-data/
+│   └── synthetic/                     ← Clearly labeled reference test data
+├── backend/                           ← Python 3.12 / FastAPI modular monolith
+│   ├── scalebridge_science/           ← Pure, deterministic scientific engine (zero I/O)
+│   ├── app/                           ← Web services, DB persistence, RBAC, endpoints
+│   ├── tests/                         ← API and integration test suite
+│   ├── Dockerfile                     ← Production container configuration
+│   ├── pyproject.toml                 ← Modern packaging & dependency definitions
+│   ├── requirements.txt               ← Frozen dependencies for PaaS/Docker
+│   └── .env.example                   ← Documented environment variables
+├── frontend/                          ← TypeScript / Next.js 14 App Router
+│   ├── src/                           ← React components, pages, and API client
+│   ├── Dockerfile                     ← Production container configuration
+│   ├── package.json                   ← Frontend dependencies and scripts
+│   ├── vercel.json                    ← Vercel deployment specification
+│   └── .env.example                   ← Frontend environment variables
+├── docker-compose.yml                 ← Local multi-container development stack
+├── render.yaml                        ← Render PaaS blueprint for Web + PostgreSQL
+└── README.md                          ← You are here
 ```
 
 ## 4. Reading order

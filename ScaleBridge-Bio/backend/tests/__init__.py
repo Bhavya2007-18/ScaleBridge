@@ -1,1 +1,1 @@
-"""ScaleBridge Bio test suite."""
+"""Integration tests package."""

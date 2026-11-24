@@ -1,0 +1,19 @@
+name: Deployment Readiness Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  docker-smoke-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Backend Docker Image
+        run: |
+          docker build -t scalebridge-backend:smoke ./backend
+      - name: Build Frontend Docker Image
+        run: |
+          docker build -t scalebridge-frontend:smoke ./frontend

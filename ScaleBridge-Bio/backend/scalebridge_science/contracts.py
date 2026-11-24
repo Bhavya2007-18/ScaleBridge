@@ -1,22 +1,40 @@
-"""Typed data contracts for `scalebridge_science` (see docs/10_SCIENTIFIC_ENGINE.md)."""
+"""Typed data contracts for `scalebridge_science` (see docs/10_SCIENTIFIC_ENGINE.md).
+
+The public contract types are intentionally dependency-light: this module imports
+only the standard library and pydantic.  ``ThresholdConfig`` is owned by
+``scalebridge_science.readiness.thresholds`` and re-exported here for backwards
+compatibility with existing callers.
+"""
 
 from __future__ import annotations
 
+from enum import Enum
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from scalebridge_science._pydantic_compat import BaseModel, Field
 
-Provenance = Literal[
-    "sensor",
-    "manual_entry",
-    "lab_assay",
-    "vendor_datasheet",
-    "published_correlation",
-    "user_assumption",
-    "calculated",
-]
 
-ValueNature = Literal["measured", "estimated", "assumed", "calculated"]
+class Provenance(str, Enum):
+    """Controlled provenance vocabulary (docs/10 §1.4, §4)."""
+
+    sensor = "sensor"
+    manual_entry = "manual_entry"
+    lab_assay = "lab_assay"
+    vendor_datasheet = "vendor_datasheet"
+    published_correlation = "published_correlation"
+    user_assumption = "user_assumption"
+    calculated = "calculated"
+
+
+class ValueNature(str, Enum):
+    """Controlled value-nature vocabulary (docs/10 §4, §7)."""
+
+    measured = "measured"
+    estimated = "estimated"
+    assumed = "assumed"
+    calculated = "calculated"
+
+
 EvidenceLevel = Literal["measured", "mixed", "estimated", "assumed", "insufficient"]
 CalcStatus = Literal["computed", "insufficient_evidence", "not_applicable", "error"]
 Severity = Literal["critical", "high", "medium", "low", "info"]
@@ -24,6 +42,13 @@ RuleOutcome = Literal["triggered", "not_triggered", "insufficient_evidence", "no
 CompatOutcome = Literal["compatible", "incompatible", "cannot_evaluate"]
 TaskPriority = Literal["P1", "P2", "P3"]
 TaskType = Literal["measurement", "experiment", "expert_review", "data_request"]
+
+
+def _default_thresholds() -> Any:
+    """Build the default threshold snapshot without importing readiness eagerly."""
+    from scalebridge_science.readiness.thresholds import ThresholdConfig
+
+    return ThresholdConfig()
 
 
 class Quantity(BaseModel):
@@ -35,8 +60,8 @@ class Quantity(BaseModel):
     original_unit: str | None = None
     display_value: float | None = None
     display_unit: str | None = None
-    provenance: Provenance = "manual_entry"
-    value_nature: ValueNature = "measured"
+    provenance: Provenance = Provenance.manual_entry
+    value_nature: ValueNature = ValueNature.measured
     source_ref: str | None = None
     note: str | None = None
 
@@ -109,25 +134,6 @@ class CriterionSelection(BaseModel):
     is_primary: bool = False
 
 
-class DescriptorBand(BaseModel):
-    min_ratio: float | None = None
-    max_ratio: float | None = None
-
-
-class ThresholdConfig(BaseModel):
-    """Expert-configurable rule thresholds (defaults to None = not_configured per doc 12 §3)."""
-
-    version: str = "0.1.0-unconfigured"
-    re_turbulent_min: float | None = None
-    descriptor_ratio_band: dict[str, DescriptorBand] = Field(default_factory=dict)
-    d_over_t_rel_tol: float | None = None
-    hl_over_t_rel_tol: float | None = None
-    otr_demand_margin: float | None = None
-    cooling_margin: float | None = None
-    temperature_deviation_max_k: float | None = None
-    do_critical_percent: float | None = None
-
-
 class ScenarioConfig(BaseModel):
     criteria: list[CriterionSelection]
     aeration_basis: Literal["S-VVM", "S-VS"] = "S-VVM"
@@ -135,7 +141,7 @@ class ScenarioConfig(BaseModel):
     source_kla_point_id: str | None = None
     target_kla_point_id: str | None = None
     constraints: dict[str, Quantity] = Field(default_factory=dict)
-    thresholds: ThresholdConfig = Field(default_factory=ThresholdConfig)
+    thresholds: "ThresholdConfig" = Field(default_factory=_default_thresholds)  # noqa: UP037
 
 
 class AssessmentInput(BaseModel):
@@ -257,3 +263,45 @@ class AssessmentOutput(BaseModel):
     risk_flags: list[RiskFlag]
     validation_tasks: list[ValidationTaskSpec]
     summary: AssessmentSummary
+
+
+# ``ThresholdConfig`` lives in the readiness package.  Import it at the end so
+# that contracts can be imported first without creating a circular-import
+# failure; ``ScenarioConfig``'s forward reference is then resolved explicitly.
+from scalebridge_science.readiness.thresholds import DescriptorBand, ThresholdConfig
+
+if hasattr(ScenarioConfig, "model_rebuild"):
+    ScenarioConfig.model_rebuild()
+
+__all__ = [
+    "AssessmentInput",
+    "AssessmentOutput",
+    "AssessmentSummary",
+    "BaseModel",
+    "CalcStatus",
+    "CalculationResult",
+    "CompatOutcome",
+    "CompatibilityCheck",
+    "CriterionSelection",
+    "DescriptorBand",
+    "EvidenceLevel",
+    "Field",
+    "InputRef",
+    "KlaEvidencePoint",
+    "MediumProperties",
+    "MixingTimeEvidencePoint",
+    "ProcessSummary",
+    "Provenance",
+    "Quantity",
+    "RiskFlag",
+    "RuleOutcome",
+    "ScenarioConfig",
+    "Severity",
+    "TaskPriority",
+    "TaskType",
+    "ThresholdConfig",
+    "TradeOffRow",
+    "ValidationTaskSpec",
+    "ValueNature",
+    "VesselSpec",
+]

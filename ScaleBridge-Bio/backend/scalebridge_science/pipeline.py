@@ -2,12 +2,7 @@
 
 from __future__ import annotations
 
-from scalebridge_science import (
-    CONTRACT_VERSION,
-    ENGINE_VERSION,
-    FORMULA_REGISTRY_VERSION,
-    RULE_REGISTRY_VERSION,
-)
+from scalebridge_science import CONTRACT_VERSION, ENGINE_VERSION
 from scalebridge_science.contracts import (
     AssessmentInput,
     AssessmentOutput,
@@ -15,11 +10,13 @@ from scalebridge_science.contracts import (
 )
 from scalebridge_science.criteria import evaluate_criteria_and_calculations
 from scalebridge_science.evidence import derive_overall_evidence_level
+from scalebridge_science.formulas.registry import FORMULA_REGISTRY_VERSION
 from scalebridge_science.readiness import (
     evaluate_compatibility_checks,
     evaluate_risk_rules,
     generate_validation_tasks,
 )
+from scalebridge_science.readiness.registry import RULE_REGISTRY_VERSION
 from scalebridge_science.units import PINT_VERSION
 
 
