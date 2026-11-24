@@ -34,13 +34,13 @@ const CHART_CONFIGS: DualChartConfig[] = [
     subtitle: "Jacket Loop Control vs. Alkali Titration",
     primaryLabel: "Temp",
     primaryUnit: "°C",
-    primaryColor: "#22D3EE",
+    primaryColor: "#E4E4E7",
     primaryMin: 36.0,
     primaryMax: 37.6,
     getPrimary: (p) => p.temperatureC,
     secondaryLabel: "pH",
     secondaryUnit: "pH",
-    secondaryColor: "#34D399",
+    secondaryColor: "#10B981",
     secondaryMin: 6.85,
     secondaryMax: 7.25,
     getSecondary: (p) => p.ph,
@@ -51,13 +51,13 @@ const CHART_CONFIGS: DualChartConfig[] = [
     subtitle: "Dissolved Oxygen (%sat) vs. Impeller Speed (RPM)",
     primaryLabel: "dO₂",
     primaryUnit: "%sat",
-    primaryColor: "#38BDF8",
+    primaryColor: "#E4E4E7",
     primaryMin: 25,
     primaryMax: 105,
     getPrimary: (p) => p.dissolvedOxygenPct,
     secondaryLabel: "Agitation",
     secondaryUnit: "RPM",
-    secondaryColor: "#A78BFA",
+    secondaryColor: "#A1A1AA",
     secondaryMin: 120,
     secondaryMax: 240,
     getSecondary: (p) => p.agitationRpm,
@@ -74,7 +74,7 @@ const CHART_CONFIGS: DualChartConfig[] = [
     getPrimary: (p) => p.biomassGL,
     secondaryLabel: "Glucose",
     secondaryUnit: "g/L",
-    secondaryColor: "#FBBF24",
+    secondaryColor: "#F59E0B",
     secondaryMin: 0,
     secondaryMax: 26,
     getSecondary: (p) => p.glucoseGL,
@@ -85,13 +85,13 @@ const CHART_CONFIGS: DualChartConfig[] = [
     subtitle: "mAb Volumetric Titer vs. OTR/OUR Efficiency",
     primaryLabel: "Titer",
     primaryUnit: "g/L",
-    primaryColor: "#22D3EE",
+    primaryColor: "#E4E4E7",
     primaryMin: 0,
     primaryMax: 5.2,
     getPrimary: (p) => p.titerGL,
     secondaryLabel: "Efficiency",
     secondaryUnit: "%",
-    secondaryColor: "#34D399",
+    secondaryColor: "#10B981",
     secondaryMin: 70,
     secondaryMax: 100,
     getSecondary: (p) => p.efficiencyPct,
@@ -142,11 +142,11 @@ function DualSeriesCard({
   const activePt = data[activeIdx];
 
   return (
-    <div className="sb-surface rounded-2xl p-5 flex flex-col justify-between">
+    <div className="sb-surface rounded-[12px] p-5 flex flex-col justify-between">
       <div className="flex items-start justify-between gap-2 mb-3">
         <div>
-          <h4 className="text-sm font-display font-semibold text-slate-100">{cfg.title}</h4>
-          <p className="text-[11px] font-mono text-slate-400">{cfg.subtitle}</p>
+          <h4 className="text-[15px] font-semibold text-[#FAFAFA]">{cfg.title}</h4>
+          <p className="text-[12px] text-[#71717A]">{cfg.subtitle}</p>
         </div>
         <DataOriginBadge origin={origin} />
       </div>
@@ -165,23 +165,23 @@ function DualSeriesCard({
               y1={padY + plotH * f}
               x2={w - padX}
               y2={padY + plotH * f}
-              stroke="rgba(148,163,184,0.1)"
+              stroke="rgba(255,255,255,0.06)"
               strokeDasharray="3 3"
             />
           ))}
 
-          {/* Animated SVG Curves */}
+          {/* SVG Curves */}
           <path
             d={pathA}
             fill="none"
             stroke={cfg.primaryColor}
-            strokeWidth="2.2"
+            strokeWidth="2"
           />
           <path
             d={pathB}
             fill="none"
             stroke={cfg.secondaryColor}
-            strokeWidth="2"
+            strokeWidth="1.8"
             strokeDasharray="4 3"
           />
 
@@ -193,7 +193,7 @@ function DualSeriesCard({
                 y1={padY}
                 x2={primaryPts[activeIdx].x}
                 y2={h - padY}
-                stroke="rgba(148,163,184,0.3)"
+                stroke="rgba(255,255,255,0.22)"
                 strokeWidth="1"
               />
               <circle
@@ -229,9 +229,9 @@ function DualSeriesCard({
 
       {/* Interactive Telemetry Readout Footer */}
       {activePt && (
-        <div className="mt-3 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono sb-tabular">
-          <span className="text-slate-400">
-            t = <strong className="text-slate-200">{activePt.hour} h</strong>
+        <div className="mt-3 pt-3 border-t border-[#27272A] flex flex-wrap items-center justify-between gap-2 text-[12px] font-mono sb-tabular">
+          <span className="text-[#71717A]">
+            t = <strong className="text-[#FAFAFA]">{activePt.hour} h</strong>
           </span>
           <div className="flex items-center gap-4">
             <span style={{ color: cfg.primaryColor }}>

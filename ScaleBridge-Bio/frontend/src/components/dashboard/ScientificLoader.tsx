@@ -17,18 +17,15 @@ export function ScientificLoader({
         compact ? "py-10" : "min-h-[320px]"
       } text-center select-none`}
     >
-      <div className="relative w-16 h-16 flex items-center justify-center">
-        {/* Outer precision telemetry ring */}
-        <div className="absolute inset-0 rounded-full border border-cyan-400/30 border-t-cyan-400 animate-spin" />
-        {/* Inner bioluminescent impeller ring */}
+      <div className="relative w-14 h-14 flex items-center justify-center">
+        <div className="absolute inset-0 rounded-full border border-[#27272A] border-t-[#FAFAFA] animate-spin" />
         <div
-          className="absolute inset-2.5 rounded-full border border-emerald-400/25 border-b-emerald-400 animate-spin"
+          className="absolute inset-2.5 rounded-full border border-[#27272A] border-b-[#10B981] animate-spin"
           style={{ animationDirection: "reverse", animationDuration: "2.4s" }}
         />
-        {/* Core cellular pulse */}
-        <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.8)] animate-pulse" />
+        <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
       </div>
-      <p className="mt-4 text-xs font-mono tracking-wider uppercase text-slate-400">
+      <p className="mt-4 text-[12px] font-medium text-[#71717A]">
         {label}
       </p>
     </div>

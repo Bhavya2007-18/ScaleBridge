@@ -58,87 +58,83 @@ export default function ScaleBridgeLandingPage() {
   );
 
   return (
-    <div className="min-h-screen sb-grid-bg text-slate-100 overflow-x-hidden">
+    <div className="min-h-screen bg-[#09090B] text-[#FAFAFA] overflow-x-hidden">
       <LandingNavbar />
 
-      {/* 1. HERO: IMMERSIVE 3D BIOREACTOR EXPERIENCE */}
+      {/* 1. HERO: BIOREACTOR DIGITAL TWIN */}
       <section
         id="digital-twin"
-        className="relative pt-24 pb-16 lg:pt-28 lg:pb-24 max-w-7xl mx-auto px-6 min-h-[92vh] flex items-center"
+        className="relative pt-24 pb-20 lg:pt-28 lg:pb-24 max-w-7xl mx-auto px-6 min-h-[90vh] flex items-center"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
           {/* Left Copy Column */}
           <div className="lg:col-span-6 space-y-6 z-10">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-700/80 text-[11px] font-mono uppercase tracking-widest text-cyan-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Intelligent Bioprocess Control Ecosystem
+              <span className="inline-flex items-center gap-2 text-[12px] font-semibold text-[#10B981]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+                Bioprocess Scale-Up Intelligence
               </span>
               <DataOriginBadge origin="simulated" />
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-slate-50 leading-[1.06]">
-              Scale biology with{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-300 to-emerald-300">
-                deterministic physics
-              </span>{" "}
-              and live intelligence.
+            <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-semibold tracking-[-0.03em] text-[#FAFAFA] leading-[1.08]">
+              Scale biology with deterministic physics and live intelligence.
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-xl">
-              ScaleBridge transforms complex bioprocesses into intelligent, understandable, and optimizable systems—unifying fermentation telemetry, reactor geometry, hydrodynamic physics, and AI-guided scale-up readiness in one workspace.
+            <p className="text-[15px] text-[#A1A1AA] leading-[1.6] max-w-xl">
+              ScaleBridge transforms fermentation process transfers into auditable engineering decisions—unifying batch telemetry, vessel geometry, hydrodynamic physics, and risk readiness in one workspace.
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-[#03060C] font-mono font-semibold text-xs uppercase tracking-wider transition-colors"
+                className="inline-flex items-center gap-2 h-10 px-5 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] font-medium text-[13px] transition-colors"
               >
-                Open Control Center
-                <ArrowRight className="w-4 h-4" />
+                <span>Open Control Center</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               <a
                 href="#telemetry"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 text-slate-200 font-mono text-xs uppercase tracking-wider transition-colors"
+                className="inline-flex items-center gap-2 h-10 px-5 rounded-lg bg-[#111114] hover:bg-[#16161A] border border-[#27272A] text-[#FAFAFA] font-medium text-[13px] transition-colors"
               >
-                Interact With 3D Twin
+                Interact with Digital Twin
               </a>
             </div>
 
             {/* Scientific Telemetry Readouts */}
-            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800/80">
+            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-[#27272A]">
               <div>
-                <span className="text-[10px] font-mono uppercase text-slate-400 block">
+                <span className="text-[12px] font-medium text-[#71717A] block">
                   Power Density (P/V)
                 </span>
-                <span className="text-xl font-mono font-bold text-slate-100 sb-tabular">
+                <span className="text-[20px] font-semibold tracking-[-0.02em] text-[#FAFAFA] sb-tabular mt-1 inline-block">
                   {liveMetrics.targetPvWm3.toFixed(1)}{" "}
-                  <span className="text-xs font-normal text-cyan-400">W/m³</span>
+                  <span className="text-[12px] font-mono font-normal text-[#71717A]">W/m³</span>
                 </span>
               </div>
               <div>
-                <span className="text-[10px] font-mono uppercase text-slate-400 block">
+                <span className="text-[12px] font-medium text-[#71717A] block">
                   Mass Transfer (kLa)
                 </span>
-                <span className="text-xl font-mono font-bold text-emerald-300 sb-tabular">
+                <span className="text-[20px] font-semibold tracking-[-0.02em] text-[#FAFAFA] sb-tabular mt-1 inline-block">
                   {liveMetrics.targetKlaPerH.toFixed(1)}{" "}
-                  <span className="text-xs font-normal text-slate-400">1/h</span>
+                  <span className="text-[12px] font-mono font-normal text-[#71717A]">1/h</span>
                 </span>
               </div>
               <div>
-                <span className="text-[10px] font-mono uppercase text-slate-400 block">
+                <span className="text-[12px] font-medium text-[#71717A] block">
                   Impeller Tip Speed
                 </span>
-                <span className="text-xl font-mono font-bold text-slate-100 sb-tabular">
+                <span className="text-[20px] font-semibold tracking-[-0.02em] text-[#FAFAFA] sb-tabular mt-1 inline-block">
                   {liveMetrics.targetTipSpeedMs.toFixed(2)}{" "}
-                  <span className="text-xs font-normal text-cyan-400">m/s</span>
+                  <span className="text-[12px] font-mono font-normal text-[#71717A]">m/s</span>
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Right 3D Bioreactor Centerpiece with Floating HUD Telemetry */}
-          <div className="lg:col-span-6 relative h-[480px] sm:h-[560px] rounded-3xl sb-surface overflow-hidden">
+          {/* Right 3D Bioreactor Centerpiece with Minimal HUD */}
+          <div className="lg:col-span-6 relative h-[480px] sm:h-[540px] rounded-[12px] sb-surface overflow-hidden">
             <BioreactorScene
               rpm={rpm}
               aerationVvm={aerationVvm}
@@ -147,94 +143,95 @@ export default function ScaleBridgeLandingPage() {
             />
 
             {/* Floating Scientific Callout: Top Left */}
-            <div className="absolute top-5 left-5 px-3.5 py-2.5 rounded-xl sb-glass pointer-events-none">
-              <div className="flex items-center gap-2 text-[10px] font-mono uppercase text-slate-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Broth Vitality · Simulated
+            <div className="absolute top-4 left-4 px-3.5 py-2.5 rounded-lg sb-glass pointer-events-none">
+              <div className="flex items-center gap-2 text-[11px] font-medium text-[#A1A1AA]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+                <span>Broth Vitality · Simulated</span>
               </div>
-              <div className="mt-1 flex items-baseline gap-3 font-mono text-xs sb-tabular">
-                <span className="text-slate-100 font-semibold">36.8 °C</span>
-                <span className="text-cyan-300">pH 7.05</span>
-                <span className="text-emerald-300">dO₂ 40.5%</span>
+              <div className="mt-1 flex items-baseline gap-3 text-[12px] font-mono sb-tabular">
+                <span className="text-[#FAFAFA] font-medium">36.8 °C</span>
+                <span className="text-[#A1A1AA]">pH 7.05</span>
+                <span className="text-[#10B981]">dO₂ 40.5%</span>
               </div>
             </div>
 
             {/* Floating Scientific Callout: Top Right */}
-            <div className="absolute top-5 right-5 px-3 py-1.5 rounded-full sb-glass text-[10px] font-mono text-slate-300 pointer-events-none">
-              DRAG TO ORBIT · 150 L SUB TWIN
+            <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md sb-glass text-[11px] font-medium text-[#A1A1AA] pointer-events-none">
+              Drag to orbit · 150 L SUB
             </div>
 
             {/* Floating Scientific Callout: Bottom */}
-            <div className="absolute bottom-5 inset-x-5 flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 rounded-xl sb-glass text-[11px] font-mono pointer-events-none">
-              <span className="text-slate-300">
-                Impeller: <strong className="text-cyan-300">{rpm} RPM</strong> · Gas Sparge:{" "}
-                <strong className="text-emerald-300">{aerationVvm.toFixed(2)} vvm</strong>
+            <div className="absolute bottom-4 inset-x-4 flex flex-wrap items-center justify-between gap-2 px-3.5 py-2.5 rounded-lg sb-glass text-[12px] pointer-events-none">
+              <span className="text-[#A1A1AA]">
+                Impeller:{" "}
+                <strong className="font-mono font-medium text-[#FAFAFA]">{rpm} rpm</strong>{" "}
+                · Gas sparge:{" "}
+                <strong className="font-mono font-medium text-[#FAFAFA]">
+                  {aerationVvm.toFixed(2)} vvm
+                </strong>
               </span>
-              <span className="text-slate-400 uppercase">
-                Regime: <strong className="text-slate-100">{liveMetrics.regime}</strong>
+              <span className="text-[#71717A] capitalize">
+                Regime: <strong className="font-medium text-[#FAFAFA]">{liveMetrics.regime}</strong>
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. THE SCALE-UP CHALLENGE & PLATFORM SOLUTION */}
-      <section id="challenge" className="py-20 border-t border-slate-800/70 bg-[#03060C]/60">
+      {/* 2. SCALE PHYSICS & PLATFORM SOLUTION */}
+      <section id="challenge" className="py-24 border-t border-[#18181B]">
         <div className="max-w-7xl mx-auto px-6 space-y-12">
-          <div className="max-w-2xl">
-            <span className="text-xs font-mono uppercase tracking-widest text-cyan-400">
-              01 // Why Bioprocess Transfers Fail
+          <div>
+            <span className="text-[12px] font-semibold text-[#10B981] block">
+              Scale Physics
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl font-display font-bold text-slate-100">
+            <h2 className="mt-3 text-[32px] sm:text-[40px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#FAFAFA] max-w-[680px]">
               Lab success breaks when vessel geometry changes.
             </h2>
-            <p className="mt-3 text-sm text-slate-400 leading-relaxed">
+            <p className="mt-4 text-[14px] text-[#A1A1AA] leading-[1.6] max-w-[680px]">
               Moving a fermentation process from a 2 L benchtop reactor to 200 L pilot or 2,000 L GMP tanks cannot preserve power density, tip speed, oxygen transfer, and mixing time simultaneously. ScaleBridge makes every trade-off explicit before a single liter is inoculated.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="rounded-[12px] border border-[#27272A] bg-[#111114] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#27272A] overflow-hidden">
             {[
               {
                 icon: Gauge,
                 tag: "Hydrodynamics & Shear",
                 title: "Coupled P/V vs. Tip Speed",
                 body: "Calculates exact shaft power density, Rushton/hydrofoil tip velocities, and turbulent Reynolds regimes across non-similar vessel geometries using Pint-verified dimensional units.",
-                accent: "text-cyan-400",
               },
               {
                 icon: Activity,
                 tag: "Mass & Heat Transfer",
-                title: "OTR Bottlenecks & Insufficient Evidence",
+                title: "OTR Bottlenecks & Evidence Gaps",
                 body: "Evaluates Van't Riet kLa predictions against metabolic oxygen demand while explicitly halting and flagging missing broth rheology or cooling jacket measurements.",
-                accent: "text-emerald-400",
               },
               {
                 icon: ShieldCheck,
                 tag: "Audit-Ready Transfer",
                 title: "Explainable Risk & Validation Plans",
                 body: "Translates hardware shortfalls and kinetic anomalies into prioritized pre-transfer experiments, reviewer sign-offs, and provenance-hashed transfer dossiers.",
-                accent: "text-sky-400",
               },
             ].map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.title}
-                  className="sb-surface rounded-2xl p-6 hover:border-slate-700 transition-colors"
+                  className="p-7 transition-colors hover:bg-[#16161A]"
                 >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center">
-                      <Icon className={`w-5 h-5 ${item.accent}`} />
-                    </div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                  <div className="flex items-center justify-between">
+                    <Icon className="w-4 h-4 text-[#A1A1AA]" />
+                    <span className="text-[12px] font-medium text-[#71717A]">
                       {item.tag}
                     </span>
                   </div>
-                  <h3 className="text-lg font-display font-semibold text-slate-100">
+                  <h3 className="mt-8 text-[16px] font-semibold leading-[1.4] text-[#FAFAFA]">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-xs text-slate-400 leading-relaxed">{item.body}</p>
+                  <p className="mt-2 text-[14px] font-normal leading-[1.6] text-[#A1A1AA]">
+                    {item.body}
+                  </p>
                 </div>
               );
             })}
@@ -243,22 +240,23 @@ export default function ScaleBridgeLandingPage() {
       </section>
 
       {/* 3. INTERACTIVE DIGITAL TWIN TELEMETRY & DATA VISUALIZATION */}
-      <section id="telemetry" className="py-20 border-t border-slate-800/70">
-        <div className="max-w-7xl mx-auto px-6 space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div className="max-w-2xl">
-              <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">
-                02 // Real-Time Telemetry &amp; Process Curves
+      <section id="telemetry" className="py-24 border-t border-[#18181B]">
+        <div className="max-w-7xl mx-auto px-6 space-y-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <span className="text-[12px] font-semibold text-[#10B981] block">
+                Real-Time Telemetry
               </span>
-              <h2 className="mt-2 text-3xl sm:text-4xl font-display font-bold text-slate-100">
+              <h2 className="mt-3 text-[32px] sm:text-[40px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#FAFAFA] max-w-[680px]">
                 Observe biology, hydrodynamics, and nutrient kinetics together.
               </h2>
             </div>
             <Link
               href="/dashboard"
-              className="text-xs font-mono uppercase tracking-wider text-cyan-300 hover:text-cyan-200 inline-flex items-center gap-1.5"
+              className="text-[13px] font-medium text-[#FAFAFA] hover:text-[#A1A1AA] inline-flex items-center gap-1.5 transition-colors shrink-0"
             >
-              Launch Full Analytics Workspace <ArrowRight className="w-3.5 h-3.5" />
+              <span>Launch full analytics workspace</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
@@ -271,19 +269,19 @@ export default function ScaleBridgeLandingPage() {
         </div>
       </section>
 
-      {/* 4. UNIFIED ECOSYSTEM ARCHITECTURE */}
-      <section id="ecosystem" className="py-20 border-t border-slate-800/70 bg-[#03060C]/70">
+      {/* 4. UNIFIED ECOSYSTEM ARCHITECTURE (CONNECTED 4-COLUMN BENTO) */}
+      <section id="ecosystem" className="py-24 border-t border-[#18181B]">
         <div className="max-w-7xl mx-auto px-6 space-y-12">
-          <div className="max-w-2xl">
-            <span className="text-xs font-mono uppercase tracking-widest text-cyan-400">
-              03 // One Intelligent Ecosystem
+          <div>
+            <span className="text-[12px] font-semibold text-[#A1A1AA] block">
+              Unified Architecture
             </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl font-display font-bold text-slate-100">
+            <h2 className="mt-3 text-[32px] sm:text-[40px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#FAFAFA] max-w-[680px]">
               From raw bioreactor logs to verified manufacturing readiness.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="rounded-[12px] border border-[#27272A] bg-[#111114] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#27272A] overflow-hidden">
             {[
               {
                 step: "01",
@@ -306,61 +304,61 @@ export default function ScaleBridgeLandingPage() {
               {
                 step: "04",
                 icon: Cpu,
-                title: "AI & Validation Plan",
-                desc: "Prioritized commissioning checks, AI optimization insights, reviewer sign-offs, and PDF transfer reports.",
+                title: "Validation Plan",
+                desc: "Prioritized commissioning checks, engineering insights, reviewer sign-offs, and PDF transfer reports.",
               },
             ].map((node) => {
               const Icon = node.icon;
               return (
                 <div
                   key={node.step}
-                  className="sb-surface rounded-2xl p-5 flex flex-col justify-between"
+                  className="p-7 transition-colors hover:bg-[#16161A]"
                 >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-mono text-xs text-cyan-400 font-semibold">
-                        STAGE {node.step}
-                      </span>
-                      <Icon className="w-4 h-4 text-slate-400" />
-                    </div>
-                    <h3 className="text-base font-display font-semibold text-slate-100">
-                      {node.title}
-                    </h3>
-                    <p className="mt-2 text-xs text-slate-400 leading-relaxed">{node.desc}</p>
+                  <div className="flex items-center justify-between">
+                    <Icon className="w-4 h-4 text-[#A1A1AA]" />
+                    <span className="font-mono text-[12px] text-[#71717A]">
+                      {node.step}
+                    </span>
                   </div>
+                  <h3 className="mt-8 text-[16px] font-semibold leading-[1.4] text-[#FAFAFA]">
+                    {node.title}
+                  </h3>
+                  <p className="mt-2 text-[14px] font-normal leading-[1.6] text-[#A1A1AA]">
+                    {node.desc}
+                  </p>
                 </div>
               );
             })}
           </div>
 
-          {/* Closing CTA */}
-          <div className="sb-surface rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          {/* Closing CTA Banner */}
+          <div className="rounded-[12px] sb-cta-glow px-8 py-9 sm:px-10 sm:py-9 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <span className="text-[11px] font-mono uppercase tracking-widest text-emerald-400">
+              <span className="text-[12px] font-semibold text-[#10B981] block">
                 Biotechnology Control Center
               </span>
-              <h3 className="mt-2 text-2xl sm:text-3xl font-display font-bold text-slate-100">
+              <h3 className="mt-1.5 text-[24px] font-semibold tracking-[-0.02em] leading-[1.3] text-[#FAFAFA]">
                 Enter the ScaleBridge Engineering Workspace
               </h3>
-              <p className="mt-2 text-xs sm:text-sm text-slate-400 max-w-xl">
-                Explore live or simulated CHO fed-batch telemetry, compare 2 L to 2,000 L bioreactors, run deterministic scale-up assessments, and inspect AI optimization insights.
+              <p className="mt-1.5 text-[14px] text-[#A1A1AA] leading-[1.6] max-w-xl">
+                Explore live or simulated CHO fed-batch telemetry, compare 2 L to 2,000 L bioreactors, run deterministic scale-up assessments, and inspect validation plans.
               </p>
             </div>
             <Link
               href="/dashboard"
-              className="shrink-0 inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-[#03060C] font-mono font-bold text-xs uppercase tracking-wider transition-colors"
+              className="shrink-0 inline-flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] font-medium text-[13px] transition-colors"
             >
-              Launch Control Center
-              <ArrowRight className="w-4 h-4" />
+              <span>Launch Control Center</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-slate-800/80 py-8 px-6 text-xs font-mono text-slate-500">
+      <footer className="border-t border-[#18181B] py-7 px-6 text-[12px] text-[#71717A]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span>SCALEBRIDGE BIO // DETERMINISTIC BIOPROCESS INTELLIGENCE</span>
-          <span>LANDING TELEMETRY CLEARLY LABELED AS SIMULATED / SAMPLE DATA</span>
+          <span>ScaleBridge.bio — Deterministic Bioprocess Intelligence</span>
+          <span>Landing telemetry labeled as simulated or sample data</span>
         </div>
       </footer>
     </div>

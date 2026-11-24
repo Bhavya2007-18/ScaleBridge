@@ -55,9 +55,35 @@ import {
   SeverityBadge,
 } from "@/components/ScientificBadges";
 import { BatchOverlaySeries, BatchTrendChart } from "@/components/BatchTrendChart";
+import { ColumnMapper, ColumnMappingEntry } from "@/components/ColumnMapper";
+import { VesselCompareTable } from "@/components/VesselCompareTable";
 import { KpiCard } from "@/components/dashboard/KpiCard";
 import { BioprocessCharts } from "@/components/dashboard/BioprocessCharts";
 import { ScientificLoader } from "@/components/dashboard/ScientificLoader";
+import { SYNTHETIC_GOLDEN_CSV } from "@/lib/format";
+
+function parseCsvTextToPreview(csvText: string): {
+  headers: string[];
+  rows: Array<Record<string, string | number | null>>;
+} {
+  const lines = csvText
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+  if (lines.length === 0) return { headers: [], rows: [] };
+  const headers = lines[0].split(",").map((h) => h.trim().replace(/^"|"$/g, ""));
+  const rows = lines.slice(1).map((line) => {
+    const cells = line.split(",").map((c) => c.trim().replace(/^"|"$/g, ""));
+    const rec: Record<string, string | number | null> = {};
+    headers.forEach((h, i) => {
+      const v = cells[i] ?? "";
+      const num = Number(v);
+      rec[h] = v === "" ? null : !Number.isNaN(num) ? num : v;
+    });
+    return rec;
+  });
+  return { headers, rows };
+}
 
 const BioreactorScene = dynamic(
   () => import("@/components/three/BioreactorScene").then((m) => m.BioreactorScene),
@@ -123,6 +149,23 @@ export default function ScaleBridgeControlCenterPage() {
   const [uploadRunCode, setUploadRunCode] = useState("LAB-2L-RUN-03");
   const [uploadVolume, setUploadVolume] = useState(2.0);
   const [lastQualityReport, setLastQualityReport] = useState<QualityReport | null>(null);
+  const [csvHeaders, setCsvHeaders] = useState<string[]>(
+    () => parseCsvTextToPreview(SYNTHETIC_GOLDEN_CSV).headers
+  );
+  const [csvSampleRows, setCsvSampleRows] = useState<
+    Array<Record<string, string | number | null>>
+  >(() => parseCsvTextToPreview(SYNTHETIC_GOLDEN_CSV).rows);
+
+  // Vessel registration form state
+  const [showNewVesselForm, setShowNewVesselForm] = useState(false);
+  const [newVesselName, setNewVesselName] = useState("BioFlo 500L Pilot Stainless");
+  const [newVesselScale, setNewVesselScale] = useState<"lab" | "pilot" | "production">("pilot");
+  const [newVesselVolMax, setNewVesselVolMax] = useState(500);
+  const [newVesselImpellerD, setNewVesselImpellerD] = useState(0.36);
+  const [newVesselMaxRpm, setNewVesselMaxRpm] = useState(210);
+  const [newVesselMaxPower, setNewVesselMaxPower] = useState(5200);
+  const [newVesselMaxVvm, setNewVesselMaxVvm] = useState(0.95);
+  const [newVesselImpellerType, setNewVesselImpellerType] = useState("2x Rushton + Hydrofoil");
 
   // Scenario Modeler state
   const [sourceVesselId, setSourceVesselId] = useState<string>(SAMPLE_VESSELS[0].id);
@@ -550,21 +593,21 @@ export default function ScaleBridgeControlCenterPage() {
   const latestPoint = SAMPLE_BIOPROCESS_SERIES[SAMPLE_BIOPROCESS_SERIES.length - 1];
 
   return (
-    <div className="min-h-screen bg-[#040812] text-slate-100 flex">
+    <div className="min-h-screen bg-[#09090B] text-[#FAFAFA] flex">
       {/* LEFT SIDEBAR */}
-      <aside className="hidden lg:flex w-64 shrink-0 flex-col justify-between bg-[#03060C] border-r border-slate-800/80 p-5 sticky top-0 h-screen">
+      <aside className="hidden lg:flex w-64 shrink-0 flex-col justify-between bg-[#09090B] border-r border-[#18181B] p-5 sticky top-0 h-screen">
         <div className="space-y-8">
           {/* Brand */}
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-lg bg-slate-900 border border-cyan-400/35 flex items-center justify-center">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.75)]" />
+              <div className="w-7 h-7 rounded-md bg-[#111114] border border-[#27272A] flex items-center justify-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
+                <span className="w-2 h-2 rounded-full bg-[#10B981]" />
               </div>
               <div>
-                <span className="font-display font-bold text-sm text-slate-100 block">
-                  ScaleBridge<span className="text-cyan-400 font-normal">.bio</span>
+                <span className="font-semibold tracking-[-0.02em] text-[15px] text-[#FAFAFA] block">
+                  ScaleBridge<span className="text-[#71717A] font-normal">.bio</span>
                 </span>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 block">
+                <span className="text-[11px] font-medium text-[#71717A] block">
                   Control Center
                 </span>
               </div>
@@ -573,8 +616,8 @@ export default function ScaleBridgeControlCenterPage() {
 
           {/* Navigation */}
           <nav className="space-y-1">
-            <p className="px-3 text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-2">
-              Workspace Modules
+            <p className="px-3 text-[11px] font-medium text-[#71717A] mb-2">
+              Workspace
             </p>
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
@@ -583,13 +626,13 @@ export default function ScaleBridgeControlCenterPage() {
                 <button
                   key={item.id}
                   onClick={() => setActiveNav(item.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-colors ${
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors ${
                     active
-                      ? "bg-cyan-500/10 text-cyan-300 border border-cyan-400/25"
-                      : "text-slate-400 hover:text-slate-100 hover:bg-slate-900/70 border border-transparent"
+                      ? "bg-[#18181B] text-[#FAFAFA] border border-[#27272A]"
+                      : "text-[#A1A1AA] hover:text-[#FAFAFA] hover:bg-[#111114] border border-transparent"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${active ? "text-cyan-400" : "text-slate-500"}`} />
+                  <Icon className={`w-4 h-4 ${active ? "text-[#FAFAFA]" : "text-[#71717A]"}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -599,29 +642,29 @@ export default function ScaleBridgeControlCenterPage() {
 
         {/* Active Vessel Status Card in Sidebar */}
         <div className="space-y-3">
-          <div className="p-3.5 rounded-xl bg-[#080D18] border border-slate-800 space-y-2">
-            <div className="flex items-center justify-between text-[10px] font-mono">
-              <span className="text-slate-400 uppercase">Target Digital Twin</span>
-              <span className="flex items-center gap-1 text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                ACTIVE
+          <div className="p-3.5 rounded-[10px] bg-[#111114] border border-[#27272A] space-y-2 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="text-[#71717A] font-medium">Target Digital Twin</span>
+              <span className="flex items-center gap-1.5 text-[#10B981] font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+                Active
               </span>
             </div>
-            <p className="text-xs font-display font-semibold text-slate-100 truncate">
+            <p className="text-[13px] font-semibold text-[#FAFAFA] truncate">
               {targetVessel?.name}
             </p>
-            <div className="flex justify-between text-[11px] font-mono text-slate-400">
-              <span>{twinRpm} RPM</span>
+            <div className="flex justify-between text-[11px] font-mono text-[#71717A]">
+              <span>{twinRpm} rpm</span>
               <span>{twinVvm.toFixed(2)} vvm</span>
             </div>
           </div>
 
           <Link
             href="/"
-            className="flex items-center justify-center gap-2 w-full py-2 rounded-xl border border-slate-800 hover:border-slate-700 text-xs font-mono text-slate-400 hover:text-slate-200 transition-colors"
+            className="flex items-center justify-center gap-2 w-full h-9 rounded-lg border border-[#27272A] bg-[#111114] hover:bg-[#16161A] text-[12px] font-medium text-[#A1A1AA] hover:text-[#FAFAFA] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            3D Product Showcase
+            <span>Back to Overview</span>
           </Link>
         </div>
       </aside>
@@ -629,34 +672,36 @@ export default function ScaleBridgeControlCenterPage() {
       {/* MAIN CONTENT SHELL */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* TOP NAVIGATION BAR */}
-        <header className="sticky top-0 z-40 h-16 bg-[#040812]/85 backdrop-blur-xl border-b border-slate-800/80 px-6 flex items-center justify-between gap-4">
+        <header className="sticky top-0 z-40 h-16 bg-[#09090B]/85 backdrop-blur-md border-b border-[#18181B] px-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 min-w-0">
             <div className="lg:hidden flex items-center gap-2">
-              <Link href="/" className="text-xs font-mono text-cyan-400">
-                ← 3D
+              <Link href="/" className="text-[13px] font-medium text-[#A1A1AA] hover:text-[#FAFAFA]">
+                ← Overview
               </Link>
             </div>
             <div className="min-w-0">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <select
                   value={selectedProject.id}
                   onChange={(e) => {
                     const p = projects.find((pr) => pr.id === e.target.value);
                     if (p) void selectLiveProject(p);
                   }}
-                  className="bg-transparent text-sm font-display font-semibold text-slate-100 focus:outline-none cursor-pointer truncate"
+                  className="bg-transparent text-[14px] font-semibold tracking-[-0.01em] text-[#FAFAFA] focus:outline-none cursor-pointer truncate"
                 >
                   {projects.map((p) => (
-                    <option key={p.id} value={p.id} className="bg-[#080D18]">
+                    <option key={p.id} value={p.id} className="bg-[#111114]">
                       {p.name}
                     </option>
                   ))}
                 </select>
                 <DataOriginBadge origin={dataOrigin} />
               </div>
-              <p className="text-[11px] font-mono text-slate-400 truncate">
-                {selectedProject.organism_name} · {selectedProject.process_type} · Recipe{" "}
-                {selectedProject.latest_passport?.recipe_version || "R-2026.2"}
+              <p className="text-[12px] text-[#71717A] truncate">
+                {selectedProject.organism_name} · {selectedProject.process_type} ·{" "}
+                <span className="font-mono">
+                  {selectedProject.latest_passport?.recipe_version || "R-2026.2"}
+                </span>
               </p>
             </div>
           </div>
@@ -665,41 +710,41 @@ export default function ScaleBridgeControlCenterPage() {
             {user ? (
               <div className="flex items-center gap-3">
                 <div className="hidden sm:block text-right">
-                  <div className="text-xs font-medium text-slate-200">{user.full_name}</div>
-                  <div className="text-[10px] font-mono uppercase text-cyan-400">
+                  <div className="text-[13px] font-medium text-[#FAFAFA]">{user.full_name}</div>
+                  <div className="text-[11px] font-medium text-[#10B981] capitalize">
                     {user.memberships[0]?.role || "scientist"}
                   </div>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-xs font-mono text-slate-300 hover:text-white transition-colors"
+                  className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-[#27272A] bg-[#111114] hover:bg-[#16161A] text-[13px] font-medium text-[#A1A1AA] hover:text-[#FAFAFA] transition-colors"
                 >
                   <LogOut className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Sign Out</span>
+                  <span className="hidden sm:inline">Sign out</span>
                 </button>
               </div>
             ) : (
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/35 text-xs font-mono text-cyan-300 transition-colors"
+                className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] text-[13px] font-medium transition-colors"
               >
                 <LogIn className="w-3.5 h-3.5" />
-                Connect Live API / Sign In
+                <span>Connect Live API</span>
               </button>
             )}
           </div>
         </header>
 
         {/* Mobile Nav Strip */}
-        <div className="lg:hidden flex overflow-x-auto gap-1.5 px-4 py-2.5 border-b border-slate-800 bg-[#03060C]">
+        <div className="lg:hidden flex overflow-x-auto gap-1.5 px-4 py-2.5 border-b border-[#18181B] bg-[#09090B]">
           {NAV_ITEMS.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveNav(item.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium whitespace-nowrap ${
                 activeNav === item.id
-                  ? "bg-cyan-500/15 text-cyan-300 border border-cyan-400/30"
-                  : "text-slate-400"
+                  ? "bg-[#18181B] text-[#FAFAFA] border border-[#27272A]"
+                  : "text-[#A1A1AA]"
               }`}
             >
               {item.label}
@@ -711,15 +756,15 @@ export default function ScaleBridgeControlCenterPage() {
         {(statusBanner || errorBanner) && (
           <div className="px-6 pt-4 space-y-2">
             {statusBanner && (
-              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-400/30 text-xs font-mono text-emerald-200 flex items-center justify-between">
+              <div className="p-3 rounded-lg bg-[#10B981]/10 border border-[#10B981]/25 text-xs font-medium text-[#10B981] flex items-center justify-between">
                 <span>{statusBanner}</span>
-                <button onClick={() => setStatusBanner(null)} className="text-emerald-400 hover:text-white">
+                <button onClick={() => setStatusBanner(null)} className="text-[#10B981] hover:text-white">
                   ✕
                 </button>
               </div>
             )}
             {errorBanner && (
-              <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-400/35 text-xs font-mono text-rose-200 flex items-center justify-between">
+              <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-400/35 text-xs font-medium text-rose-200 flex items-center justify-between">
                 <span>{errorBanner}</span>
                 <button onClick={() => setErrorBanner(null)} className="text-rose-400 hover:text-white">
                   ✕
@@ -770,7 +815,7 @@ export default function ScaleBridgeControlCenterPage() {
                   label="Agitation"
                   value={twinRpm}
                   decimals={0}
-                  unit="RPM"
+                  unit="rpm"
                   delta={`Tip ${(modelPreview.targetTipSpeedMs).toFixed(2)} m/s`}
                   status={modelPreview.shearStatus === "critical" ? "critical" : "nominal"}
                   sparkline={SAMPLE_BIOPROCESS_SERIES.map((p) => p.agitationRpm)}
@@ -787,7 +832,7 @@ export default function ScaleBridgeControlCenterPage() {
                   origin={dataOrigin === "live" ? "live" : "sample"}
                 />
                 <KpiCard
-                  label="Process Efficiency"
+                  label="Efficiency"
                   value={latestPoint.efficiencyPct}
                   decimals={1}
                   unit="%"
@@ -801,28 +846,28 @@ export default function ScaleBridgeControlCenterPage() {
               {/* Digital Twin + AI Insights Split Row */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 {/* Compact Interactive 3D Digital Twin */}
-                <div className="lg:col-span-5 sb-surface rounded-2xl p-5 flex flex-col justify-between">
+                <div className="lg:col-span-5 sb-surface rounded-[12px] p-5 flex flex-col justify-between">
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400">
+                      <span className="text-[12px] font-semibold text-[#10B981]">
                         Live Reactor Digital Twin
                       </span>
-                      <h3 className="text-base font-display font-semibold text-slate-100">
+                      <h3 className="text-[16px] font-semibold text-[#FAFAFA]">
                         {targetVessel.name}
                       </h3>
                     </div>
                     <DataOriginBadge origin="simulated" />
                   </div>
 
-                  <div className="h-72 rounded-xl bg-[#03060C] border border-slate-800/80 overflow-hidden relative">
+                  <div className="h-72 rounded-lg bg-[#09090B] border border-[#27272A] overflow-hidden relative">
                     <BioreactorScene rpm={twinRpm} aerationVvm={twinVvm} compact interactive />
                   </div>
 
-                  <div className="mt-4 grid grid-cols-2 gap-4 pt-3 border-t border-slate-800/80">
+                  <div className="mt-4 grid grid-cols-2 gap-4 pt-3 border-t border-[#27272A]">
                     <div>
-                      <div className="flex justify-between text-[11px] font-mono text-slate-400 mb-1">
+                      <div className="flex justify-between text-[12px] text-[#A1A1AA] mb-1">
                         <span>Impeller Speed</span>
-                        <span className="text-cyan-300">{twinRpm} RPM</span>
+                        <span className="font-mono text-[#FAFAFA]">{twinRpm} rpm</span>
                       </div>
                       <input
                         type="range"
@@ -831,13 +876,13 @@ export default function ScaleBridgeControlCenterPage() {
                         step={5}
                         value={twinRpm}
                         onChange={(e) => setTwinRpm(Number(e.target.value))}
-                        className="w-full accent-cyan-400"
+                        className="w-full accent-[#FAFAFA] cursor-pointer"
                       />
                     </div>
                     <div>
-                      <div className="flex justify-between text-[11px] font-mono text-slate-400 mb-1">
+                      <div className="flex justify-between text-[12px] text-[#A1A1AA] mb-1">
                         <span>Sparge VVM</span>
-                        <span className="text-emerald-300">{twinVvm.toFixed(2)} vvm</span>
+                        <span className="font-mono text-[#10B981]">{twinVvm.toFixed(2)} vvm</span>
                       </div>
                       <input
                         type="range"
@@ -846,19 +891,19 @@ export default function ScaleBridgeControlCenterPage() {
                         step={0.05}
                         value={twinVvm}
                         onChange={(e) => setTwinVvm(Number(e.target.value))}
-                        className="w-full accent-emerald-400"
+                        className="w-full accent-[#10B981] cursor-pointer"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* AI Optimization Insights & Alerts */}
-                <div className="lg:col-span-7 sb-surface rounded-2xl p-5 flex flex-col justify-between space-y-4">
+                <div className="lg:col-span-7 sb-surface rounded-[12px] p-5 flex flex-col justify-between space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-cyan-400" />
-                      <h3 className="text-base font-display font-semibold text-slate-100">
-                        AI Process Optimization &amp; Advisory Insights
+                      <Sparkles className="w-4 h-4 text-[#10B981]" />
+                      <h3 className="text-[16px] font-semibold text-[#FAFAFA]">
+                        Process Optimization &amp; Advisory Insights
                       </h3>
                     </div>
                     <DataOriginBadge origin="simulated" />
@@ -868,26 +913,27 @@ export default function ScaleBridgeControlCenterPage() {
                     {SAMPLE_AI_INSIGHTS.map((ins) => (
                       <div
                         key={ins.id}
-                        className="p-4 rounded-xl bg-[#040812] border border-slate-800 hover:border-cyan-500/30 transition-colors"
+                        className="p-4 rounded-lg bg-[#09090B] border border-[#27272A] hover:bg-[#16161A] transition-colors"
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <span className="text-sm font-display font-semibold text-slate-100">
+                          <span className="text-[14px] font-semibold text-[#FAFAFA]">
                             {ins.title}
                           </span>
                           <div className="flex items-center gap-2">
-                            <span className="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 border border-emerald-400/25 px-2 py-0.5 rounded-full">
+                            <span className="text-[11px] font-mono text-[#10B981] bg-[#10B981]/10 border border-[#10B981]/25 px-2 py-0.5 rounded-full">
                               {ins.impactLabel}
                             </span>
-                            <span className="text-[10px] font-mono text-slate-400">
+                            <span className="text-[11px] font-mono text-[#71717A]">
                               {ins.confidencePct}% conf.
                             </span>
                           </div>
                         </div>
-                        <p className="mt-1.5 text-xs text-slate-400 leading-relaxed">
+                        <p className="mt-1.5 text-[13px] text-[#A1A1AA] leading-relaxed">
                           {ins.rationale}
                         </p>
-                        <div className="mt-2.5 pt-2 border-t border-slate-800/70 text-[11px] font-mono text-cyan-300">
-                          Recommended Action: {ins.recommendedAction}
+                        <div className="mt-2.5 pt-2 border-t border-[#18181B] text-[12px] text-[#FAFAFA]">
+                          <span className="text-[#71717A]">Action: </span>
+                          {ins.recommendedAction}
                         </div>
                       </div>
                     ))}
@@ -900,21 +946,21 @@ export default function ScaleBridgeControlCenterPage() {
 
               {/* Bottom Strip: Experiment Batches & Active Alerts */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className="lg:col-span-7 sb-surface rounded-2xl p-5">
+                <div className="lg:col-span-7 sb-surface rounded-[12px] p-5">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-display font-semibold text-slate-100">
+                    <h3 className="text-[15px] font-semibold text-[#FAFAFA]">
                       Experimental &amp; Reference Batches ({batches.length})
                     </h3>
                     <button
                       onClick={() => setActiveNav("ingestion")}
-                      className="text-xs font-mono text-cyan-400 hover:text-cyan-300"
+                      className="text-[12px] font-medium text-[#FAFAFA] hover:text-[#A1A1AA]"
                     >
                       + Ingest CSV Batch
                     </button>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs font-mono">
-                      <thead className="text-[10px] uppercase text-slate-400 border-b border-slate-800">
+                      <thead className="text-[11px] font-sans font-medium text-[#71717A] border-b border-[#27272A]">
                         <tr>
                           <th className="py-2.5 pr-4">Run Code</th>
                           <th className="py-2.5 pr-4">Scale</th>
@@ -923,15 +969,15 @@ export default function ScaleBridgeControlCenterPage() {
                           <th className="py-2.5">Origin</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                      <tbody className="divide-y divide-[#18181B] text-[#A1A1AA]">
                         {batches.map((b) => (
-                          <tr key={b.id}>
-                            <td className="py-2.5 pr-4 font-semibold text-slate-100">{b.run_code}</td>
+                          <tr key={b.id} className="hover:bg-[#16161A]">
+                            <td className="py-2.5 pr-4 font-semibold text-[#FAFAFA]">{b.run_code}</td>
                             <td className="py-2.5 pr-4">{b.scale_label || "—"}</td>
                             <td className="py-2.5 pr-4 sb-tabular">
                               {b.working_volume_original ?? "—"} {b.working_volume_unit || ""}
                             </td>
-                            <td className="py-2.5 pr-4 text-slate-400">{b.operator || "—"}</td>
+                            <td className="py-2.5 pr-4 text-[#71717A]">{b.operator || "—"}</td>
                             <td className="py-2.5">
                               <DataOriginBadge origin={b.is_synthetic ? "sample" : "live"} />
                             </td>
@@ -942,29 +988,29 @@ export default function ScaleBridgeControlCenterPage() {
                   </div>
                 </div>
 
-                <div className="lg:col-span-5 sb-surface rounded-2xl p-5 space-y-3">
+                <div className="lg:col-span-5 sb-surface rounded-[12px] p-5 space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <AlertTriangle className="w-4 h-4 text-amber-400" />
-                      <h3 className="text-sm font-display font-semibold text-slate-100">
+                      <h3 className="text-[15px] font-semibold text-[#FAFAFA]">
                         Process Risk Alerts ({assessment.risk_flags.length})
                       </h3>
                     </div>
                     <button
                       onClick={() => setActiveNav("readiness")}
-                      className="text-xs font-mono text-cyan-400 hover:text-cyan-300"
+                      className="text-[12px] font-medium text-[#FAFAFA] hover:text-[#A1A1AA]"
                     >
                       View Readiness →
                     </button>
                   </div>
                   <div className="space-y-2.5">
                     {assessment.risk_flags.slice(0, 3).map((rf) => (
-                      <div key={rf.id} className="p-3 rounded-xl bg-[#040812] border border-slate-800">
+                      <div key={rf.id} className="p-3 rounded-lg bg-[#09090B] border border-[#27272A]">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs font-semibold text-slate-100">{rf.title}</span>
+                          <span className="text-[13px] font-medium text-[#FAFAFA]">{rf.title}</span>
                           <SeverityBadge severity={rf.severity} outcome={rf.outcome} />
                         </div>
-                        <p className="mt-1 text-[11px] text-slate-400 line-clamp-2">{rf.explanation}</p>
+                        <p className="mt-1 text-[12px] text-[#A1A1AA] line-clamp-2">{rf.explanation}</p>
                       </div>
                     ))}
                   </div>
@@ -976,39 +1022,39 @@ export default function ScaleBridgeControlCenterPage() {
           {/* 2. PROCESS PASSPORT */}
           {activeNav === "passport" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              <div className="lg:col-span-7 sb-surface rounded-2xl p-6 space-y-5">
+              <div className="lg:col-span-7 sb-surface rounded-[12px] p-6 space-y-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400">
+                    <span className="text-[12px] font-semibold text-[#10B981]">
                       Process Passport · Version {selectedProject.latest_passport?.version ?? 1}
                     </span>
-                    <h2 className="text-xl font-display font-bold text-slate-100 mt-1">
+                    <h2 className="text-xl font-semibold tracking-[-0.02em] text-[#FAFAFA] mt-1">
                       {selectedProject.name}
                     </h2>
                   </div>
                   <DataOriginBadge origin={dataOrigin} />
                 </div>
 
-                <p className="text-xs text-slate-400 leading-relaxed">
+                <p className="text-[14px] text-[#A1A1AA] leading-relaxed">
                   {selectedProject.latest_passport?.process_description}
                 </p>
 
                 <div className="space-y-2">
-                  <h4 className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                  <h4 className="text-[12px] font-medium text-[#71717A]">
                     Critical Process Parameters (CPPs)
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {(selectedProject.latest_passport?.process_parameters || []).map((pp) => (
                       <div
                         key={pp.key}
-                        className="p-3 rounded-xl bg-[#040812] border border-slate-800 flex items-center justify-between"
+                        className="p-3 rounded-lg bg-[#09090B] border border-[#27272A] flex items-center justify-between"
                       >
                         <div>
-                          <span className="text-[10px] font-mono uppercase text-slate-400 block">
+                          <span className="text-[11px] text-[#71717A] capitalize block">
                             {pp.key.replace(/_/g, " ")}
                           </span>
-                          <span className="text-sm font-mono font-bold text-slate-100 sb-tabular">
-                            {pp.value} {pp.unit}
+                          <span className="text-sm font-mono font-semibold text-[#FAFAFA] sb-tabular">
+                            {pp.value} <span className="text-[#71717A] font-normal">{pp.unit}</span>
                           </span>
                         </div>
                         <NatureBadge nature={pp.value_nature} />
@@ -1017,24 +1063,24 @@ export default function ScaleBridgeControlCenterPage() {
                   </div>
                 </div>
 
-                <div className="space-y-2 pt-3 border-t border-slate-800">
-                  <h4 className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                <div className="space-y-2 pt-3 border-t border-[#27272A]">
+                  <h4 className="text-[12px] font-medium text-[#71717A]">
                     Required Scale-Up Data Checklist
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {checklist.items.map((it) => (
                       <div
                         key={it.key}
-                        className="p-3 rounded-xl bg-[#040812] border border-slate-800 flex items-center justify-between text-xs"
+                        className="p-3 rounded-lg bg-[#09090B] border border-[#27272A] flex items-center justify-between text-xs"
                       >
-                        <span className="text-slate-200">{it.label}</span>
+                        <span className="text-[#FAFAFA]">{it.label}</span>
                         <span
                           className={`font-mono text-[10px] uppercase px-2 py-0.5 rounded border ${
                             it.status === "complete"
-                              ? "bg-emerald-500/10 text-emerald-300 border-emerald-400/30"
+                              ? "bg-[#10B981]/10 text-[#10B981] border-[#10B981]/25"
                               : it.status === "assumed"
-                              ? "bg-amber-500/10 text-amber-300 border-amber-400/30"
-                              : "bg-rose-500/10 text-rose-300 border-rose-400/30"
+                              ? "bg-amber-500/10 text-amber-300 border-amber-400/25"
+                              : "bg-rose-500/10 text-rose-300 border-rose-400/25"
                           }`}
                         >
                           {it.status}
@@ -1047,57 +1093,57 @@ export default function ScaleBridgeControlCenterPage() {
 
               <form
                 onSubmit={handleSavePassportVersion}
-                className="lg:col-span-5 sb-surface rounded-2xl p-6 space-y-4 h-fit"
+                className="lg:col-span-5 sb-surface rounded-[12px] p-6 space-y-4 h-fit"
               >
-                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400">
+                <span className="text-[12px] font-semibold text-[#10B981]">
                   Immutable Version Revision
                 </span>
-                <h3 className="text-lg font-display font-semibold text-slate-100">
+                <h3 className="text-[16px] font-semibold text-[#FAFAFA]">
                   Update Broth &amp; Medium Properties
                 </h3>
                 <div className="space-y-3 text-xs">
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1">Recipe Version Tag</label>
+                    <label className="block text-[#A1A1AA] mb-1">Recipe Version Tag</label>
                     <input
                       value={recipeVersion}
                       onChange={(e) => setRecipeVersion(e.target.value)}
-                      className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                      className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1">Broth Density (kg/m³)</label>
+                    <label className="block text-[#A1A1AA] mb-1">Broth Density (kg/m³)</label>
                     <input
                       type="number"
                       value={densityVal}
                       onChange={(e) => setDensityVal(Number(e.target.value))}
-                      className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                      className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1">Dynamic Viscosity (mPa·s)</label>
+                    <label className="block text-[#A1A1AA] mb-1">Dynamic Viscosity (mPa·s)</label>
                     <input
                       type="number"
                       step="0.1"
                       value={viscosityVal}
                       onChange={(e) => setViscosityVal(Number(e.target.value))}
-                      className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                      className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1">O₂ Saturation C* (mmol/L)</label>
+                    <label className="block text-[#A1A1AA] mb-1">O₂ Saturation C* (mmol/L)</label>
                     <input
                       type="number"
                       step="0.01"
                       value={cStarVal}
                       onChange={(e) => setCStarVal(Number(e.target.value))}
-                      className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                      className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                     />
                   </div>
                 </div>
                 <button
                   type="submit"
                   disabled={busy}
-                  className="w-full py-3 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-[#03060C] font-mono font-semibold text-xs uppercase tracking-wider transition-colors"
+                  className="w-full h-10 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] font-medium text-[13px] transition-colors"
                 >
                   {busy ? "Committing Revision..." : "Commit New Passport Version"}
                 </button>
@@ -1111,73 +1157,105 @@ export default function ScaleBridgeControlCenterPage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <form
                   onSubmit={handleUploadAndImportBatch}
-                  className="lg:col-span-5 sb-surface rounded-2xl p-6 space-y-4"
+                  className="lg:col-span-5 sb-surface rounded-[12px] p-6 space-y-4"
                 >
-                  <div className="flex items-center gap-2">
-                    <Upload className="w-4 h-4 text-cyan-400" />
-                    <h3 className="text-lg font-display font-semibold text-slate-100">
-                      Ingest Bioreactor Run CSV
-                    </h3>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <Upload className="w-4 h-4 text-[#A1A1AA]" />
+                      <h3 className="text-[16px] font-semibold text-[#FAFAFA]">
+                        Ingest Bioreactor Run CSV
+                      </h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const parsed = parseCsvTextToPreview(SYNTHETIC_GOLDEN_CSV);
+                        setCsvHeaders(parsed.headers);
+                        setCsvSampleRows(parsed.rows);
+                        setStatusBanner(
+                          "Loaded synthetic golden 120 h fed-batch reference CSV into ontology mapper."
+                        );
+                      }}
+                      className="px-2.5 py-1 rounded-md bg-[#09090B] hover:bg-[#16161A] border border-[#27272A] text-[11px] font-medium text-[#FAFAFA]"
+                    >
+                      Load Golden CSV
+                    </button>
                   </div>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-[13px] text-[#A1A1AA]">
                     Parse vendor telemetry exports with unit preservation and physical bounds checking.
                   </p>
                   <div className="space-y-3 text-xs">
                     <div>
-                      <label className="block font-mono text-slate-400 mb-1">Run Code</label>
+                      <label className="block text-[#A1A1AA] mb-1">Run Code</label>
                       <input
                         value={uploadRunCode}
                         onChange={(e) => setUploadRunCode(e.target.value)}
-                        className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                       />
                     </div>
                     <div>
-                      <label className="block font-mono text-slate-400 mb-1">Working Volume (L)</label>
+                      <label className="block text-[#A1A1AA] mb-1">Working Volume (L)</label>
                       <input
                         type="number"
                         step="0.1"
                         value={uploadVolume}
                         onChange={(e) => setUploadVolume(Number(e.target.value))}
-                        className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                       />
                     </div>
                     <div>
-                      <label className="block font-mono text-slate-400 mb-1">CSV Telemetry File</label>
+                      <label className="block text-[#A1A1AA] mb-1">CSV Telemetry File</label>
                       <input
                         type="file"
                         accept=".csv,.txt"
-                        onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
-                        className="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-slate-800 file:text-cyan-300 file:font-mono"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0] || null;
+                          setUploadFile(file);
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (ev) => {
+                              const text = (ev.target?.result as string) || "";
+                              const parsed = parseCsvTextToPreview(text);
+                              if (parsed.headers.length > 0) {
+                                setCsvHeaders(parsed.headers);
+                                setCsvSampleRows(parsed.rows);
+                              }
+                            };
+                            reader.readAsText(file);
+                          }
+                        }}
+                        className="w-full text-xs text-[#A1A1AA] file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border file:border-[#27272A] file:bg-[#09090B] file:text-[#FAFAFA] file:font-medium"
                       />
                     </div>
                   </div>
                   <button
                     type="submit"
                     disabled={busy || !uploadFile}
-                    className="w-full py-3 rounded-xl bg-cyan-400 hover:bg-cyan-300 disabled:opacity-40 text-[#03060C] font-mono font-semibold text-xs uppercase tracking-wider"
+                    className="w-full h-10 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] disabled:opacity-40 text-[#09090B] font-medium text-[13px] transition-colors"
                   >
-                    Validate &amp; Import Batch
+                    Validate &amp; Import Uploaded File
                   </button>
                 </form>
 
-                <div className="lg:col-span-7 sb-surface rounded-2xl p-6 space-y-4">
+                <div className="lg:col-span-7 sb-surface rounded-[12px] p-6 space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-display font-semibold text-slate-100">
+                    <h3 className="text-[16px] font-semibold text-[#FAFAFA]">
                       Ingestion Quality Audit
                     </h3>
                     <DataOriginBadge origin={dataOrigin} />
                   </div>
                   {lastQualityReport ? (
                     <div className="space-y-3 text-xs font-mono">
-                      <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-400/25 text-emerald-300">
+                      <div className="p-3 rounded-lg bg-[#10B981]/10 border border-[#10B981]/25 text-[#10B981]">
                         Imported {lastQualityReport.rows_imported} / {lastQualityReport.rows_total} rows · Blocking errors:{" "}
-                        {lastQualityReport.blocking ? "YES" : "NO"}
+                        {lastQualityReport.blocking ? "YES" : "NO"} · Pint Conversions:{" "}
+                        {lastQualityReport.conversions.length}
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {lastQualityReport.variables.map((v) => (
-                          <div key={v.variable} className="p-3 rounded-xl bg-[#040812] border border-slate-800">
-                            <div className="text-slate-200 font-semibold">{v.variable}</div>
-                            <div className="text-slate-400 mt-1">
+                          <div key={v.variable} className="p-3 rounded-lg bg-[#09090B] border border-[#27272A]">
+                            <div className="text-[#FAFAFA] font-semibold">{v.variable}</div>
+                            <div className="text-[#A1A1AA] mt-1">
                               Unit: {v.unit_original} → {v.unit_display} ({v.valid_count} valid)
                             </div>
                           </div>
@@ -1185,12 +1263,47 @@ export default function ScaleBridgeControlCenterPage() {
                       </div>
                     </div>
                   ) : (
-                    <p className="text-xs text-slate-400">
-                      Upload a CSV file on the left to inspect Pint unit conversions and sensor outlier checks.
+                    <p className="text-[13px] text-[#A1A1AA]">
+                      Review and confirm the interactive column mappings below to generate a Pint unit-conversion and DQ-* quality audit report.
                     </p>
                   )}
                 </div>
               </div>
+
+              {csvHeaders.length > 0 && (
+                <ColumnMapper
+                  headers={csvHeaders}
+                  sampleRows={csvSampleRows}
+                  onSaveMappings={(
+                    mappings: ColumnMappingEntry[],
+                    tsCfg,
+                    report: QualityReport
+                  ) => {
+                    const newBatch: BatchRecord = {
+                      id: `batch_mapped_${Date.now()}`,
+                      project_id: selectedProject.id,
+                      run_code: uploadRunCode,
+                      scale_label: `${uploadVolume} L Benchtop`,
+                      working_volume_original: uploadVolume,
+                      working_volume_unit: "L",
+                      working_volume_si: uploadVolume / 1000,
+                      start_time: new Date().toISOString(),
+                      end_time: null,
+                      operator: user?.full_name || "Dr. Elena Vance",
+                      notes: `Mapped ${mappings.length} ontology variables (${tsCfg.column} [${tsCfg.kind}])`,
+                      is_synthetic: true,
+                      variables_available: mappings.map((m) => m.standardParameter),
+                      summary: {},
+                      created_at: new Date().toISOString(),
+                    };
+                    setBatches((prev) => [newBatch, ...prev]);
+                    setLastQualityReport(report);
+                    setStatusBanner(
+                      `Committed batch ${uploadRunCode} with ${mappings.length} Pint-normalized variables (${report.rows_imported} rows).`
+                    );
+                  }}
+                />
+              )}
 
               {overlaySeries.length > 0 && (
                 <BatchTrendChart
@@ -1203,53 +1316,274 @@ export default function ScaleBridgeControlCenterPage() {
 
           {/* 4. VESSEL FLEET */}
           {activeNav === "vessels" && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {vessels.map((v) => (
-                <div key={v.id} className="sb-surface rounded-2xl p-6 space-y-4">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 uppercase text-[10px]">
-                      {v.scale_class}
-                    </span>
-                    <span className="text-slate-400">{v.manufacturer || "Custom"}</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-display font-bold text-slate-100">{v.name}</h3>
-                    <p className="text-xs font-mono text-slate-400 mt-0.5">
-                      {v.location || "Biomanufacturing Suite"}
-                    </p>
-                  </div>
-                  <div className="space-y-2 pt-3 border-t border-slate-800 text-xs font-mono">
-                    {Object.entries(v.latest_version.parameters).map(([k, q]) => (
-                      <div key={k} className="flex justify-between py-1 border-b border-slate-800/50">
-                        <span className="text-slate-400">{k.replace(/_/g, " ")}</span>
-                        <span className="text-slate-100 sb-tabular">{formatQuantity(q, 3)}</span>
-                      </div>
-                    ))}
-                    <div className="flex justify-between py-1">
-                      <span className="text-slate-400">Impeller</span>
-                      <span className="text-cyan-300 text-right">{v.latest_version.impeller_type}</span>
-                    </div>
-                  </div>
-                  {v.missing_specifications.length > 0 && (
-                    <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-400/25 text-[11px] font-mono text-amber-300">
-                      Missing Spec: {v.missing_specifications.map((m) => m.key).join(", ")}
-                    </div>
-                  )}
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <span className="text-[12px] font-semibold text-[#10B981]">
+                    Equipment Capability Envelopes
+                  </span>
+                  <h2 className="text-xl font-semibold tracking-[-0.02em] text-[#FAFAFA] mt-0.5">
+                    Bioreactor Fleet &amp; Side-by-Side Geometry Matrix
+                  </h2>
                 </div>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => setShowNewVesselForm((v) => !v)}
+                  className="h-9 px-4 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] font-medium text-[13px] transition-colors"
+                >
+                  {showNewVesselForm ? "Cancel" : "+ Register Bioreactor"}
+                </button>
+              </div>
+
+              {showNewVesselForm && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const created: VesselRecord = {
+                      id: `ves_custom_${Date.now()}`,
+                      name: newVesselName,
+                      scale_class: newVesselScale,
+                      manufacturer: "Custom Bioreactor Systems",
+                      model: `${newVesselVolMax}L-STR`,
+                      location: "Pilot Biomanufacturing Suite",
+                      latest_version: {
+                        id: `vv_custom_${Date.now()}`,
+                        version: 1,
+                        impeller_type: newVesselImpellerType,
+                        impeller_count: 2,
+                        sparger_type: "Ring Sparger",
+                        instrumentation: ["pH", "dO2", "PT100", "Off-gas O2/CO2"],
+                        controls: ["Cascade Agitation + O2", "Jacket Chiller Loop"],
+                        parameters: {
+                          working_volume_max: {
+                            value: newVesselVolMax,
+                            unit: "L",
+                            provenance: "vendor_datasheet",
+                            value_nature: "measured",
+                          },
+                          impeller_diameter: {
+                            value: newVesselImpellerD,
+                            unit: "m",
+                            provenance: "vendor_datasheet",
+                            value_nature: "measured",
+                          },
+                          max_agitation_speed: {
+                            value: newVesselMaxRpm,
+                            unit: "rpm",
+                            provenance: "vendor_datasheet",
+                            value_nature: "measured",
+                          },
+                          max_power: {
+                            value: newVesselMaxPower,
+                            unit: "W",
+                            provenance: "vendor_datasheet",
+                            value_nature: "measured",
+                          },
+                          max_aeration: {
+                            value: newVesselMaxVvm,
+                            unit: "vvm",
+                            provenance: "vendor_datasheet",
+                            value_nature: "measured",
+                          },
+                        },
+                        kla_evidence: [],
+                        mixing_time_evidence: [],
+                        change_note: "Registered via Control Center",
+                        created_at: new Date().toISOString(),
+                      },
+                      missing_specifications: [
+                        {
+                          key: "measured_broth_kla",
+                          required_by_formulas: ["F-OTR-001"],
+                          required_by_checks: [],
+                        },
+                      ],
+                      created_at: new Date().toISOString(),
+                    };
+                    setVessels((prev) => [...prev, created]);
+                    setTargetVesselId(created.id);
+                    setShowNewVesselForm(false);
+                    setStatusBanner(`Registered vessel profile '${created.name}' to fleet.`);
+                  }}
+                  className="sb-surface rounded-[12px] p-6 space-y-4 text-xs"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 font-mono">
+                    <div>
+                      <label className="block font-sans text-[#A1A1AA] mb-1">Vessel Name</label>
+                      <input
+                        value={newVesselName}
+                        onChange={(e) => setNewVesselName(e.target.value)}
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-[#FAFAFA]"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-sans text-[#A1A1AA] mb-1">Scale Class</label>
+                      <select
+                        value={newVesselScale}
+                        onChange={(e) =>
+                          setNewVesselScale(e.target.value as "lab" | "pilot" | "production")
+                        }
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-[#FAFAFA]"
+                      >
+                        <option value="lab">lab</option>
+                        <option value="pilot">pilot</option>
+                        <option value="production">production</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block font-sans text-[#A1A1AA] mb-1">Max Working Volume (L)</label>
+                      <input
+                        type="number"
+                        value={newVesselVolMax}
+                        onChange={(e) => setNewVesselVolMax(Number(e.target.value))}
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-[#FAFAFA]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-sans text-[#A1A1AA] mb-1">Impeller Diameter D (m)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={newVesselImpellerD}
+                        onChange={(e) => setNewVesselImpellerD(Number(e.target.value))}
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-[#FAFAFA]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-sans text-[#A1A1AA] mb-1">Max Agitation (rpm)</label>
+                      <input
+                        type="number"
+                        value={newVesselMaxRpm}
+                        onChange={(e) => setNewVesselMaxRpm(Number(e.target.value))}
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-[#FAFAFA]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-sans text-[#A1A1AA] mb-1">Motor Power Limit (W)</label>
+                      <input
+                        type="number"
+                        value={newVesselMaxPower}
+                        onChange={(e) => setNewVesselMaxPower(Number(e.target.value))}
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-[#FAFAFA]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-sans text-[#A1A1AA] mb-1">Max Aeration (vvm)</label>
+                      <input
+                        type="number"
+                        step="0.05"
+                        value={newVesselMaxVvm}
+                        onChange={(e) => setNewVesselMaxVvm(Number(e.target.value))}
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-[#FAFAFA]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-sans text-[#A1A1AA] mb-1">Impeller Type</label>
+                      <input
+                        value={newVesselImpellerType}
+                        onChange={(e) => setNewVesselImpellerType(e.target.value)}
+                        className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-[#FAFAFA]"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="h-9 px-4 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] font-medium text-[13px]"
+                  >
+                    Save Vessel Profile to Fleet
+                  </button>
+                </form>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {vessels.map((v) => (
+                  <div key={v.id} className="sb-surface rounded-[12px] p-6 space-y-4 hover:bg-[#16161A] transition-colors">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#18181B] border border-[#27272A] text-[#FAFAFA] font-mono uppercase text-[10px]">
+                        {v.scale_class}
+                      </span>
+                      <span className="text-[#71717A]">{v.manufacturer || "Custom"}</span>
+                    </div>
+                    <div>
+                      <h3 className="text-[16px] font-semibold text-[#FAFAFA]">{v.name}</h3>
+                      <p className="text-[12px] text-[#71717A] mt-0.5">
+                        {v.location || "Biomanufacturing Suite"}
+                      </p>
+                    </div>
+                    <div className="space-y-2 pt-3 border-t border-[#27272A] text-xs font-mono">
+                      {Object.entries(v.latest_version.parameters).map(([k, q]) => (
+                        <div key={k} className="flex justify-between py-1 border-b border-[#18181B]">
+                          <span className="text-[#A1A1AA] font-sans capitalize">{k.replace(/_/g, " ")}</span>
+                          <span className="text-[#FAFAFA] sb-tabular">{formatQuantity(q, 3)}</span>
+                        </div>
+                      ))}
+                      <div className="flex justify-between py-1">
+                        <span className="text-[#A1A1AA] font-sans">Impeller</span>
+                        <span className="text-[#FAFAFA] text-right">{v.latest_version.impeller_type}</span>
+                      </div>
+                    </div>
+                    {v.missing_specifications.length > 0 && (
+                      <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-400/25 text-[11px] font-mono text-amber-300">
+                        Missing Spec: {v.missing_specifications.map((m) => m.key).join(", ")}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Side-by-Side Vessel Geometry & Capability Comparison Matrix */}
+              {sourceVessel && targetVessel && (
+                <div className="space-y-3 pt-2">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <h3 className="text-[16px] font-semibold text-[#FAFAFA]">
+                      Compare Source vs. Target Vessel Envelopes
+                    </h3>
+                    <div className="flex items-center gap-2 text-xs font-mono">
+                      <select
+                        value={sourceVessel.id}
+                        onChange={(e) => setSourceVesselId(e.target.value)}
+                        className="rounded-lg bg-[#111114] border border-[#27272A] px-3 py-1.5 text-[#FAFAFA]"
+                      >
+                        {vessels.map((v) => (
+                          <option key={v.id} value={v.id}>
+                            Source: {v.name}
+                          </option>
+                        ))}
+                      </select>
+                      <span className="text-[#71717A]">→</span>
+                      <select
+                        value={targetVessel.id}
+                        onChange={(e) => setTargetVesselId(e.target.value)}
+                        className="rounded-lg bg-[#111114] border border-[#27272A] px-3 py-1.5 text-[#FAFAFA]"
+                      >
+                        {vessels.map((v) => (
+                          <option key={v.id} value={v.id}>
+                            Target: {v.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <VesselCompareTable
+                    sourceVessel={sourceVessel}
+                    targetVessel={targetVessel}
+                  />
+                </div>
+              )}
             </div>
           )}
 
           {/* 5. SCALE-UP MODELER */}
           {activeNav === "modeler" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              <div className="lg:col-span-7 sb-surface rounded-2xl p-6 space-y-6">
+              <div className="lg:col-span-7 sb-surface rounded-[12px] p-6 space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400">
+                    <span className="text-[12px] font-semibold text-[#10B981]">
                       Deterministic Hydrodynamic Coupling
                     </span>
-                    <h2 className="text-xl font-display font-bold text-slate-100">
+                    <h2 className="text-xl font-semibold tracking-[-0.02em] text-[#FAFAFA] mt-0.5">
                       Configure Vessel Transfer Scenario
                     </h2>
                   </div>
@@ -1258,11 +1592,11 @@ export default function ScaleBridgeControlCenterPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1.5">Source Vessel</label>
+                    <label className="block text-[#A1A1AA] mb-1.5">Source Vessel</label>
                     <select
                       value={sourceVesselId}
                       onChange={(e) => setSourceVesselId(e.target.value)}
-                      className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                      className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                     >
                       {vessels.map((v) => (
                         <option key={v.id} value={v.id}>
@@ -1272,11 +1606,11 @@ export default function ScaleBridgeControlCenterPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1.5">Target Vessel</label>
+                    <label className="block text-[#A1A1AA] mb-1.5">Target Vessel</label>
                     <select
                       value={targetVesselId}
                       onChange={(e) => setTargetVesselId(e.target.value)}
-                      className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                      className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                     >
                       {vessels.map((v) => (
                         <option key={v.id} value={v.id}>
@@ -1286,28 +1620,28 @@ export default function ScaleBridgeControlCenterPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1.5">Target Volume (L)</label>
+                    <label className="block text-[#A1A1AA] mb-1.5">Target Volume (L)</label>
                     <input
                       type="number"
                       value={targetVolumeL}
                       onChange={(e) => setTargetVolumeL(Number(e.target.value))}
-                      className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                      className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1.5">Primary Scale Criterion</label>
+                    <label className="block text-[#A1A1AA] mb-1.5">Primary Scale Criterion</label>
                     <select
                       value={primaryCrit}
                       onChange={(e) => setPrimaryCrit(e.target.value as "S-PV" | "S-TIP")}
-                      className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                      className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA] focus:outline-none focus:border-[#A1A1AA]"
                     >
                       <option value="S-PV">Constant Power per Volume (P/V)</option>
                       <option value="S-TIP">Constant Impeller Tip Speed</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1.5">
-                      Target Agitation ({targetRpm} RPM)
+                    <label className="block text-[#A1A1AA] mb-1.5">
+                      Target Agitation (<span className="font-mono text-[#FAFAFA]">{targetRpm} rpm</span>)
                     </label>
                     <input
                       type="range"
@@ -1316,12 +1650,12 @@ export default function ScaleBridgeControlCenterPage() {
                       step={5}
                       value={targetRpm}
                       onChange={(e) => setTargetRpm(Number(e.target.value))}
-                      className="w-full accent-cyan-400"
+                      className="w-full accent-[#FAFAFA] cursor-pointer"
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-slate-400 mb-1.5">
-                      Sparge Aeration ({aerationVvm.toFixed(2)} vvm)
+                    <label className="block text-[#A1A1AA] mb-1.5">
+                      Sparge Aeration (<span className="font-mono text-[#10B981]">{aerationVvm.toFixed(2)} vvm</span>)
                     </label>
                     <input
                       type="range"
@@ -1330,34 +1664,37 @@ export default function ScaleBridgeControlCenterPage() {
                       step={0.05}
                       value={aerationVvm}
                       onChange={(e) => setAerationVvm(Number(e.target.value))}
-                      className="w-full accent-emerald-400"
+                      className="w-full accent-[#10B981] cursor-pointer"
                     />
                   </div>
                 </div>
 
                 {/* Live Physics Readouts */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-slate-800">
-                  <div className="p-3 rounded-xl bg-[#040812] border border-slate-800">
-                    <span className="text-[10px] font-mono text-slate-400 block">Target P/V</span>
-                    <span className="text-base font-mono font-bold text-cyan-300 sb-tabular">
-                      {modelPreview.targetPvWm3.toFixed(1)} W/m³
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-[#27272A]">
+                  <div className="p-3 rounded-lg bg-[#09090B] border border-[#27272A]">
+                    <span className="text-[11px] text-[#71717A] block">Target P/V</span>
+                    <span className="text-base font-semibold text-[#FAFAFA] sb-tabular mt-0.5 inline-block">
+                      {modelPreview.targetPvWm3.toFixed(1)}{" "}
+                      <span className="text-[11px] font-mono font-normal text-[#71717A]">W/m³</span>
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#040812] border border-slate-800">
-                    <span className="text-[10px] font-mono text-slate-400 block">Tip Speed</span>
-                    <span className="text-base font-mono font-bold text-emerald-300 sb-tabular">
-                      {modelPreview.targetTipSpeedMs.toFixed(2)} m/s
+                  <div className="p-3 rounded-lg bg-[#09090B] border border-[#27272A]">
+                    <span className="text-[11px] text-[#71717A] block">Tip Speed</span>
+                    <span className="text-base font-semibold text-[#FAFAFA] sb-tabular mt-0.5 inline-block">
+                      {modelPreview.targetTipSpeedMs.toFixed(2)}{" "}
+                      <span className="text-[11px] font-mono font-normal text-[#71717A]">m/s</span>
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#040812] border border-slate-800">
-                    <span className="text-[10px] font-mono text-slate-400 block">Predicted kLa</span>
-                    <span className="text-base font-mono font-bold text-emerald-300 sb-tabular">
-                      {modelPreview.targetKlaPerH.toFixed(1)} 1/h
+                  <div className="p-3 rounded-lg bg-[#09090B] border border-[#27272A]">
+                    <span className="text-[11px] text-[#71717A] block">Predicted kLa</span>
+                    <span className="text-base font-semibold text-[#10B981] sb-tabular mt-0.5 inline-block">
+                      {modelPreview.targetKlaPerH.toFixed(1)}{" "}
+                      <span className="text-[11px] font-mono font-normal text-[#71717A]">1/h</span>
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#040812] border border-slate-800">
-                    <span className="text-[10px] font-mono text-slate-400 block">Reynolds</span>
-                    <span className="text-base font-mono font-bold text-slate-100 sb-tabular">
+                  <div className="p-3 rounded-lg bg-[#09090B] border border-[#27272A]">
+                    <span className="text-[11px] text-[#71717A] block">Reynolds</span>
+                    <span className="text-base font-semibold text-[#FAFAFA] sb-tabular mt-0.5 inline-block">
                       {(modelPreview.targetReynolds / 1000).toFixed(1)}k
                     </span>
                   </div>
@@ -1366,21 +1703,21 @@ export default function ScaleBridgeControlCenterPage() {
                 <button
                   onClick={handleRunScaleUpAssessment}
                   disabled={busy}
-                  className="w-full py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-[#03060C] font-mono font-semibold text-xs uppercase tracking-wider transition-colors"
+                  className="w-full h-10 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] font-medium text-[13px] transition-colors"
                 >
                   {busy ? "Computing Assessment..." : "Execute Deterministic Scale-Up Assessment →"}
                 </button>
               </div>
 
-              <div className="lg:col-span-5 sb-surface rounded-2xl p-5 flex flex-col justify-between">
+              <div className="lg:col-span-5 sb-surface rounded-[12px] p-5 flex flex-col justify-between">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono text-slate-300">Target Vessel Twin Preview</span>
+                  <span className="text-[13px] font-medium text-[#FAFAFA]">Target Vessel Twin Preview</span>
                   <DataOriginBadge origin="simulated" />
                 </div>
-                <div className="h-80 rounded-xl bg-[#03060C] border border-slate-800 overflow-hidden">
+                <div className="h-80 rounded-lg bg-[#09090B] border border-[#27272A] overflow-hidden">
                   <BioreactorScene rpm={targetRpm} aerationVvm={aerationVvm} compact interactive />
                 </div>
-                <p className="mt-3 text-[11px] font-mono text-slate-400">
+                <p className="mt-3 text-[12px] text-[#71717A]">
                   3D impeller velocity and bubble dispersion respond directly to your Target RPM and Aeration VVM sliders.
                 </p>
               </div>
@@ -1391,30 +1728,30 @@ export default function ScaleBridgeControlCenterPage() {
           {activeNav === "readiness" && (
             <div className="space-y-6">
               {/* Top Summary & PDF Action */}
-              <div className="sb-surface rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="sb-surface rounded-[12px] p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400">
+                    <span className="text-[12px] font-mono text-[#71717A]">
                       Assessment {assessment.id}
                     </span>
                     <DataOriginBadge origin={assessment.is_synthetic ? "simulated" : "live"} />
                   </div>
-                  <h2 className="text-2xl font-display font-bold text-slate-100">
+                  <h2 className="text-xl font-semibold tracking-[-0.02em] text-[#FAFAFA]">
                     Scale-Up Readiness &amp; Equipment Compatibility
                   </h2>
                 </div>
                 <button
                   onClick={handleExportReport}
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-[#03060C] font-mono font-bold text-xs uppercase tracking-wider shrink-0"
+                  className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] font-medium text-[13px] shrink-0 transition-colors"
                 >
                   <FileText className="w-4 h-4" />
-                  Export Transfer Report
+                  <span>Export Transfer Report</span>
                 </button>
               </div>
 
               {/* Calculation Traces */}
               <div className="space-y-3">
-                <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400">
+                <h3 className="text-[12px] font-medium text-[#71717A]">
                   Traceable Engineering Calculations
                 </h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -1426,20 +1763,26 @@ export default function ScaleBridgeControlCenterPage() {
 
               {/* Equipment Compatibility Checks */}
               <div className="space-y-3">
-                <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400">
+                <h3 className="text-[12px] font-medium text-[#71717A]">
                   Hardware &amp; Utility Compatibility
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {assessment.compatibility_checks.map((cc) => (
-                    <div key={cc.id} className="sb-surface rounded-xl p-4 space-y-2">
+                    <div key={cc.id} className="sb-surface rounded-[12px] p-4 space-y-2">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-semibold text-slate-100">{cc.title}</span>
+                        <span className="text-[13px] font-semibold text-[#FAFAFA]">{cc.title}</span>
                         <CompatBadge outcome={cc.outcome} />
                       </div>
-                      <p className="text-[11px] text-slate-400">{cc.explanation}</p>
-                      <div className="text-[11px] font-mono text-cyan-300 pt-1">
-                        Required: {cc.required_display ?? "N/A"} {cc.display_unit} · Cap:{" "}
-                        {cc.capability_max_display ?? "N/A"} {cc.display_unit}
+                      <p className="text-[12px] text-[#A1A1AA]">{cc.explanation}</p>
+                      <div className="text-[11px] font-mono text-[#71717A] pt-1">
+                        Required:{" "}
+                        <span className="text-[#FAFAFA]">
+                          {cc.required_display ?? "N/A"} {cc.display_unit}
+                        </span>{" "}
+                        · Cap:{" "}
+                        <span className="text-[#FAFAFA]">
+                          {cc.capability_max_display ?? "N/A"} {cc.display_unit}
+                        </span>
                       </div>
                     </div>
                   ))}
@@ -1448,10 +1791,10 @@ export default function ScaleBridgeControlCenterPage() {
 
               {/* Validation Tasks & Reviewer Sign-Off */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className="lg:col-span-7 sb-surface rounded-2xl p-5 space-y-3">
+                <div className="lg:col-span-7 sb-surface rounded-[12px] p-5 space-y-3">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <h3 className="text-sm font-display font-semibold text-slate-100">
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+                    <h3 className="text-[15px] font-semibold text-[#FAFAFA]">
                       Validation &amp; Commissioning Plan
                     </h3>
                   </div>
@@ -1459,16 +1802,16 @@ export default function ScaleBridgeControlCenterPage() {
                     {assessment.validation_tasks.map((vt) => (
                       <div
                         key={vt.id}
-                        className="p-3.5 rounded-xl bg-[#040812] border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                        className="p-3.5 rounded-lg bg-[#09090B] border border-[#27272A] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                       >
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-400/25">
+                            <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-[#18181B] text-[#FAFAFA] border border-[#27272A]">
                               {vt.priority}
                             </span>
-                            <span className="text-xs font-semibold text-slate-100">{vt.title}</span>
+                            <span className="text-[13px] font-medium text-[#FAFAFA]">{vt.title}</span>
                           </div>
-                          <p className="mt-1 text-[11px] text-slate-400">{vt.description}</p>
+                          <p className="mt-1 text-[12px] text-[#A1A1AA]">{vt.description}</p>
                         </div>
                         <select
                           value={vt.status}
@@ -1478,7 +1821,7 @@ export default function ScaleBridgeControlCenterPage() {
                               e.target.value as "open" | "in_progress" | "done" | "waived"
                             )
                           }
-                          className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-mono text-slate-200 shrink-0"
+                          className="bg-[#111114] border border-[#27272A] rounded-lg px-2.5 py-1.5 text-xs font-mono text-[#FAFAFA] shrink-0"
                         >
                           <option value="open">OPEN</option>
                           <option value="in_progress">IN PROGRESS</option>
@@ -1492,11 +1835,11 @@ export default function ScaleBridgeControlCenterPage() {
 
                 <form
                   onSubmit={handleSubmitReview}
-                  className="lg:col-span-5 sb-surface rounded-2xl p-5 space-y-3 h-fit"
+                  className="lg:col-span-5 sb-surface rounded-[12px] p-5 space-y-3 h-fit"
                 >
                   <div className="flex items-center gap-2">
-                    <Cpu className="w-4 h-4 text-cyan-400" />
-                    <h3 className="text-sm font-display font-semibold text-slate-100">
+                    <Cpu className="w-4 h-4 text-[#A1A1AA]" />
+                    <h3 className="text-[15px] font-semibold text-[#FAFAFA]">
                       Human Engineering Sign-Off
                     </h3>
                   </div>
@@ -1507,7 +1850,7 @@ export default function ScaleBridgeControlCenterPage() {
                         e.target.value as "approved_for_discussion" | "changes_requested"
                       )
                     }
-                    className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 text-xs font-mono text-slate-100"
+                    className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-xs text-[#FAFAFA]"
                   >
                     <option value="approved_for_discussion">
                       Approved for Pilot Facility Discussion
@@ -1520,26 +1863,26 @@ export default function ScaleBridgeControlCenterPage() {
                     rows={3}
                     value={reviewComment}
                     onChange={(e) => setReviewComment(e.target.value)}
-                    className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 text-xs text-slate-200"
+                    className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 text-xs text-[#FAFAFA]"
                   />
                   <button
                     type="submit"
-                    className="w-full py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-[#03060C] font-mono font-semibold text-xs uppercase tracking-wider"
+                    className="w-full h-9 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] font-medium text-[13px] transition-colors"
                   >
                     Record Reviewer Sign-Off
                   </button>
 
                   {assessment.reviews.length > 0 && (
-                    <div className="pt-3 border-t border-slate-800 space-y-2">
+                    <div className="pt-3 border-t border-[#27272A] space-y-2">
                       {assessment.reviews.map((rev) => (
                         <div
                           key={rev.id}
-                          className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-400/25 text-xs"
+                          className="p-2.5 rounded-lg bg-[#10B981]/10 border border-[#10B981]/25 text-xs"
                         >
-                          <div className="font-mono font-semibold text-emerald-300">
+                          <div className="font-mono font-semibold text-[#10B981]">
                             {rev.reviewer_name} · {rev.decision.replace(/_/g, " ").toUpperCase()}
                           </div>
-                          <p className="text-slate-300 mt-1 text-[11px]">{rev.comment}</p>
+                          <p className="text-[#FAFAFA] mt-1 text-[11px]">{rev.comment}</p>
                         </div>
                       ))}
                     </div>
@@ -1553,40 +1896,40 @@ export default function ScaleBridgeControlCenterPage() {
 
       {/* AUTHENTICATION MODAL (SUPPORTS LIVE API + SKIP TO DEMO) */}
       {showAuthModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="max-w-md w-full sb-surface rounded-2xl p-6 space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="max-w-md w-full sb-surface rounded-[12px] p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-display font-bold text-slate-100">
+              <h3 className="text-[16px] font-semibold text-[#FAFAFA]">
                 Connect Live Engineering Backend
               </h3>
               <button
                 onClick={() => setShowAuthModal(false)}
-                className="text-slate-400 hover:text-white text-sm"
+                className="text-[#71717A] hover:text-[#FAFAFA] text-sm"
               >
                 ✕
               </button>
             </div>
-            <p className="text-xs text-slate-400">
+            <p className="text-[13px] text-[#A1A1AA]">
               Sign in against the FastAPI server for live Postgres persistence, or continue offline in Simulated Digital Twin mode.
             </p>
             <form onSubmit={handleLogin} className="space-y-3 text-xs">
               <div>
-                <label className="block font-mono text-slate-400 mb-1">Email</label>
+                <label className="block text-[#A1A1AA] mb-1">Email</label>
                 <input
                   type="email"
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
-                  className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                  className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA]"
                   required
                 />
               </div>
               <div>
-                <label className="block font-mono text-slate-400 mb-1">Password</label>
+                <label className="block text-[#A1A1AA] mb-1">Password</label>
                 <input
                   type="password"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full rounded-xl bg-[#040812] border border-slate-800 px-3 py-2.5 font-mono text-slate-100"
+                  className="w-full rounded-lg bg-[#09090B] border border-[#27272A] px-3 py-2 font-mono text-[#FAFAFA]"
                   required
                 />
               </div>
@@ -1598,14 +1941,14 @@ export default function ScaleBridgeControlCenterPage() {
               <button
                 type="submit"
                 disabled={busy}
-                className="w-full py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-[#03060C] font-mono font-semibold uppercase tracking-wider"
+                className="w-full h-9 rounded-lg bg-[#FAFAFA] hover:bg-[#E4E4E7] text-[#09090B] font-medium text-[13px]"
               >
-                {busy ? "Authenticating..." : "Sign In to Live API"}
+                {busy ? "Authenticating..." : "Sign in to Live API"}
               </button>
               <button
                 type="button"
                 onClick={handleGuestDemoMode}
-                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-mono uppercase tracking-wider"
+                className="w-full h-9 rounded-lg bg-[#09090B] hover:bg-[#16161A] border border-[#27272A] text-[#A1A1AA] hover:text-[#FAFAFA] font-medium text-[13px]"
               >
                 Skip (Use Simulated Twin Mode) →
               </button>
