@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
+import io
 from datetime import datetime, timezone
 from typing import Any
 
+import numpy as np
 from fastapi import APIRouter, Depends, File, Form, Query, Response, UploadFile, status
 from fastapi.responses import StreamingResponse
-import io
-import numpy as np
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
@@ -24,7 +24,6 @@ from app.core.config import settings
 from app.core.security import (
     create_access_token,
     generate_refresh_token,
-    hash_password,
     verify_password,
 )
 from app.core.storage import object_store
@@ -61,7 +60,6 @@ from app.modules.ingestion_service import (
     validate_and_normalize_dataframe,
 )
 from app.modules.report_service import render_transfer_report_pdf
-
 from scalebridge_science.contracts import (
     AssessmentInput,
     CriterionSelection,
@@ -83,8 +81,8 @@ from scalebridge_science.formulas import (
 from scalebridge_science.pipeline import run_assessment
 from scalebridge_science.readiness import RULE_REGISTRY, inspect_missing_vessel_specs
 from scalebridge_science.units import (
-    UnitDimensionError,
     VARIABLE_UNIT_SPECS,
+    UnitDimensionError,
     convert_value,
     to_si_quantity,
 )
@@ -102,7 +100,7 @@ def health_live() -> dict[str, str]:
 
 @router.get("/health/ready")
 def health_ready(db: Session = Depends(get_db)) -> dict[str, str]:
-    db.execute( Organization.__table__.select().limit(1))
+    db.execute(Organization.__table__.select().limit(1))
     return {"status": "ready"}
 
 
@@ -120,9 +118,7 @@ def login(req: LoginRequest, response: Response, db: Session = Depends(get_db)) 
     if not user or not verify_password(req.password, user.password_hash):
         record_audit(db, None, None, "auth.login_failed", "user", req.email, {})
         db.commit()
-        raise ApiError(
-            status.HTTP_401_UNAUTHORIZED, "UNAUTHENTICATED", "Invalid email or password"
-        )
+        raise ApiError(status.HTTP_401_UNAUTHORIZED, "UNAUTHENTICATED", "Invalid email or password")
 
     user.last_login_at = datetime.now(timezone.utc)
     access_token, expires_in = create_access_token(user.id, user.email)
@@ -276,9 +272,7 @@ def _serialize_project(p: Project, db: Session) -> dict[str, Any]:
         .first()
     )
     batch_count = (
-        db.query(Batch)
-        .filter(Batch.project_id == p.id, Batch.archived_at.is_(None))
-        .count()
+        db.query(Batch).filter(Batch.project_id == p.id, Batch.archived_at.is_(None)).count()
     )
     scenario_count = db.query(Scenario).filter(Scenario.project_id == p.id).count()
     return {
@@ -471,6 +465,7 @@ def create_passport_version(
     )
     proj.updated_at = datetime.now(timezone.utc)
     db.add(pv)
+    db.flush()
     record_audit(
         db,
         ctx.organization.id,
@@ -498,11 +493,7 @@ def get_project_data_checklist(
         .order_by(PassportVersion.version.desc())
         .first()
     )
-    batches = (
-        db.query(Batch)
-        .filter(Batch.project_id == proj.id, Batch.archived_at.is_(None))
-        .all()
-    )
+    batches = db.query(Batch).filter(Batch.project_id == proj.id, Batch.archived_at.is_(None)).all()
     vessels = (
         db.query(Vessel)
         .filter(
@@ -711,9 +702,7 @@ def preview_datafile(
     try:
         prev = preview_file_bytes(raw_bytes, f.original_filename, sheet_name=sheet, max_rows=rows)
     except Exception as exc:
-        raise ApiError(
-            status.HTTP_422_UNPROCESSABLE_ENTITY, "INGESTION_ERROR", str(exc)
-        ) from exc
+        raise ApiError(status.HTTP_422_UNPROCESSABLE_ENTITY, "INGESTION_ERROR", str(exc)) from exc
     return prev
 
 
@@ -980,7 +969,9 @@ def _compute_batch_summary_dict(db: Session, batch: Batch) -> dict[str, Any]:
 
     var_stats: dict[str, Any] = {}
     for vkey, mlist in by_var.items():
-        spec = VARIABLE_UNIT_SPECS.get(vkey, {"si": mlist[0].unit_si, "display": mlist[0].unit_original})
+        spec = VARIABLE_UNIT_SPECS.get(
+            vkey, {"si": mlist[0].unit_si, "display": mlist[0].unit_original}
+        )
         unit_si = str(spec["si"])
         unit_disp = str(spec["display"])
         valid_si = [m.value_si for m in mlist if m.quality_flag == "ok" and m.value_si is not None]
@@ -1220,19 +1211,13 @@ class CreateVesselVersionRequest(BaseModel):
 
 
 def _build_vessel_spec(vessel: Vessel, ver: VesselVersion, db: Session) -> VesselSpec:
-    param_rows = (
-        db.query(VesselParameter)
-        .filter(VesselParameter.vessel_version_id == ver.id)
-        .all()
-    )
+    param_rows = db.query(VesselParameter).filter(VesselParameter.vessel_version_id == ver.id).all()
     param_map: dict[str, Quantity] = {}
     for pr in param_rows:
         spec = VARIABLE_UNIT_SPECS.get(pr.key, {"si": pr.unit_si, "display": pr.unit_original})
         disp_u = str(spec["display"])
         disp_v = (
-            convert_value(pr.value_si, pr.unit_si, disp_u)
-            if pr.unit_si != disp_u
-            else pr.value_si
+            convert_value(pr.value_si, pr.unit_si, disp_u) if pr.unit_si != disp_u else pr.value_si
         )
         param_map[pr.key] = Quantity(
             value=pr.value_si,
@@ -1446,9 +1431,7 @@ def create_vessel(
         .first()
     )
     if existing:
-        raise ApiError(
-            status.HTTP_409_CONFLICT, "CONFLICT", f"Vessel '{req.name}' already exists"
-        )
+        raise ApiError(status.HTTP_409_CONFLICT, "CONFLICT", f"Vessel '{req.name}' already exists")
 
     vessel = Vessel(
         organization_id=ctx.organization.id,
@@ -1728,9 +1711,7 @@ def create_scenario(
             value_nature=req.target_working_volume.value_nature,  # type: ignore[arg-type]
         )
     except UnitDimensionError as exc:
-        raise ApiError(
-            status.HTTP_422_UNPROCESSABLE_ENTITY, "VALIDATION_ERROR", str(exc)
-        ) from exc
+        raise ApiError(status.HTTP_422_UNPROCESSABLE_ENTITY, "VALIDATION_ERROR", str(exc)) from exc
 
     scen = Scenario(
         organization_id=ctx.organization.id,
@@ -1868,7 +1849,15 @@ def execute_scenario_assessment(
                 source_ref="batch_metadata:working_volume",
             )
 
-        for vkey in ("agitation_speed", "airflow", "gas_flow_total", "temperature", "power_draw", "ph", "dissolved_oxygen"):
+        for vkey in (
+            "agitation_speed",
+            "airflow",
+            "gas_flow_total",
+            "temperature",
+            "power_draw",
+            "ph",
+            "dissolved_oxygen",
+        ):
             meds = [
                 s["variables"][vkey]["median_si"]
                 for s in summaries
@@ -2158,9 +2147,7 @@ def execute_scenario_assessment(
                     if rid in rule_to_flag_id
                 ],
                 linked_check_ids=[
-                    check_to_id[cid]
-                    for cid in vt.triggered_by_check_ids
-                    if cid in check_to_id
+                    check_to_id[cid] for cid in vt.triggered_by_check_ids if cid in check_to_id
                 ],
                 status="open",
             )
@@ -2186,21 +2173,11 @@ def _serialize_assessment(a: Assessment, db: Session) -> dict[str, Any]:
         .order_by(CalculationResultRow.sort_order.asc())
         .all()
     )
-    flags = (
-        db.query(RiskFlagRow)
-        .filter(RiskFlagRow.assessment_id == a.id)
-        .all()
-    )
+    flags = db.query(RiskFlagRow).filter(RiskFlagRow.assessment_id == a.id).all()
     checks = (
-        db.query(CompatibilityCheckRow)
-        .filter(CompatibilityCheckRow.assessment_id == a.id)
-        .all()
+        db.query(CompatibilityCheckRow).filter(CompatibilityCheckRow.assessment_id == a.id).all()
     )
-    tasks = (
-        db.query(ValidationTaskRow)
-        .filter(ValidationTaskRow.assessment_id == a.id)
-        .all()
-    )
+    tasks = db.query(ValidationTaskRow).filter(ValidationTaskRow.assessment_id == a.id).all()
     reviews = (
         db.query(ReviewSignoff)
         .filter(ReviewSignoff.assessment_id == a.id)

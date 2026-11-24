@@ -1,0 +1,108 @@
+name: ScaleBridge Bio CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - 'person-*'
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - 'person-*'
+
+jobs:
+  lint-and-format:
+    name: Lint & Code Style (Ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Linting Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff
+
+      - name: Run Ruff Linter
+        run: |
+          ruff check ScaleBridge-Bio/backend/
+
+      - name: Check Code Formatting
+        run: |
+          ruff format --check ScaleBridge-Bio/backend/
+
+  typecheck:
+    name: Type Checking (Mypy)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ScaleBridge-Bio/backend/
+          pip install mypy
+
+      - name: Run Mypy
+        run: |
+          mypy ScaleBridge-Bio/backend/scalebridge_science ScaleBridge-Bio/backend/app --ignore-missing-imports
+
+  test:
+    name: Unit & Integration Tests (Pytest)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Backend & Dev Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e "ScaleBridge-Bio/backend/[dev]"
+
+      - name: Run Pytest with Coverage
+        working-directory: ScaleBridge-Bio/backend
+        run: |
+          pytest --cov=scalebridge_science --cov=app --cov-report=term-missing --cov-report=xml
+
+      - name: Upload Test Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ matrix.python-version }}
+          path: ScaleBridge-Bio/backend/coverage.xml
+          if-no-files-found: ignore
+
+  security:
+    name: Security & Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for committed secrets (.env files)
+        run: |
+          if find . -name "*.env" ! -name "*.env.example" | grep -q .; then
+            echo "ERROR: Unredacted .env file detected in repository!"
+            exit 1
+          fi
+          echo "No committed .env files found."

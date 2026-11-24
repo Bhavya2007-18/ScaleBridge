@@ -90,7 +90,9 @@ def test_t5_power_per_volume() -> None:
 
 def test_t6_ungassed_power_from_power_number() -> None:
     """T6: F-PWR-001 with N_p=5, rho=1000, N=500 rpm, D=0.055 m -> P0 = 1.45626 W."""
-    Np = to_si_quantity(5.0, "dimensionless", "impeller_power_number", provenance="vendor_datasheet")
+    Np = to_si_quantity(
+        5.0, "dimensionless", "impeller_power_number", provenance="vendor_datasheet"
+    )
     rho = to_si_quantity(1000.0, "kg/m^3", "density", provenance="manual_entry")
     N = to_si_quantity(500.0, "rpm", "agitation_speed", provenance="sensor")
     D = to_si_quantity(0.055, "m", "impeller_diameter", provenance="manual_entry")
@@ -104,7 +106,9 @@ def test_t6_ungassed_power_from_power_number() -> None:
 def test_t7_t8_otr_and_do_conversion() -> None:
     """T7 & T8: kLa=100 1/h, C*=0.20 mmol/L, DO=30% -> C_L=0.06 mmol/L, OTR=14.0 mmol/(L*h), OTR_max=20.0."""
     kLa = to_si_quantity(100.0, "1/h", "kla", provenance="lab_assay")
-    C_star = to_si_quantity(0.20, "mmol/L", "oxygen_saturation_concentration", provenance="manual_entry")
+    C_star = to_si_quantity(
+        0.20, "mmol/L", "oxygen_saturation_concentration", provenance="manual_entry"
+    )
     DO = to_si_quantity(30.0, "% air sat", "dissolved_oxygen", provenance="sensor")
 
     doc_res = calc_do_concentration(DO, C_star)
@@ -164,14 +168,30 @@ def test_end_to_end_assessment_pipeline_and_determinism() -> None:
         instrumentation=["ph_probe", "do_probe", "temperature_probe"],
         controls=["ph_control", "temperature_control", "do_cascade_agitation"],
         parameters={
-            "working_volume_min": to_si_quantity(0.8, "L", "working_volume_min", "vendor_datasheet"),
-            "working_volume_max": to_si_quantity(2.0, "L", "working_volume_max", "vendor_datasheet"),
-            "vessel_inner_diameter": to_si_quantity(0.13, "m", "vessel_inner_diameter", "vendor_datasheet"),
-            "liquid_height_at_working_volume": to_si_quantity(0.15, "m", "liquid_height_at_working_volume", "manual_entry"),
-            "impeller_diameter": to_si_quantity(0.055, "m", "impeller_diameter", "vendor_datasheet"),
-            "impeller_power_number": to_si_quantity(5.0, "dimensionless", "impeller_power_number", "vendor_datasheet"),
-            "agitation_speed_min": to_si_quantity(100.0, "rpm", "agitation_speed_min", "vendor_datasheet"),
-            "agitation_speed_max": to_si_quantity(1200.0, "rpm", "agitation_speed_max", "vendor_datasheet"),
+            "working_volume_min": to_si_quantity(
+                0.8, "L", "working_volume_min", "vendor_datasheet"
+            ),
+            "working_volume_max": to_si_quantity(
+                2.0, "L", "working_volume_max", "vendor_datasheet"
+            ),
+            "vessel_inner_diameter": to_si_quantity(
+                0.13, "m", "vessel_inner_diameter", "vendor_datasheet"
+            ),
+            "liquid_height_at_working_volume": to_si_quantity(
+                0.15, "m", "liquid_height_at_working_volume", "manual_entry"
+            ),
+            "impeller_diameter": to_si_quantity(
+                0.055, "m", "impeller_diameter", "vendor_datasheet"
+            ),
+            "impeller_power_number": to_si_quantity(
+                5.0, "dimensionless", "impeller_power_number", "vendor_datasheet"
+            ),
+            "agitation_speed_min": to_si_quantity(
+                100.0, "rpm", "agitation_speed_min", "vendor_datasheet"
+            ),
+            "agitation_speed_max": to_si_quantity(
+                1200.0, "rpm", "agitation_speed_max", "vendor_datasheet"
+            ),
         },
         kla_evidence=[
             KlaEvidencePoint(
@@ -195,15 +215,31 @@ def test_end_to_end_assessment_pipeline_and_determinism() -> None:
         instrumentation=["ph_probe", "do_probe", "temperature_probe"],
         controls=["ph_control", "temperature_control"],
         parameters={
-            "working_volume_min": to_si_quantity(60.0, "L", "working_volume_min", "vendor_datasheet"),
-            "working_volume_max": to_si_quantity(200.0, "L", "working_volume_max", "vendor_datasheet"),
-            "vessel_inner_diameter": to_si_quantity(0.55, "m", "vessel_inner_diameter", "vendor_datasheet"),
-            "liquid_height_at_working_volume": to_si_quantity(0.85, "m", "liquid_height_at_working_volume", "manual_entry"),
+            "working_volume_min": to_si_quantity(
+                60.0, "L", "working_volume_min", "vendor_datasheet"
+            ),
+            "working_volume_max": to_si_quantity(
+                200.0, "L", "working_volume_max", "vendor_datasheet"
+            ),
+            "vessel_inner_diameter": to_si_quantity(
+                0.55, "m", "vessel_inner_diameter", "vendor_datasheet"
+            ),
+            "liquid_height_at_working_volume": to_si_quantity(
+                0.85, "m", "liquid_height_at_working_volume", "manual_entry"
+            ),
             "impeller_diameter": to_si_quantity(0.25, "m", "impeller_diameter", "vendor_datasheet"),
-            "impeller_power_number": to_si_quantity(5.0, "dimensionless", "impeller_power_number", "vendor_datasheet"),
-            "agitation_speed_min": to_si_quantity(50.0, "rpm", "agitation_speed_min", "vendor_datasheet"),
-            "agitation_speed_max": to_si_quantity(400.0, "rpm", "agitation_speed_max", "vendor_datasheet"),
-            "motor_power_limit": to_si_quantity(1500.0, "W", "motor_power_limit", "vendor_datasheet"),
+            "impeller_power_number": to_si_quantity(
+                5.0, "dimensionless", "impeller_power_number", "vendor_datasheet"
+            ),
+            "agitation_speed_min": to_si_quantity(
+                50.0, "rpm", "agitation_speed_min", "vendor_datasheet"
+            ),
+            "agitation_speed_max": to_si_quantity(
+                400.0, "rpm", "agitation_speed_max", "vendor_datasheet"
+            ),
+            "motor_power_limit": to_si_quantity(
+                1500.0, "W", "motor_power_limit", "vendor_datasheet"
+            ),
             "gas_flow_min": to_si_quantity(10.0, "L/min", "gas_flow_min", "vendor_datasheet"),
             "gas_flow_max": to_si_quantity(200.0, "L/min", "gas_flow_max", "vendor_datasheet"),
         },
@@ -242,7 +278,9 @@ def test_end_to_end_assessment_pipeline_and_determinism() -> None:
         aeration_basis="S-VVM",
         target_working_volume=to_si_quantity(150.0, "L", "working_volume", "manual_entry"),
         constraints={
-            "min_do_required": to_si_quantity(20.0, "% air sat", "min_do_required", "user_assumption"),
+            "min_do_required": to_si_quantity(
+                20.0, "% air sat", "min_do_required", "user_assumption"
+            ),
             "max_tip_speed": to_si_quantity(2.0, "m/s", "max_tip_speed", "user_assumption"),
         },
         thresholds=ThresholdConfig(),
@@ -263,14 +301,18 @@ def test_end_to_end_assessment_pipeline_and_determinism() -> None:
 
     # Check T10: S-TIP N_t = 500 * (0.055 / 0.25) = 110 rpm
     row_tip = next(r for r in out1.trade_offs if r.criterion_id == "S-TIP")
-    assert math.isclose(row_tip.target_operating_point["N"].display_value or 0.0, 110.0, rel_tol=1e-5)
+    assert math.isclose(
+        row_tip.target_operating_point["N"].display_value or 0.0, 110.0, rel_tol=1e-5
+    )
 
     # Check T11: S-PV N_t ≈ 169.1 rpm (2.818 1/s)
     row_pv = next(r for r in out1.trade_offs if r.criterion_id == "S-PV")
     assert math.isclose(row_pv.target_operating_point["N"].value, 2.818, rel_tol=1e-3)
 
     # Check T12: S-VVM Q_g,t = 0.5 vvm * 150 L = 75 L/min
-    assert math.isclose(row_pv.target_operating_point["Q_g"].display_value or 0.0, 75.0, rel_tol=1e-5)
+    assert math.isclose(
+        row_pv.target_operating_point["Q_g"].display_value or 0.0, 75.0, rel_tol=1e-5
+    )
 
     # Verify expected flags triggered/insufficient
     rule_outcomes = {f.rule_id: f.outcome for f in out1.risk_flags}
