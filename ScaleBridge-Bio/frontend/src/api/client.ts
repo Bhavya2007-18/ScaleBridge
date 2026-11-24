@@ -1,4 +1,6 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE =
+  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_API_URL) ||
+  'http://localhost:8000/api/v1';
 
 export async function apiClient<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem('scalebridge_token');

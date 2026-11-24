@@ -12,10 +12,10 @@ export interface BatchOverlaySeries {
 }
 
 const COLORS = [
-  "#0D9488", // teal-600
-  "#2563EB", // blue-600
-  "#D97706", // amber-600
-  "#7C3AED", // violet-600
+  "#22D3EE", // cyan-400
+  "#34D399", // bioluminescent emerald-400
+  "#FBBF24", // amber-400
+  "#A78BFA", // violet-400
 ];
 
 export function BatchTrendChart({
@@ -53,17 +53,17 @@ export function BatchTrendChart({
         });
 
         return (
-          <div key={varKey} className="bg-white rounded-lg border border-slate-200 p-3 shadow-sm">
-            <div className="flex items-center justify-between mb-1 px-1">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
+          <div key={varKey} className="sb-surface rounded-xl p-4">
+            <div className="flex items-center justify-between mb-2 px-1">
+              <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">
                 {varKey.replace(/_/g, " ")}
               </h4>
-              <span className="font-mono text-xs text-slate-500">
+              <span className="font-mono text-[11px] text-slate-400">
                 Unit: {unitLabel || "N/A"} · Elapsed Time (h)
               </span>
             </div>
             {traces.length === 0 ? (
-              <div className="h-56 flex items-center justify-center text-xs text-slate-400">
+              <div className="h-56 flex items-center justify-center text-xs font-mono text-slate-500">
                 No measurement series available for {varKey}
               </div>
             ) : (
@@ -72,12 +72,22 @@ export function BatchTrendChart({
                 layout={{
                   autosize: true,
                   height: 240,
-                  margin: { l: 48, r: 16, t: 12, b: 38 },
-                  xaxis: { title: { text: "Elapsed Fermentation Time (h)", font: { size: 11 } } },
-                  yaxis: { title: { text: unitLabel, font: { size: 11 } } },
-                  legend: { orientation: "h", y: 1.14, x: 0, font: { size: 10 } },
+                  margin: { l: 50, r: 16, t: 16, b: 40 },
+                  xaxis: {
+                    title: { text: "Elapsed Fermentation Time (h)", font: { size: 11, color: "#94A3B8" } },
+                    gridcolor: "rgba(148, 163, 184, 0.08)",
+                    tickfont: { size: 10, color: "#94A3B8" },
+                    zerolinecolor: "rgba(148, 163, 184, 0.15)",
+                  },
+                  yaxis: {
+                    title: { text: unitLabel, font: { size: 11, color: "#94A3B8" } },
+                    gridcolor: "rgba(148, 163, 184, 0.08)",
+                    tickfont: { size: 10, color: "#94A3B8" },
+                    zerolinecolor: "rgba(148, 163, 184, 0.15)",
+                  },
+                  legend: { orientation: "h", y: 1.15, x: 0, font: { size: 10, color: "#CBD5E1" } },
                   paper_bgcolor: "transparent",
-                  plot_bgcolor: "#f8fafc",
+                  plot_bgcolor: "rgba(3, 6, 12, 0.65)",
                 }}
                 config={{ displayModeBar: false, responsive: true }}
                 style={{ width: "100%" }}

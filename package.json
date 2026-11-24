@@ -1,0 +1,9 @@
+{
+  "name": "scalebridge-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix ScaleBridge-Bio/frontend run dev",
+    "build": "npm --prefix ScaleBridge-Bio/frontend run build",
+    "start": "npm --prefix ScaleBridge-Bio/frontend run start"
+  }
+}

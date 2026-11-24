@@ -7,19 +7,20 @@ interface ProvenanceBadgeProps {
 
 export const ProvenanceBadge: React.FC<ProvenanceBadgeProps> = ({ nature, source }) => {
   const styles = {
-    measured: 'bg-emerald-100 text-emerald-800 border-emerald-300',
-    calculated: 'bg-blue-100 text-blue-800 border-blue-300',
-    estimated: 'bg-amber-100 text-amber-800 border-amber-300',
-    assumed: 'bg-purple-100 text-purple-800 border-purple-300',
-    default: 'bg-slate-100 text-slate-700 border-slate-300',
+    measured: 'bg-[#2fe578]/10 text-[#2fe578] border-[#2fe578]/30',
+    calculated: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+    estimated: 'bg-amber-400/10 text-amber-300 border-amber-400/30',
+    assumed: 'bg-teal-400/10 text-teal-300 border-teal-400/30',
+    default: 'bg-white/5 text-[#a3b3a9] border-white/10',
   };
 
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${styles[nature] || styles.default}`}
-      title={source ? `Source: ${source}` : undefined}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider border ${styles[nature] || styles.default}`}
+      title={source ? `Custody Source: ${source}` : undefined}
     >
-      {nature.toUpperCase()}
+      <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80 animate-pulse"></span>
+      {nature}
     </span>
   );
 };

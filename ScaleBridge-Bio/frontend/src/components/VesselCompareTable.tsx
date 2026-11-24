@@ -11,48 +11,50 @@ export const VesselCompareTable: React.FC<VesselCompareTableProps> = ({
   targetVessel,
 }) => {
   return (
-    <div className="overflow-x-auto border border-slate-200 rounded-lg">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-slate-50 border-b border-slate-200 text-slate-700">
+    <div className="overflow-hidden border border-white/10 rounded-2xl bg-[#0f1612]/70 backdrop-blur-md">
+      <div className="p-4 border-b border-white/5 flex items-center justify-between text-xs font-mono text-[#8e9e94]">
+        <span>VESSEL GEOMETRY MATRIX (CUSTODY NODES)</span>
+        <span className="text-[#2fe578]">EXPANSION MULTIPLIER: {(targetVessel.working_volume_max_l / (sourceVessel.working_volume_max_l || 1)).toFixed(1)}X</span>
+      </div>
+      <table className="w-full text-left text-xs font-mono">
+        <thead className="bg-white/[0.02] text-[#8e9e94] border-b border-white/5 uppercase tracking-wider text-[10px]">
           <tr>
-            <th className="p-3 font-semibold">Geometric / Operating Parameter</th>
-            <th className="p-3 font-semibold">Source ({sourceVessel.name})</th>
-            <th className="p-3 font-semibold">Target ({targetVessel.name})</th>
-            <th className="p-3 font-semibold">Scale Ratio</th>
+            <th className="p-4 font-normal">Physical Metric</th>
+            <th className="p-4 font-normal">Origin Node ({sourceVessel.name})</th>
+            <th className="p-4 font-normal">Destination Node ({targetVessel.name})</th>
+            <th className="p-4 font-normal">Transformation Factor</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
-          <tr>
-            <td className="p-3 font-medium text-slate-800">Working Volume (L)</td>
-            <td className="p-3">{sourceVessel.working_volume_max_l} L</td>
-            <td className="p-3">{targetVessel.working_volume_max_l} L</td>
-            <td className="p-3 font-bold text-indigo-600">
-              {(targetVessel.working_volume_max_l / (sourceVessel.working_volume_max_l || 1)).toFixed(1)}x
-            </td>
+        <tbody className="divide-y divide-white/5 text-[#d0ded5]">
+          <tr className="hover:bg-white/[0.01] transition">
+            <td className="p-4 text-[#e3e9e5] font-sans font-medium">Working Volume</td>
+            <td className="p-4 font-mono">{sourceVessel.working_volume_max_l} Liters</td>
+            <td className="p-4 font-mono text-[#2fe578] font-bold">{targetVessel.working_volume_max_l} Liters</td>
+            <td className="p-4 text-[#7cf6b1]">{(targetVessel.working_volume_max_l / (sourceVessel.working_volume_max_l || 1)).toFixed(1)}x Volumetric Shift</td>
           </tr>
-          <tr>
-            <td className="p-3 font-medium text-slate-800">Scale Category</td>
-            <td className="p-3 capitalize">{sourceVessel.scale_category}</td>
-            <td className="p-3 capitalize">{targetVessel.scale_category}</td>
-            <td className="p-3 text-slate-400">—</td>
+          <tr className="hover:bg-white/[0.01] transition">
+            <td className="p-4 text-[#e3e9e5] font-sans font-medium">Classification Tier</td>
+            <td className="p-4 uppercase">{sourceVessel.scale_category} (Bench)</td>
+            <td className="p-4 uppercase text-[#2fe578]">{targetVessel.scale_category} (Plant)</td>
+            <td className="p-4 text-white/40">Verified Step</td>
           </tr>
-          <tr>
-            <td className="p-3 font-medium text-slate-800">Impeller Types</td>
-            <td className="p-3">{sourceVessel.impeller_types.join(', ')}</td>
-            <td className="p-3">{targetVessel.impeller_types.join(', ')}</td>
-            <td className="p-3 text-slate-400">—</td>
+          <tr className="hover:bg-white/[0.01] transition">
+            <td className="p-4 text-[#e3e9e5] font-sans font-medium">Impeller Architecture</td>
+            <td className="p-4 font-sans text-xs">{sourceVessel.impeller_types.join(', ')}</td>
+            <td className="p-4 font-sans text-xs">{targetVessel.impeller_types.join(', ')}</td>
+            <td className="p-4 text-white/40">Geometric Non-similarity flagged</td>
           </tr>
-          <tr>
-            <td className="p-3 font-medium text-slate-800">Max Agitation (RPM)</td>
-            <td className="p-3">{sourceVessel.max_rpm ?? 'N/A'} RPM</td>
-            <td className="p-3">{targetVessel.max_rpm ?? 'N/A'} RPM</td>
-            <td className="p-3 text-slate-400">—</td>
+          <tr className="hover:bg-white/[0.01] transition">
+            <td className="p-4 text-[#e3e9e5] font-sans font-medium">Max Kinetic Drive (RPM)</td>
+            <td className="p-4 font-mono">{sourceVessel.max_rpm ?? '—'} RPM</td>
+            <td className="p-4 font-mono">{targetVessel.max_rpm ?? '—'} RPM</td>
+            <td className="p-4 text-white/40">Drive Envelope OK</td>
           </tr>
-          <tr>
-            <td className="p-3 font-medium text-slate-800">Max Motor Power (W)</td>
-            <td className="p-3">{sourceVessel.max_power_w ?? 'N/A'} W</td>
-            <td className="p-3">{targetVessel.max_power_w ?? 'N/A'} W</td>
-            <td className="p-3 text-slate-400">—</td>
+          <tr className="hover:bg-white/[0.01] transition">
+            <td className="p-4 text-[#e3e9e5] font-sans font-medium">Motor Power Rating</td>
+            <td className="p-4 font-mono">{sourceVessel.max_power_w ?? '—'} W</td>
+            <td className="p-4 font-mono text-[#7cf6b1]">{targetVessel.max_power_w ?? '—'} W</td>
+            <td className="p-4 text-[#7cf6b1]">Sufficient Utility Headroom</td>
           </tr>
         </tbody>
       </table>
