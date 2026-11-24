@@ -1,0 +1,3406 @@
+{
+  "engine_version": "0.1.0",
+  "contract_version": "0.1.0",
+  "formula_registry_version": "0.1.0",
+  "rule_registry_version": "0.1.0",
+  "threshold_config_version": "0.1.0-unconfigured",
+  "pint_version": "0.26.2",
+  "is_synthetic": true,
+  "calculations": [
+    {
+      "formula_id": "F-GEO-001",
+      "formula_name": "Impeller-to-tank diameter ratio (D/T)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "D/T = D / T",
+      "inputs": {
+        "D": {
+          "value": 0.055,
+          "unit": "meter",
+          "original_value": 0.055,
+          "original_unit": "m",
+          "display_value": 0.055,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "T": {
+          "value": 0.13,
+          "unit": "meter",
+          "original_value": 0.13,
+          "original_unit": "m",
+          "display_value": 0.13,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.4230769230769231,
+        "unit": "dimensionless",
+        "original_value": 0.4230769230769231,
+        "original_unit": "dimensionless",
+        "display_value": 0.4230769230769231,
+        "display_unit": "dimensionless",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-GEO-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Characteristic impeller diameter D relative to inner tank diameter T."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-GEO-002",
+      "formula_name": "Liquid aspect ratio (H_L/T)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "H_L/T = H_L / T",
+      "inputs": {
+        "H_L": {
+          "value": 0.15,
+          "unit": "meter",
+          "original_value": 0.15,
+          "original_unit": "m",
+          "display_value": 0.15,
+          "display_unit": "m",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "T": {
+          "value": 0.13,
+          "unit": "meter",
+          "original_value": 0.13,
+          "original_unit": "m",
+          "display_value": 0.13,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 1.1538461538461537,
+        "unit": "dimensionless",
+        "original_value": 1.1538461538461537,
+        "original_unit": "dimensionless",
+        "display_value": 1.1538461538461537,
+        "display_unit": "dimensionless",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-GEO-002@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Liquid height H_L at nominal working volume."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-GEO-001",
+      "formula_name": "Impeller-to-tank diameter ratio (D/T)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": null,
+      "equation": "D/T = D / T",
+      "inputs": {
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "T": {
+          "value": 0.55,
+          "unit": "meter",
+          "original_value": 0.55,
+          "original_unit": "m",
+          "display_value": 0.55,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.45454545454545453,
+        "unit": "dimensionless",
+        "original_value": 0.45454545454545453,
+        "original_unit": "dimensionless",
+        "display_value": 0.45454545454545453,
+        "display_unit": "dimensionless",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-GEO-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Characteristic impeller diameter D relative to inner tank diameter T."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-GEO-002",
+      "formula_name": "Liquid aspect ratio (H_L/T)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": null,
+      "equation": "H_L/T = H_L / T",
+      "inputs": {
+        "H_L": {
+          "value": 0.85,
+          "unit": "meter",
+          "original_value": 0.85,
+          "original_unit": "m",
+          "display_value": 0.85,
+          "display_unit": "m",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "T": {
+          "value": 0.55,
+          "unit": "meter",
+          "original_value": 0.55,
+          "original_unit": "m",
+          "display_value": 0.55,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 1.5454545454545452,
+        "unit": "dimensionless",
+        "original_value": 1.5454545454545452,
+        "original_unit": "dimensionless",
+        "display_value": 1.5454545454545452,
+        "display_unit": "dimensionless",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-GEO-002@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Liquid height H_L at nominal working volume."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-TIP-001",
+      "formula_name": "Impeller tip speed",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "u_tip = π · N · D",
+      "inputs": {
+        "N": {
+          "value": 8.333333333333334,
+          "unit": "1 / second",
+          "original_value": 500.0,
+          "original_unit": "rpm",
+          "display_value": 500.00000000000006,
+          "display_unit": "rpm",
+          "provenance": "sensor",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "D": {
+          "value": 0.055,
+          "unit": "meter",
+          "original_value": 0.055,
+          "original_unit": "m",
+          "display_value": 0.055,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 1.439896632895322,
+        "unit": "meter / second",
+        "original_value": 1.439896632895322,
+        "original_unit": "m/s",
+        "display_value": 1.439896632895322,
+        "display_unit": "m/s",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-TIP-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Evaluated using characteristic impeller diameter D and rotational speed N (in rev/s)."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-RE-001",
+      "formula_name": "Impeller Reynolds number",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "Re = ρ · N · D² / μ",
+      "inputs": {
+        "rho": {
+          "value": 1000.0,
+          "unit": "kg / m**3",
+          "original_value": 1000.0,
+          "original_unit": "kg/m^3",
+          "display_value": 1000.0,
+          "display_unit": "kg/m^3",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "N": {
+          "value": 8.333333333333334,
+          "unit": "1 / second",
+          "original_value": 500.0,
+          "original_unit": "rpm",
+          "display_value": 500.00000000000006,
+          "display_unit": "rpm",
+          "provenance": "sensor",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "D": {
+          "value": 0.055,
+          "unit": "meter",
+          "original_value": 0.055,
+          "original_unit": "m",
+          "display_value": 0.055,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "mu": {
+          "value": 0.001,
+          "unit": "pascal * second",
+          "original_value": 0.001,
+          "original_unit": "Pa*s",
+          "display_value": 1.0,
+          "display_unit": "mPa*s",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 25208.333333333336,
+        "unit": "dimensionless",
+        "original_value": 25208.333333333336,
+        "original_unit": "dimensionless",
+        "display_value": 25208.333333333336,
+        "display_unit": "dimensionless",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-RE-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "assumed",
+      "assumptions": [
+        "Assumes Newtonian liquid behavior with dynamic viscosity μ at process temperature."
+      ],
+      "warnings": [
+        "NEWTONIAN_ASSUMPTION: Calculated assuming Newtonian broth viscosity."
+      ]
+    },
+    {
+      "formula_id": "F-PWR-001",
+      "formula_name": "Ungassed agitation power from power number",
+      "formula_version": "1.0.0",
+      "review_status": "pending_review",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "P₀ = n_imp · N_p · ρ · N³ · D⁵",
+      "inputs": {
+        "N_p": {
+          "value": 5.0,
+          "unit": "dimensionless",
+          "original_value": 5.0,
+          "original_unit": "dimensionless",
+          "display_value": 5.0,
+          "display_unit": "dimensionless",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "rho": {
+          "value": 1000.0,
+          "unit": "kg / m**3",
+          "original_value": 1000.0,
+          "original_unit": "kg/m^3",
+          "display_value": 1000.0,
+          "display_unit": "kg/m^3",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "N": {
+          "value": 8.333333333333334,
+          "unit": "1 / second",
+          "original_value": 500.0,
+          "original_unit": "rpm",
+          "display_value": 500.00000000000006,
+          "display_unit": "rpm",
+          "provenance": "sensor",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "D": {
+          "value": 0.055,
+          "unit": "meter",
+          "original_value": 0.055,
+          "original_unit": "m",
+          "display_value": 0.055,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "n_imp": {
+          "value": 1.0,
+          "unit": "dimensionless",
+          "original_value": 1.0,
+          "original_unit": "dimensionless",
+          "display_value": 1.0,
+          "display_unit": "dimensionless",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 1.4562626591435188,
+        "unit": "watt",
+        "original_value": 1.4562626591435188,
+        "original_unit": "W",
+        "display_value": 1.4562626591435188,
+        "display_unit": "W",
+        "provenance": "calculated",
+        "value_nature": "estimated",
+        "source_ref": "F-PWR-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "assumed",
+      "assumptions": [
+        "Constant turbulent power number N_p for baffled vessel.",
+        "Ungassed power estimate; aeration typically reduces actual gassed power draw.",
+        "Multiple impellers treated as additive without hydrodynamic interaction."
+      ],
+      "warnings": [
+        "UNGASSED_POWER_ESTIMATE: Ungassed power P₀; gassed power reduction under aeration is not applied.",
+        "FORMULA_PENDING_REVIEW: F-PWR-001 is pending formal domain-expert review."
+      ]
+    },
+    {
+      "formula_id": "F-PV-001",
+      "formula_name": "Power per liquid working volume",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "P/V = P / V_w",
+      "inputs": {
+        "P": {
+          "value": 1.4562626591435188,
+          "unit": "watt",
+          "original_value": 1.4562626591435188,
+          "original_unit": "W",
+          "display_value": 1.4562626591435188,
+          "display_unit": "W",
+          "provenance": "calculated",
+          "value_nature": "estimated",
+          "source_ref": "F-PWR-001@1.0.0",
+          "note": null
+        },
+        "V_w": {
+          "value": 0.0020000000000000005,
+          "unit": "m**3",
+          "original_value": 2.0,
+          "original_unit": "L",
+          "display_value": 2.0000000000000004,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 728.1313295717592,
+        "unit": "watt / m**3",
+        "original_value": 728.1313295717592,
+        "original_unit": "W/m^3",
+        "display_value": 728.1313295717592,
+        "display_unit": "W/m^3",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-PV-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "estimated",
+      "assumptions": [
+        "Volume-averaged power dissipation; local energy dissipation near the impeller is significantly higher."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-VVM-001",
+      "formula_name": "Gas flow per liquid working volume (vvm)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "vvm = Q_g / V_w",
+      "inputs": {
+        "Q_g": {
+          "value": 1.666666666666667e-05,
+          "unit": "m**3 / second",
+          "original_value": 1.0,
+          "original_unit": "L/min",
+          "display_value": 1.0000000000000002,
+          "display_unit": "L/min",
+          "provenance": "sensor",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "V_w": {
+          "value": 0.0020000000000000005,
+          "unit": "m**3",
+          "original_value": 2.0,
+          "original_unit": "L",
+          "display_value": 2.0000000000000004,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.008333333333333333,
+        "unit": "1 / second",
+        "original_value": 0.5,
+        "original_unit": "vvm",
+        "display_value": 0.5,
+        "display_unit": "vvm",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-VVM-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Gas flow rate Q_g evaluated at consistent reference conditions."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-VS-001",
+      "formula_name": "Superficial gas velocity",
+      "formula_version": "1.0.0",
+      "review_status": "pending_review",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "v_s = Q_g / (π · T² / 4)",
+      "inputs": {
+        "Q_g": {
+          "value": 1.666666666666667e-05,
+          "unit": "m**3 / second",
+          "original_value": 1.0,
+          "original_unit": "L/min",
+          "display_value": 1.0000000000000002,
+          "display_unit": "L/min",
+          "provenance": "sensor",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "T": {
+          "value": 0.13,
+          "unit": "meter",
+          "original_value": 0.13,
+          "original_unit": "m",
+          "display_value": 0.13,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.001255660300527774,
+        "unit": "meter / second",
+        "original_value": 0.001255660300527774,
+        "original_unit": "m/s",
+        "display_value": 0.001255660300527774,
+        "display_unit": "m/s",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-VS-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Uniform cylindrical vessel cross-section A = π·T²/4."
+      ],
+      "warnings": [
+        "FORMULA_PENDING_REVIEW: F-VS-001 is pending formal domain-expert review."
+      ]
+    },
+    {
+      "formula_id": "F-DOC-001",
+      "formula_name": "Dissolved oxygen concentration from % air saturation",
+      "formula_version": "1.0.0",
+      "review_status": "pending_review",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "C_L = (DO_% / 100) · C*",
+      "inputs": {
+        "DO": {
+          "value": 20.0,
+          "unit": "percent_air_saturation",
+          "original_value": 20.0,
+          "original_unit": "% air sat",
+          "display_value": 20.0,
+          "display_unit": "% air sat",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "C_star": {
+          "value": 0.19999999999999998,
+          "unit": "mol / m**3",
+          "original_value": 0.2,
+          "original_unit": "mmol/L",
+          "display_value": 0.20000000000000004,
+          "display_unit": "mmol/L",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.04,
+        "unit": "mol / m**3",
+        "original_value": 0.04000000000000001,
+        "original_unit": "mmol/L",
+        "display_value": 0.04000000000000001,
+        "display_unit": "mmol/L",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-DOC-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "assumed",
+      "assumptions": [
+        "DO probe calibrated to 100% air saturation at conditions matching C*."
+      ],
+      "warnings": [
+        "FORMULA_PENDING_REVIEW: F-DOC-001 is pending formal domain-expert review."
+      ]
+    },
+    {
+      "formula_id": "F-OTR-001",
+      "formula_name": "Oxygen transfer rate (OTR) at operating DO",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "OTR = kLa · (C* − C_L)",
+      "inputs": {
+        "kLa": {
+          "value": 0.03333333333333333,
+          "unit": "1 / second",
+          "original_value": 120.0,
+          "original_unit": "1/h",
+          "display_value": 120.0,
+          "display_unit": "1/h",
+          "provenance": "lab_assay",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "C_star": {
+          "value": 0.19999999999999998,
+          "unit": "mol / m**3",
+          "original_value": 0.2,
+          "original_unit": "mmol/L",
+          "display_value": 0.20000000000000004,
+          "display_unit": "mmol/L",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "C_L": {
+          "value": 0.04,
+          "unit": "mol / m**3",
+          "original_value": 0.04000000000000001,
+          "original_unit": "mmol/L",
+          "display_value": 0.04000000000000001,
+          "display_unit": "mmol/L",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-DOC-001@1.0.0",
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.005333333333333332,
+        "unit": "mol / (m**3 * second)",
+        "original_value": 19.200000000000003,
+        "original_unit": "mmol/(L*h)",
+        "display_value": 19.200000000000003,
+        "display_unit": "mmol/(L*h)",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-OTR-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "assumed",
+      "assumptions": [
+        "Well-mixed liquid phase with uniform C_L and C*.",
+        "kLa measured or validated for the actual vessel, sparger, medium, and operating point."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-OTR-MAX",
+      "formula_name": "Theoretical maximum OTR driving bound (at C_L = 0)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "source",
+      "criterion_id": null,
+      "equation": "OTR_max = kLa · C*",
+      "inputs": {
+        "kLa": {
+          "value": 0.03333333333333333,
+          "unit": "1 / second",
+          "original_value": 120.0,
+          "original_unit": "1/h",
+          "display_value": 120.0,
+          "display_unit": "1/h",
+          "provenance": "lab_assay",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "C_star": {
+          "value": 0.19999999999999998,
+          "unit": "mol / m**3",
+          "original_value": 0.2,
+          "original_unit": "mmol/L",
+          "display_value": 0.20000000000000004,
+          "display_unit": "mmol/L",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.006666666666666666,
+        "unit": "mol / (m**3 * second)",
+        "original_value": 24.000000000000004,
+        "original_unit": "mmol/(L*h)",
+        "display_value": 24.000000000000004,
+        "display_unit": "mmol/(L*h)",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-OTR-MAX@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "assumed",
+      "assumptions": [
+        "Theoretical upper bound at zero dissolved oxygen (C_L = 0); not a viable aerobic operating point."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-TIP-001",
+      "formula_name": "Impeller tip speed",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-PV",
+      "equation": "u_tip = π · N · D",
+      "inputs": {
+        "N": {
+          "value": 2.8175846748413056,
+          "unit": "1 / second",
+          "original_value": 169.05508049047833,
+          "original_unit": "rpm",
+          "display_value": 169.05508049047833,
+          "display_unit": "rpm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-PV",
+          "note": null
+        },
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 2.212925828837158,
+        "unit": "meter / second",
+        "original_value": 2.212925828837158,
+        "original_unit": "m/s",
+        "display_value": 2.212925828837158,
+        "display_unit": "m/s",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-TIP-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Evaluated using characteristic impeller diameter D and rotational speed N (in rev/s)."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-RE-001",
+      "formula_name": "Impeller Reynolds number",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-PV",
+      "equation": "Re = ρ · N · D² / μ",
+      "inputs": {
+        "rho": {
+          "value": 1000.0,
+          "unit": "kg / m**3",
+          "original_value": 1000.0,
+          "original_unit": "kg/m^3",
+          "display_value": 1000.0,
+          "display_unit": "kg/m^3",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "N": {
+          "value": 2.8175846748413056,
+          "unit": "1 / second",
+          "original_value": 169.05508049047833,
+          "original_unit": "rpm",
+          "display_value": 169.05508049047833,
+          "display_unit": "rpm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-PV",
+          "note": null
+        },
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "mu": {
+          "value": 0.001,
+          "unit": "pascal * second",
+          "original_value": 0.001,
+          "original_unit": "Pa*s",
+          "display_value": 1.0,
+          "display_unit": "mPa*s",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 176099.04217758158,
+        "unit": "dimensionless",
+        "original_value": 176099.04217758158,
+        "original_unit": "dimensionless",
+        "display_value": 176099.04217758158,
+        "display_unit": "dimensionless",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-RE-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "assumed",
+      "assumptions": [
+        "Assumes Newtonian liquid behavior with dynamic viscosity μ at process temperature."
+      ],
+      "warnings": [
+        "NEWTONIAN_ASSUMPTION: Calculated assuming Newtonian broth viscosity."
+      ]
+    },
+    {
+      "formula_id": "F-PWR-001",
+      "formula_name": "Ungassed agitation power from power number",
+      "formula_version": "1.0.0",
+      "review_status": "pending_review",
+      "scale": "target",
+      "criterion_id": "S-PV",
+      "equation": "P₀ = n_imp · N_p · ρ · N³ · D⁵",
+      "inputs": {
+        "N_p": {
+          "value": 5.0,
+          "unit": "dimensionless",
+          "original_value": 5.0,
+          "original_unit": "dimensionless",
+          "display_value": 5.0,
+          "display_unit": "dimensionless",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "rho": {
+          "value": 1000.0,
+          "unit": "kg / m**3",
+          "original_value": 1000.0,
+          "original_unit": "kg/m^3",
+          "display_value": 1000.0,
+          "display_unit": "kg/m^3",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "N": {
+          "value": 2.8175846748413056,
+          "unit": "1 / second",
+          "original_value": 169.05508049047833,
+          "original_unit": "rpm",
+          "display_value": 169.05508049047833,
+          "display_unit": "rpm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-PV",
+          "note": null
+        },
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "n_imp": {
+          "value": 1.0,
+          "unit": "dimensionless",
+          "original_value": 1.0,
+          "original_unit": "dimensionless",
+          "display_value": 1.0,
+          "display_unit": "dimensionless",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 109.21969943576389,
+        "unit": "watt",
+        "original_value": 109.21969943576389,
+        "original_unit": "W",
+        "display_value": 109.21969943576389,
+        "display_unit": "W",
+        "provenance": "calculated",
+        "value_nature": "estimated",
+        "source_ref": "F-PWR-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "assumed",
+      "assumptions": [
+        "Constant turbulent power number N_p for baffled vessel.",
+        "Ungassed power estimate; aeration typically reduces actual gassed power draw.",
+        "Multiple impellers treated as additive without hydrodynamic interaction."
+      ],
+      "warnings": [
+        "UNGASSED_POWER_ESTIMATE: Ungassed power P₀; gassed power reduction under aeration is not applied.",
+        "FORMULA_PENDING_REVIEW: F-PWR-001 is pending formal domain-expert review."
+      ]
+    },
+    {
+      "formula_id": "F-PV-001",
+      "formula_name": "Power per liquid working volume",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-PV",
+      "equation": "P/V = P / V_w",
+      "inputs": {
+        "P": {
+          "value": 109.21969943576389,
+          "unit": "watt",
+          "original_value": 109.21969943576389,
+          "original_unit": "W",
+          "display_value": 109.21969943576389,
+          "display_unit": "W",
+          "provenance": "calculated",
+          "value_nature": "estimated",
+          "source_ref": "F-PWR-001@1.0.0",
+          "note": null
+        },
+        "V_w": {
+          "value": 0.15000000000000002,
+          "unit": "m**3",
+          "original_value": 150.0,
+          "original_unit": "L",
+          "display_value": 150.0,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 728.1313295717591,
+        "unit": "watt / m**3",
+        "original_value": 728.1313295717591,
+        "original_unit": "W/m^3",
+        "display_value": 728.1313295717591,
+        "display_unit": "W/m^3",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-PV-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "estimated",
+      "assumptions": [
+        "Volume-averaged power dissipation; local energy dissipation near the impeller is significantly higher."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-VVM-001",
+      "formula_name": "Gas flow per liquid working volume (vvm)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-PV",
+      "equation": "vvm = Q_g / V_w",
+      "inputs": {
+        "Q_g": {
+          "value": 0.0012500000000000002,
+          "unit": "m**3 / second",
+          "original_value": 75.0,
+          "original_unit": "L/min",
+          "display_value": 75.0,
+          "display_unit": "L/min",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-VVM",
+          "note": null
+        },
+        "V_w": {
+          "value": 0.15000000000000002,
+          "unit": "m**3",
+          "original_value": 150.0,
+          "original_unit": "L",
+          "display_value": 150.0,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.008333333333333333,
+        "unit": "1 / second",
+        "original_value": 0.5,
+        "original_unit": "vvm",
+        "display_value": 0.5,
+        "display_unit": "vvm",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-VVM-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Gas flow rate Q_g evaluated at consistent reference conditions."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-VS-001",
+      "formula_name": "Superficial gas velocity",
+      "formula_version": "1.0.0",
+      "review_status": "pending_review",
+      "scale": "target",
+      "criterion_id": "S-PV",
+      "equation": "v_s = Q_g / (π · T² / 4)",
+      "inputs": {
+        "Q_g": {
+          "value": 0.0012500000000000002,
+          "unit": "m**3 / second",
+          "original_value": 75.0,
+          "original_unit": "L/min",
+          "display_value": 75.0,
+          "display_unit": "L/min",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-VVM",
+          "note": null
+        },
+        "T": {
+          "value": 0.55,
+          "unit": "meter",
+          "original_value": 0.55,
+          "original_unit": "m",
+          "display_value": 0.55,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.005261320432789929,
+        "unit": "meter / second",
+        "original_value": 0.005261320432789929,
+        "original_unit": "m/s",
+        "display_value": 0.005261320432789929,
+        "display_unit": "m/s",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-VS-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Uniform cylindrical vessel cross-section A = π·T²/4."
+      ],
+      "warnings": [
+        "FORMULA_PENDING_REVIEW: F-VS-001 is pending formal domain-expert review."
+      ]
+    },
+    {
+      "formula_id": "F-OTR-001",
+      "formula_name": "Oxygen transfer rate (OTR) at operating DO",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-PV",
+      "equation": "OTR = kLa · (C* − C_L)",
+      "inputs": {
+        "C_star": {
+          "value": 0.19999999999999998,
+          "unit": "mol / m**3",
+          "original_value": 0.2,
+          "original_unit": "mmol/L",
+          "display_value": 0.20000000000000004,
+          "display_unit": "mmol/L",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "C_L": {
+          "value": 0.04,
+          "unit": "mol / m**3",
+          "original_value": 0.04000000000000001,
+          "original_unit": "mmol/L",
+          "display_value": 0.04000000000000001,
+          "display_unit": "mmol/L",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-DOC-001@1.0.0",
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "kLa (volumetric mass-transfer coefficient)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Well-mixed liquid phase with uniform C_L and C*.",
+        "kLa measured or validated for the actual vessel, sparger, medium, and operating point."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-OTR-MAX",
+      "formula_name": "Theoretical maximum OTR driving bound (at C_L = 0)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-PV",
+      "equation": "OTR_max = kLa · C*",
+      "inputs": {
+        "C_star": {
+          "value": 0.19999999999999998,
+          "unit": "mol / m**3",
+          "original_value": 0.2,
+          "original_unit": "mmol/L",
+          "display_value": 0.20000000000000004,
+          "display_unit": "mmol/L",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "kLa (volumetric mass-transfer coefficient)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Theoretical upper bound at zero dissolved oxygen (C_L = 0); not a viable aerobic operating point."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-TIP-001",
+      "formula_name": "Impeller tip speed",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-TIP",
+      "equation": "u_tip = π · N · D",
+      "inputs": {
+        "N": {
+          "value": 1.8333333333333335,
+          "unit": "1 / second",
+          "original_value": 110.00000000000001,
+          "original_unit": "rpm",
+          "display_value": 110.00000000000001,
+          "display_unit": "rpm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-TIP",
+          "note": null
+        },
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 1.439896632895322,
+        "unit": "meter / second",
+        "original_value": 1.439896632895322,
+        "original_unit": "m/s",
+        "display_value": 1.439896632895322,
+        "display_unit": "m/s",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-TIP-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Evaluated using characteristic impeller diameter D and rotational speed N (in rev/s)."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-RE-001",
+      "formula_name": "Impeller Reynolds number",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-TIP",
+      "equation": "Re = ρ · N · D² / μ",
+      "inputs": {
+        "rho": {
+          "value": 1000.0,
+          "unit": "kg / m**3",
+          "original_value": 1000.0,
+          "original_unit": "kg/m^3",
+          "display_value": 1000.0,
+          "display_unit": "kg/m^3",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "N": {
+          "value": 1.8333333333333335,
+          "unit": "1 / second",
+          "original_value": 110.00000000000001,
+          "original_unit": "rpm",
+          "display_value": 110.00000000000001,
+          "display_unit": "rpm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-TIP",
+          "note": null
+        },
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "mu": {
+          "value": 0.001,
+          "unit": "pascal * second",
+          "original_value": 0.001,
+          "original_unit": "Pa*s",
+          "display_value": 1.0,
+          "display_unit": "mPa*s",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 114583.33333333334,
+        "unit": "dimensionless",
+        "original_value": 114583.33333333334,
+        "original_unit": "dimensionless",
+        "display_value": 114583.33333333334,
+        "display_unit": "dimensionless",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-RE-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "assumed",
+      "assumptions": [
+        "Assumes Newtonian liquid behavior with dynamic viscosity μ at process temperature."
+      ],
+      "warnings": [
+        "NEWTONIAN_ASSUMPTION: Calculated assuming Newtonian broth viscosity."
+      ]
+    },
+    {
+      "formula_id": "F-PWR-001",
+      "formula_name": "Ungassed agitation power from power number",
+      "formula_version": "1.0.0",
+      "review_status": "pending_review",
+      "scale": "target",
+      "criterion_id": "S-TIP",
+      "equation": "P₀ = n_imp · N_p · ρ · N³ · D⁵",
+      "inputs": {
+        "N_p": {
+          "value": 5.0,
+          "unit": "dimensionless",
+          "original_value": 5.0,
+          "original_unit": "dimensionless",
+          "display_value": 5.0,
+          "display_unit": "dimensionless",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "rho": {
+          "value": 1000.0,
+          "unit": "kg / m**3",
+          "original_value": 1000.0,
+          "original_unit": "kg/m^3",
+          "display_value": 1000.0,
+          "display_unit": "kg/m^3",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "N": {
+          "value": 1.8333333333333335,
+          "unit": "1 / second",
+          "original_value": 110.00000000000001,
+          "original_unit": "rpm",
+          "display_value": 110.00000000000001,
+          "display_unit": "rpm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-TIP",
+          "note": null
+        },
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "n_imp": {
+          "value": 1.0,
+          "unit": "dimensionless",
+          "original_value": 1.0,
+          "original_unit": "dimensionless",
+          "display_value": 1.0,
+          "display_unit": "dimensionless",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 30.088071469907412,
+        "unit": "watt",
+        "original_value": 30.088071469907412,
+        "original_unit": "W",
+        "display_value": 30.088071469907412,
+        "display_unit": "W",
+        "provenance": "calculated",
+        "value_nature": "estimated",
+        "source_ref": "F-PWR-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "assumed",
+      "assumptions": [
+        "Constant turbulent power number N_p for baffled vessel.",
+        "Ungassed power estimate; aeration typically reduces actual gassed power draw.",
+        "Multiple impellers treated as additive without hydrodynamic interaction."
+      ],
+      "warnings": [
+        "UNGASSED_POWER_ESTIMATE: Ungassed power P₀; gassed power reduction under aeration is not applied.",
+        "FORMULA_PENDING_REVIEW: F-PWR-001 is pending formal domain-expert review."
+      ]
+    },
+    {
+      "formula_id": "F-PV-001",
+      "formula_name": "Power per liquid working volume",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-TIP",
+      "equation": "P/V = P / V_w",
+      "inputs": {
+        "P": {
+          "value": 30.088071469907412,
+          "unit": "watt",
+          "original_value": 30.088071469907412,
+          "original_unit": "W",
+          "display_value": 30.088071469907412,
+          "display_unit": "W",
+          "provenance": "calculated",
+          "value_nature": "estimated",
+          "source_ref": "F-PWR-001@1.0.0",
+          "note": null
+        },
+        "V_w": {
+          "value": 0.15000000000000002,
+          "unit": "m**3",
+          "original_value": 150.0,
+          "original_unit": "L",
+          "display_value": 150.0,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 200.58714313271605,
+        "unit": "watt / m**3",
+        "original_value": 200.58714313271605,
+        "original_unit": "W/m^3",
+        "display_value": 200.58714313271605,
+        "display_unit": "W/m^3",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-PV-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "estimated",
+      "assumptions": [
+        "Volume-averaged power dissipation; local energy dissipation near the impeller is significantly higher."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-VVM-001",
+      "formula_name": "Gas flow per liquid working volume (vvm)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-TIP",
+      "equation": "vvm = Q_g / V_w",
+      "inputs": {
+        "Q_g": {
+          "value": 0.0012500000000000002,
+          "unit": "m**3 / second",
+          "original_value": 75.0,
+          "original_unit": "L/min",
+          "display_value": 75.0,
+          "display_unit": "L/min",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-VVM",
+          "note": null
+        },
+        "V_w": {
+          "value": 0.15000000000000002,
+          "unit": "m**3",
+          "original_value": 150.0,
+          "original_unit": "L",
+          "display_value": 150.0,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.008333333333333333,
+        "unit": "1 / second",
+        "original_value": 0.5,
+        "original_unit": "vvm",
+        "display_value": 0.5,
+        "display_unit": "vvm",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-VVM-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Gas flow rate Q_g evaluated at consistent reference conditions."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-VS-001",
+      "formula_name": "Superficial gas velocity",
+      "formula_version": "1.0.0",
+      "review_status": "pending_review",
+      "scale": "target",
+      "criterion_id": "S-TIP",
+      "equation": "v_s = Q_g / (π · T² / 4)",
+      "inputs": {
+        "Q_g": {
+          "value": 0.0012500000000000002,
+          "unit": "m**3 / second",
+          "original_value": 75.0,
+          "original_unit": "L/min",
+          "display_value": 75.0,
+          "display_unit": "L/min",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-VVM",
+          "note": null
+        },
+        "T": {
+          "value": 0.55,
+          "unit": "meter",
+          "original_value": 0.55,
+          "original_unit": "m",
+          "display_value": 0.55,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.005261320432789929,
+        "unit": "meter / second",
+        "original_value": 0.005261320432789929,
+        "original_unit": "m/s",
+        "display_value": 0.005261320432789929,
+        "display_unit": "m/s",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-VS-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Uniform cylindrical vessel cross-section A = π·T²/4."
+      ],
+      "warnings": [
+        "FORMULA_PENDING_REVIEW: F-VS-001 is pending formal domain-expert review."
+      ]
+    },
+    {
+      "formula_id": "F-OTR-001",
+      "formula_name": "Oxygen transfer rate (OTR) at operating DO",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-TIP",
+      "equation": "OTR = kLa · (C* − C_L)",
+      "inputs": {
+        "C_star": {
+          "value": 0.19999999999999998,
+          "unit": "mol / m**3",
+          "original_value": 0.2,
+          "original_unit": "mmol/L",
+          "display_value": 0.20000000000000004,
+          "display_unit": "mmol/L",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "C_L": {
+          "value": 0.04,
+          "unit": "mol / m**3",
+          "original_value": 0.04000000000000001,
+          "original_unit": "mmol/L",
+          "display_value": 0.04000000000000001,
+          "display_unit": "mmol/L",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-DOC-001@1.0.0",
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "kLa (volumetric mass-transfer coefficient)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Well-mixed liquid phase with uniform C_L and C*.",
+        "kLa measured or validated for the actual vessel, sparger, medium, and operating point."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-OTR-MAX",
+      "formula_name": "Theoretical maximum OTR driving bound (at C_L = 0)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-TIP",
+      "equation": "OTR_max = kLa · C*",
+      "inputs": {
+        "C_star": {
+          "value": 0.19999999999999998,
+          "unit": "mol / m**3",
+          "original_value": 0.2,
+          "original_unit": "mmol/L",
+          "display_value": 0.20000000000000004,
+          "display_unit": "mmol/L",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "kLa (volumetric mass-transfer coefficient)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Theoretical upper bound at zero dissolved oxygen (C_L = 0); not a viable aerobic operating point."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-TIP-001",
+      "formula_name": "Impeller tip speed",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-KLA",
+      "equation": "u_tip = π · N · D",
+      "inputs": {
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "N (agitation_speed)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Evaluated using characteristic impeller diameter D and rotational speed N (in rev/s)."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-RE-001",
+      "formula_name": "Impeller Reynolds number",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-KLA",
+      "equation": "Re = ρ · N · D² / μ",
+      "inputs": {
+        "rho": {
+          "value": 1000.0,
+          "unit": "kg / m**3",
+          "original_value": 1000.0,
+          "original_unit": "kg/m^3",
+          "display_value": 1000.0,
+          "display_unit": "kg/m^3",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "mu": {
+          "value": 0.001,
+          "unit": "pascal * second",
+          "original_value": 0.001,
+          "original_unit": "Pa*s",
+          "display_value": 1.0,
+          "display_unit": "mPa*s",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "N (agitation_speed)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Assumes Newtonian liquid behavior with dynamic viscosity μ at process temperature."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-PWR-001",
+      "formula_name": "Ungassed agitation power from power number",
+      "formula_version": "1.0.0",
+      "review_status": "pending_review",
+      "scale": "target",
+      "criterion_id": "S-KLA",
+      "equation": "P₀ = n_imp · N_p · ρ · N³ · D⁵",
+      "inputs": {
+        "N_p": {
+          "value": 5.0,
+          "unit": "dimensionless",
+          "original_value": 5.0,
+          "original_unit": "dimensionless",
+          "display_value": 5.0,
+          "display_unit": "dimensionless",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "rho": {
+          "value": 1000.0,
+          "unit": "kg / m**3",
+          "original_value": 1000.0,
+          "original_unit": "kg/m^3",
+          "display_value": 1000.0,
+          "display_unit": "kg/m^3",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "D": {
+          "value": 0.25,
+          "unit": "meter",
+          "original_value": 0.25,
+          "original_unit": "m",
+          "display_value": 0.25,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "n_imp": {
+          "value": 1.0,
+          "unit": "dimensionless",
+          "original_value": 1.0,
+          "original_unit": "dimensionless",
+          "display_value": 1.0,
+          "display_unit": "dimensionless",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "N (agitation_speed)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Constant turbulent power number N_p for baffled vessel.",
+        "Ungassed power estimate; aeration typically reduces actual gassed power draw.",
+        "Multiple impellers treated as additive without hydrodynamic interaction."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-PV-001",
+      "formula_name": "Power per liquid working volume",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-KLA",
+      "equation": "P/V = P / V_w",
+      "inputs": {
+        "V_w": {
+          "value": 0.15000000000000002,
+          "unit": "m**3",
+          "original_value": 150.0,
+          "original_unit": "L",
+          "display_value": 150.0,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "P (power_draw or F-PWR-001)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Volume-averaged power dissipation; local energy dissipation near the impeller is significantly higher."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-VVM-001",
+      "formula_name": "Gas flow per liquid working volume (vvm)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-KLA",
+      "equation": "vvm = Q_g / V_w",
+      "inputs": {
+        "Q_g": {
+          "value": 0.0012500000000000002,
+          "unit": "m**3 / second",
+          "original_value": 75.0,
+          "original_unit": "L/min",
+          "display_value": 75.0,
+          "display_unit": "L/min",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-VVM",
+          "note": null
+        },
+        "V_w": {
+          "value": 0.15000000000000002,
+          "unit": "m**3",
+          "original_value": 150.0,
+          "original_unit": "L",
+          "display_value": 150.0,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.008333333333333333,
+        "unit": "1 / second",
+        "original_value": 0.5,
+        "original_unit": "vvm",
+        "display_value": 0.5,
+        "display_unit": "vvm",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-VVM-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Gas flow rate Q_g evaluated at consistent reference conditions."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-VS-001",
+      "formula_name": "Superficial gas velocity",
+      "formula_version": "1.0.0",
+      "review_status": "pending_review",
+      "scale": "target",
+      "criterion_id": "S-KLA",
+      "equation": "v_s = Q_g / (π · T² / 4)",
+      "inputs": {
+        "Q_g": {
+          "value": 0.0012500000000000002,
+          "unit": "m**3 / second",
+          "original_value": 75.0,
+          "original_unit": "L/min",
+          "display_value": 75.0,
+          "display_unit": "L/min",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-VVM",
+          "note": null
+        },
+        "T": {
+          "value": 0.55,
+          "unit": "meter",
+          "original_value": 0.55,
+          "original_unit": "m",
+          "display_value": 0.55,
+          "display_unit": "m",
+          "provenance": "vendor_datasheet",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": {
+        "value": 0.005261320432789929,
+        "unit": "meter / second",
+        "original_value": 0.005261320432789929,
+        "original_unit": "m/s",
+        "display_value": 0.005261320432789929,
+        "display_unit": "m/s",
+        "provenance": "calculated",
+        "value_nature": "calculated",
+        "source_ref": "F-VS-001@1.0.0",
+        "note": null
+      },
+      "status": "computed",
+      "missing_inputs": [],
+      "evidence_level": "measured",
+      "assumptions": [
+        "Uniform cylindrical vessel cross-section A = π·T²/4."
+      ],
+      "warnings": [
+        "FORMULA_PENDING_REVIEW: F-VS-001 is pending formal domain-expert review."
+      ]
+    },
+    {
+      "formula_id": "F-OTR-001",
+      "formula_name": "Oxygen transfer rate (OTR) at operating DO",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-KLA",
+      "equation": "OTR = kLa · (C* − C_L)",
+      "inputs": {
+        "C_star": {
+          "value": 0.19999999999999998,
+          "unit": "mol / m**3",
+          "original_value": 0.2,
+          "original_unit": "mmol/L",
+          "display_value": 0.20000000000000004,
+          "display_unit": "mmol/L",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        },
+        "C_L": {
+          "value": 0.04,
+          "unit": "mol / m**3",
+          "original_value": 0.04000000000000001,
+          "original_unit": "mmol/L",
+          "display_value": 0.04000000000000001,
+          "display_unit": "mmol/L",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-DOC-001@1.0.0",
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "kLa (volumetric mass-transfer coefficient)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Well-mixed liquid phase with uniform C_L and C*.",
+        "kLa measured or validated for the actual vessel, sparger, medium, and operating point."
+      ],
+      "warnings": []
+    },
+    {
+      "formula_id": "F-OTR-MAX",
+      "formula_name": "Theoretical maximum OTR driving bound (at C_L = 0)",
+      "formula_version": "1.0.0",
+      "review_status": "approved",
+      "scale": "target",
+      "criterion_id": "S-KLA",
+      "equation": "OTR_max = kLa · C*",
+      "inputs": {
+        "C_star": {
+          "value": 0.19999999999999998,
+          "unit": "mol / m**3",
+          "original_value": 0.2,
+          "original_unit": "mmol/L",
+          "display_value": 0.20000000000000004,
+          "display_unit": "mmol/L",
+          "provenance": "user_assumption",
+          "value_nature": "assumed",
+          "source_ref": null,
+          "note": null
+        }
+      },
+      "output": null,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "kLa (volumetric mass-transfer coefficient)"
+      ],
+      "evidence_level": "insufficient",
+      "assumptions": [
+        "Theoretical upper bound at zero dissolved oxygen (C_L = 0); not a viable aerobic operating point."
+      ],
+      "warnings": []
+    }
+  ],
+  "trade_offs": [
+    {
+      "criterion_id": "S-PV",
+      "criterion_name": "Constant Power per Volume (P/V)",
+      "is_primary": true,
+      "status": "computed",
+      "missing_inputs": [],
+      "target_operating_point": {
+        "V_w": {
+          "value": 0.15000000000000002,
+          "unit": "m**3",
+          "original_value": 150.0,
+          "original_unit": "L",
+          "display_value": 150.0,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "N": {
+          "value": 2.8175846748413056,
+          "unit": "1 / second",
+          "original_value": 169.05508049047833,
+          "original_unit": "rpm",
+          "display_value": 169.05508049047833,
+          "display_unit": "rpm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-PV",
+          "note": null
+        },
+        "Q_g": {
+          "value": 0.0012500000000000002,
+          "unit": "m**3 / second",
+          "original_value": 75.0,
+          "original_unit": "L/min",
+          "display_value": 75.0,
+          "display_unit": "L/min",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-VVM",
+          "note": null
+        }
+      },
+      "descriptors_target": {
+        "P_per_V": {
+          "value": 728.1313295717591,
+          "unit": "watt / m**3",
+          "original_value": 728.1313295717591,
+          "original_unit": "W/m^3",
+          "display_value": 728.1313295717591,
+          "display_unit": "W/m^3",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-PV-001@1.0.0",
+          "note": null
+        },
+        "P_0": {
+          "value": 109.21969943576389,
+          "unit": "watt",
+          "original_value": 109.21969943576389,
+          "original_unit": "W",
+          "display_value": 109.21969943576389,
+          "display_unit": "W",
+          "provenance": "calculated",
+          "value_nature": "estimated",
+          "source_ref": "F-PWR-001@1.0.0",
+          "note": null
+        },
+        "u_tip": {
+          "value": 2.212925828837158,
+          "unit": "meter / second",
+          "original_value": 2.212925828837158,
+          "original_unit": "m/s",
+          "display_value": 2.212925828837158,
+          "display_unit": "m/s",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-TIP-001@1.0.0",
+          "note": null
+        },
+        "Re": {
+          "value": 176099.04217758158,
+          "unit": "dimensionless",
+          "original_value": 176099.04217758158,
+          "original_unit": "dimensionless",
+          "display_value": 176099.04217758158,
+          "display_unit": "dimensionless",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-RE-001@1.0.0",
+          "note": null
+        },
+        "vvm": {
+          "value": 0.008333333333333333,
+          "unit": "1 / second",
+          "original_value": 0.5,
+          "original_unit": "vvm",
+          "display_value": 0.5,
+          "display_unit": "vvm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-VVM-001@1.0.0",
+          "note": null
+        },
+        "v_s": {
+          "value": 0.005261320432789929,
+          "unit": "meter / second",
+          "original_value": 0.005261320432789929,
+          "original_unit": "m/s",
+          "display_value": 0.005261320432789929,
+          "display_unit": "m/s",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-VS-001@1.0.0",
+          "note": null
+        },
+        "OTR": null,
+        "OTR_max": null
+      },
+      "descriptor_ratios": {
+        "P_per_V": 0.9999999999999999,
+        "u_tip": 1.5368643680952574,
+        "Re": 6.985747127705714,
+        "vvm": 1.0,
+        "v_s": 4.1900826446281,
+        "OTR": null
+      },
+      "assumptions": [
+        "N_t = [ (P/V)_s · V_t / (n_imp,t · N_p,t · ρ · D_t⁵) ]^(1/3)",
+        "Target N_t derived from ungassed turbulent power equation P₀ = n_imp·N_p·ρ·N³·D⁵."
+      ],
+      "warnings": []
+    },
+    {
+      "criterion_id": "S-TIP",
+      "criterion_name": "Constant Impeller Tip Speed (u_tip)",
+      "is_primary": false,
+      "status": "computed",
+      "missing_inputs": [],
+      "target_operating_point": {
+        "V_w": {
+          "value": 0.15000000000000002,
+          "unit": "m**3",
+          "original_value": 150.0,
+          "original_unit": "L",
+          "display_value": 150.0,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "N": {
+          "value": 1.8333333333333335,
+          "unit": "1 / second",
+          "original_value": 110.00000000000001,
+          "original_unit": "rpm",
+          "display_value": 110.00000000000001,
+          "display_unit": "rpm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-TIP",
+          "note": null
+        },
+        "Q_g": {
+          "value": 0.0012500000000000002,
+          "unit": "m**3 / second",
+          "original_value": 75.0,
+          "original_unit": "L/min",
+          "display_value": 75.0,
+          "display_unit": "L/min",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-VVM",
+          "note": null
+        }
+      },
+      "descriptors_target": {
+        "P_per_V": {
+          "value": 200.58714313271605,
+          "unit": "watt / m**3",
+          "original_value": 200.58714313271605,
+          "original_unit": "W/m^3",
+          "display_value": 200.58714313271605,
+          "display_unit": "W/m^3",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-PV-001@1.0.0",
+          "note": null
+        },
+        "P_0": {
+          "value": 30.088071469907412,
+          "unit": "watt",
+          "original_value": 30.088071469907412,
+          "original_unit": "W",
+          "display_value": 30.088071469907412,
+          "display_unit": "W",
+          "provenance": "calculated",
+          "value_nature": "estimated",
+          "source_ref": "F-PWR-001@1.0.0",
+          "note": null
+        },
+        "u_tip": {
+          "value": 1.439896632895322,
+          "unit": "meter / second",
+          "original_value": 1.439896632895322,
+          "original_unit": "m/s",
+          "display_value": 1.439896632895322,
+          "display_unit": "m/s",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-TIP-001@1.0.0",
+          "note": null
+        },
+        "Re": {
+          "value": 114583.33333333334,
+          "unit": "dimensionless",
+          "original_value": 114583.33333333334,
+          "original_unit": "dimensionless",
+          "display_value": 114583.33333333334,
+          "display_unit": "dimensionless",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-RE-001@1.0.0",
+          "note": null
+        },
+        "vvm": {
+          "value": 0.008333333333333333,
+          "unit": "1 / second",
+          "original_value": 0.5,
+          "original_unit": "vvm",
+          "display_value": 0.5,
+          "display_unit": "vvm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-VVM-001@1.0.0",
+          "note": null
+        },
+        "v_s": {
+          "value": 0.005261320432789929,
+          "unit": "meter / second",
+          "original_value": 0.005261320432789929,
+          "original_unit": "m/s",
+          "display_value": 0.005261320432789929,
+          "display_unit": "m/s",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-VS-001@1.0.0",
+          "note": null
+        },
+        "OTR": null,
+        "OTR_max": null
+      },
+      "descriptor_ratios": {
+        "P_per_V": 0.27548209366391185,
+        "u_tip": 1.0,
+        "Re": 4.545454545454545,
+        "vvm": 1.0,
+        "v_s": 4.1900826446281,
+        "OTR": null
+      },
+      "assumptions": [
+        "N_t = N_s · (D_s / D_t)"
+      ],
+      "warnings": []
+    },
+    {
+      "criterion_id": "S-KLA",
+      "criterion_name": "kLa / Oxygen Transfer Evidence Comparison",
+      "is_primary": false,
+      "status": "insufficient_evidence",
+      "missing_inputs": [
+        "kLa (target vessel kLa evidence point)"
+      ],
+      "target_operating_point": {
+        "V_w": {
+          "value": 0.15000000000000002,
+          "unit": "m**3",
+          "original_value": 150.0,
+          "original_unit": "L",
+          "display_value": 150.0,
+          "display_unit": "L",
+          "provenance": "manual_entry",
+          "value_nature": "measured",
+          "source_ref": null,
+          "note": null
+        },
+        "Q_g": {
+          "value": 0.0012500000000000002,
+          "unit": "m**3 / second",
+          "original_value": 75.0,
+          "original_unit": "L/min",
+          "display_value": 75.0,
+          "display_unit": "L/min",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "S-VVM",
+          "note": null
+        }
+      },
+      "descriptors_target": {
+        "P_per_V": null,
+        "P_0": null,
+        "u_tip": null,
+        "Re": null,
+        "vvm": {
+          "value": 0.008333333333333333,
+          "unit": "1 / second",
+          "original_value": 0.5,
+          "original_unit": "vvm",
+          "display_value": 0.5,
+          "display_unit": "vvm",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-VVM-001@1.0.0",
+          "note": null
+        },
+        "v_s": {
+          "value": 0.005261320432789929,
+          "unit": "meter / second",
+          "original_value": 0.005261320432789929,
+          "original_unit": "m/s",
+          "display_value": 0.005261320432789929,
+          "display_unit": "m/s",
+          "provenance": "calculated",
+          "value_nature": "calculated",
+          "source_ref": "F-VS-001@1.0.0",
+          "note": null
+        },
+        "OTR": null,
+        "OTR_max": null
+      },
+      "descriptor_ratios": {
+        "P_per_V": null,
+        "u_tip": null,
+        "Re": null,
+        "vvm": 1.0,
+        "v_s": 4.1900826446281,
+        "OTR": null
+      },
+      "assumptions": [
+        "Compare documented target kLa & OTR against source kLa & oxygen demand"
+      ],
+      "warnings": []
+    }
+  ],
+  "compatibility_checks": [
+    {
+      "check_id": "C-VOLUME-RANGE",
+      "criterion_id": null,
+      "parameter_key": "working_volume",
+      "title": "Target working volume",
+      "required_value_si": 0.15000000000000002,
+      "capability_min_si": 0.06000000000000001,
+      "capability_max_si": 0.20000000000000004,
+      "unit_si": "m**3",
+      "display_unit": "L",
+      "required_display": 150.0,
+      "capability_min_display": 60.00000000000001,
+      "capability_max_display": 200.00000000000003,
+      "outcome": "compatible",
+      "explanation": "Required Target working volume (150.00 L) is within target vessel capability ([60.00, 200.00] L).",
+      "input_refs": [
+        {
+          "kind": "scenario_input",
+          "ref_id": null,
+          "key": "target_working_volume"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "working_volume_min/max"
+        }
+      ]
+    },
+    {
+      "check_id": "C-AGIT-RANGE",
+      "criterion_id": "S-PV",
+      "parameter_key": "agitation_speed",
+      "title": "Target agitation speed (S-PV)",
+      "required_value_si": 2.8175846748413056,
+      "capability_min_si": 0.8333333333333334,
+      "capability_max_si": 6.666666666666667,
+      "unit_si": "1 / second",
+      "display_unit": "rpm",
+      "required_display": 169.05508049047833,
+      "capability_min_display": 50.0,
+      "capability_max_display": 400.0,
+      "outcome": "compatible",
+      "explanation": "Required Target agitation speed (S-PV) (169.06 rpm) is within target vessel capability ([50.00, 400.00] rpm).",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "N_t:S-PV"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "agitation_speed_min/max"
+        }
+      ]
+    },
+    {
+      "check_id": "C-MOTOR-POWER",
+      "criterion_id": "S-PV",
+      "parameter_key": "motor_power_limit",
+      "title": "Target ungassed power draw vs motor limit (S-PV)",
+      "required_value_si": 109.21969943576389,
+      "capability_min_si": null,
+      "capability_max_si": 1500.0,
+      "unit_si": "watt",
+      "display_unit": "W",
+      "required_display": 109.21969943576389,
+      "capability_min_display": null,
+      "capability_max_display": 1500.0,
+      "outcome": "compatible",
+      "explanation": "Required Target ungassed power draw vs motor limit (S-PV) (109.22 W) is within target vessel capability (≤ 1500.00 W).",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-PWR-001:target:S-PV"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "motor_power_limit"
+        }
+      ]
+    },
+    {
+      "check_id": "C-AGIT-RANGE",
+      "criterion_id": "S-TIP",
+      "parameter_key": "agitation_speed",
+      "title": "Target agitation speed (S-TIP)",
+      "required_value_si": 1.8333333333333335,
+      "capability_min_si": 0.8333333333333334,
+      "capability_max_si": 6.666666666666667,
+      "unit_si": "1 / second",
+      "display_unit": "rpm",
+      "required_display": 110.00000000000001,
+      "capability_min_display": 50.0,
+      "capability_max_display": 400.0,
+      "outcome": "compatible",
+      "explanation": "Required Target agitation speed (S-TIP) (110.00 rpm) is within target vessel capability ([50.00, 400.00] rpm).",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "N_t:S-TIP"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "agitation_speed_min/max"
+        }
+      ]
+    },
+    {
+      "check_id": "C-MOTOR-POWER",
+      "criterion_id": "S-TIP",
+      "parameter_key": "motor_power_limit",
+      "title": "Target ungassed power draw vs motor limit (S-TIP)",
+      "required_value_si": 30.088071469907412,
+      "capability_min_si": null,
+      "capability_max_si": 1500.0,
+      "unit_si": "watt",
+      "display_unit": "W",
+      "required_display": 30.088071469907412,
+      "capability_min_display": null,
+      "capability_max_display": 1500.0,
+      "outcome": "compatible",
+      "explanation": "Required Target ungassed power draw vs motor limit (S-TIP) (30.09 W) is within target vessel capability (≤ 1500.00 W).",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-PWR-001:target:S-TIP"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "motor_power_limit"
+        }
+      ]
+    },
+    {
+      "check_id": "C-AGIT-RANGE",
+      "criterion_id": "S-KLA",
+      "parameter_key": "agitation_speed",
+      "title": "Target agitation speed (S-KLA)",
+      "required_value_si": null,
+      "capability_min_si": 0.8333333333333334,
+      "capability_max_si": 6.666666666666667,
+      "unit_si": "1 / second",
+      "display_unit": "rpm",
+      "required_display": null,
+      "capability_min_display": 50.0,
+      "capability_max_display": 400.0,
+      "outcome": "cannot_evaluate",
+      "explanation": "Cannot evaluate Target agitation speed (S-KLA): missing required operating value.",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "N_t:S-KLA"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "agitation_speed_min/max"
+        }
+      ]
+    },
+    {
+      "check_id": "C-MOTOR-POWER",
+      "criterion_id": "S-KLA",
+      "parameter_key": "motor_power_limit",
+      "title": "Target ungassed power draw vs motor limit (S-KLA)",
+      "required_value_si": null,
+      "capability_min_si": null,
+      "capability_max_si": 1500.0,
+      "unit_si": "watt",
+      "display_unit": "W",
+      "required_display": null,
+      "capability_min_display": null,
+      "capability_max_display": 1500.0,
+      "outcome": "cannot_evaluate",
+      "explanation": "Cannot evaluate Target ungassed power draw vs motor limit (S-KLA): missing required operating value.",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-PWR-001:target:S-KLA"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "motor_power_limit"
+        }
+      ]
+    },
+    {
+      "check_id": "C-GAS-RANGE",
+      "criterion_id": "S-VVM",
+      "parameter_key": "gas_flow",
+      "title": "Target sparger gas flow (S-VVM)",
+      "required_value_si": 0.0012500000000000002,
+      "capability_min_si": 0.00016666666666666672,
+      "capability_max_si": 0.003333333333333334,
+      "unit_si": "m**3 / second",
+      "display_unit": "L/min",
+      "required_display": 75.0,
+      "capability_min_display": 10.000000000000002,
+      "capability_max_display": 200.00000000000003,
+      "outcome": "compatible",
+      "explanation": "Required Target sparger gas flow (S-VVM) (75.00 L/min) is within target vessel capability ([10.00, 200.00] L/min).",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "Q_g,t:S-VVM"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "gas_flow_min/max"
+        }
+      ]
+    },
+    {
+      "check_id": "C-COOLING",
+      "criterion_id": null,
+      "parameter_key": "cooling_capacity",
+      "title": "Target heat removal vs cooling capacity",
+      "required_value_si": null,
+      "capability_min_si": null,
+      "capability_max_si": null,
+      "unit_si": "watt",
+      "display_unit": "W",
+      "required_display": null,
+      "capability_min_display": null,
+      "capability_max_display": null,
+      "outcome": "cannot_evaluate",
+      "explanation": "Cannot evaluate Target heat removal vs cooling capacity: missing required operating value, target vessel 'cooling_capacity' capability limits.",
+      "input_refs": [
+        {
+          "kind": "scenario_input",
+          "ref_id": null,
+          "key": "estimated_heat_load"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "cooling_capacity"
+        }
+      ]
+    },
+    {
+      "check_id": "C-TEMP-RANGE",
+      "criterion_id": null,
+      "parameter_key": "temperature",
+      "title": "Process temperature vs target vessel range",
+      "required_value_si": 310.15,
+      "capability_min_si": null,
+      "capability_max_si": null,
+      "unit_si": "kelvin",
+      "display_unit": "degC",
+      "required_display": 37.0,
+      "capability_min_display": null,
+      "capability_max_display": null,
+      "outcome": "cannot_evaluate",
+      "explanation": "Cannot evaluate Process temperature vs target vessel range: missing target vessel 'temperature' capability limits.",
+      "input_refs": [
+        {
+          "kind": "measurement_summary",
+          "ref_id": null,
+          "key": "temperature"
+        },
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "temperature_min/max"
+        }
+      ]
+    },
+    {
+      "check_id": "C-INSTRUMENT",
+      "criterion_id": null,
+      "parameter_key": "instrumentation_controls",
+      "title": "Target instrumentation and control capabilities",
+      "required_value_si": null,
+      "capability_min_si": null,
+      "capability_max_si": null,
+      "unit_si": "dimensionless",
+      "display_unit": "dimensionless",
+      "required_display": null,
+      "capability_min_display": null,
+      "capability_max_display": null,
+      "outcome": "compatible",
+      "explanation": "Target vessel documents all required sensors/controls (do_probe, temperature_probe).",
+      "input_refs": [
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "instrumentation"
+        }
+      ]
+    }
+  ],
+  "risk_flags": [
+    {
+      "rule_id": "R-DAT-001",
+      "rule_version": "1.0.0",
+      "category": "data",
+      "severity": "high",
+      "outcome": "insufficient_evidence",
+      "title": "Required engineering inputs missing for scale-up calculation",
+      "explanation": "10 calculation(s) (F-OTR-001, F-OTR-MAX, F-PV-001, F-PWR-001, F-RE-001, F-TIP-001) could not be evaluated due to missing inputs: N (agitation_speed), P (power_draw or F-PWR-001), kLa (volumetric mass-transfer coefficient).",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-OTR-001:target:S-PV"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-OTR-MAX:target:S-PV"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-OTR-001:target:S-TIP"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-OTR-MAX:target:S-TIP"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-TIP-001:target:S-KLA"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-RE-001:target:S-KLA"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-PWR-001:target:S-KLA"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-PV-001:target:S-KLA"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-OTR-001:target:S-KLA"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-OTR-MAX:target:S-KLA"
+        }
+      ],
+      "evidence_gap": "Provide measured or documented values for: N (agitation_speed), P (power_draw or F-PWR-001), kLa (volumetric mass-transfer coefficient)",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-DATA-VESSEL-SPEC",
+        "VT-MEASURE-VISCOSITY"
+      ]
+    },
+    {
+      "rule_id": "R-DAT-002",
+      "rule_version": "1.0.0",
+      "category": "data",
+      "severity": "medium",
+      "outcome": "triggered",
+      "title": "Scale-up calculation relies on user-assumed properties",
+      "explanation": "Calculations (F-DOC-001, F-OTR-001, F-OTR-MAX, F-PWR-001, F-RE-001) rely on one or more user-assumed physical properties rather than direct measurements.",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-RE-001:source"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-PWR-001:source"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-DOC-001:source"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-OTR-001:source"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-OTR-MAX:source"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-RE-001:target"
+        }
+      ],
+      "evidence_gap": "Replace user-assumed medium/process properties (e.g. density, viscosity, C*) with laboratory measurements.",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-MEASURE-VISCOSITY"
+      ]
+    },
+    {
+      "rule_id": "R-DAT-003",
+      "rule_version": "1.0.0",
+      "category": "data",
+      "severity": "info",
+      "outcome": "not_triggered",
+      "title": "Source batch data-quality issues affect engineering inputs",
+      "explanation": "No high-severity data-quality issues reported on source batch operating variables.",
+      "input_refs": [
+        {
+          "kind": "measurement_summary",
+          "ref_id": null,
+          "key": "data_quality"
+        }
+      ],
+      "evidence_gap": null,
+      "threshold_used": null,
+      "validation_task_codes": []
+    },
+    {
+      "rule_id": "R-DAT-004",
+      "rule_version": "1.0.0",
+      "category": "data",
+      "severity": "info",
+      "outcome": "not_triggered",
+      "title": "DO or pH sensor calibration status undocumented",
+      "explanation": "Primary sensor calibration status is documented as calibrated pre-run.",
+      "input_refs": [
+        {
+          "kind": "measurement_summary",
+          "ref_id": null,
+          "key": "calibration_status"
+        }
+      ],
+      "evidence_gap": null,
+      "threshold_used": null,
+      "validation_task_codes": []
+    },
+    {
+      "rule_id": "R-DAT-005",
+      "rule_version": "1.0.0",
+      "category": "data",
+      "severity": "info",
+      "outcome": "triggered",
+      "title": "Assessment uses synthetic or demonstration dataset",
+      "explanation": "This assessment uses data marked as synthetic/demonstration. Outputs illustrate workflow mechanics and must not be used for physical pilot execution.",
+      "input_refs": [
+        {
+          "kind": "scenario_input",
+          "ref_id": null,
+          "key": "is_synthetic"
+        }
+      ],
+      "evidence_gap": "Import a verified laboratory fermentation dataset from the actual organism and bench bioreactor.",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-DATA-REAL"
+      ]
+    },
+    {
+      "rule_id": "R-DAT-006",
+      "rule_version": "1.0.0",
+      "category": "data",
+      "severity": "info",
+      "outcome": "triggered",
+      "title": "Assessment includes formulas pending domain-expert sign-off",
+      "explanation": "Computed results include formula(s) with status 'pending_review': F-DOC-001, F-PWR-001, F-VS-001.",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-DOC-001"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-PWR-001"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-VS-001"
+        }
+      ],
+      "evidence_gap": "Complete independent bioprocess advisor review of proposed engineering correlations.",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-REVIEW-FORMULAS"
+      ]
+    },
+    {
+      "rule_id": "R-OXY-001",
+      "rule_version": "1.0.0",
+      "category": "oxygen_transfer",
+      "severity": "high",
+      "outcome": "triggered",
+      "title": "Source batch dissolved oxygen fell below required threshold",
+      "explanation": "Source batch minimum DO reached 18.0 % air sat, falling below required minimum DO (20.0 % air sat). The lab process may already experience oxygen limitation.",
+      "input_refs": [
+        {
+          "kind": "measurement_summary",
+          "ref_id": null,
+          "key": "do_min"
+        },
+        {
+          "kind": "scenario_input",
+          "ref_id": null,
+          "key": "min_do_required"
+        }
+      ],
+      "evidence_gap": "Investigate whether transient DO dips at bench scale impacted yield and confirm critical DO threshold.",
+      "threshold_used": {
+        "min_do_required_pct": 20.0
+      },
+      "validation_task_codes": [
+        "VT-EXP-DO-PROFILE",
+        "VT-REVIEW-OXY"
+      ]
+    },
+    {
+      "rule_id": "R-OXY-002",
+      "rule_version": "1.0.0",
+      "category": "oxygen_transfer",
+      "severity": "high",
+      "outcome": "insufficient_evidence",
+      "title": "No kLa evidence documented for target vessel",
+      "explanation": "Target vessel profile has no documented kLa evidence point. Target oxygen transfer rate (OTR) cannot be evaluated.",
+      "input_refs": [
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "kla_evidence"
+        }
+      ],
+      "evidence_gap": "Measured kLa in target vessel across planned agitation and aeration operating envelope.",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-KLA-TARGET"
+      ]
+    },
+    {
+      "rule_id": "R-OXY-003",
+      "rule_version": "1.0.0",
+      "category": "oxygen_transfer",
+      "severity": "high",
+      "outcome": "insufficient_evidence",
+      "title": "Target OTR capacity vs peak process oxygen demand (OUR)",
+      "explanation": "Cannot compare target oxygen transfer capacity against process oxygen demand: missing target OTR (requires target kLa, C*, and required DO).",
+      "input_refs": [
+        {
+          "kind": "measurement_summary",
+          "ref_id": null,
+          "key": "our_max"
+        },
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-OTR-001:target"
+        }
+      ],
+      "evidence_gap": "Quantify target OTR (requires target kLa, C*, and required DO) to verify oxygen transfer adequacy before pilot scale-up.",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-KLA-TARGET",
+        "VT-MEASURE-OUR",
+        "VT-REVIEW-OXY"
+      ]
+    },
+    {
+      "rule_id": "R-MIX-001",
+      "rule_version": "1.0.0",
+      "category": "mixing",
+      "severity": "high",
+      "outcome": "triggered",
+      "title": "Scale-up criterion trade-off violates process constraint or ratio band",
+      "explanation": "Criterion S-PV yields u_tip = 2.21 m/s > constraint 2.00 m/s.",
+      "input_refs": [
+        {
+          "kind": "scenario_input",
+          "ref_id": null,
+          "key": "constraints_and_criteria"
+        }
+      ],
+      "evidence_gap": "Bioprocess engineer review of conflicting scale-up criteria (constant P/V vs tip speed vs aeration).",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-REVIEW-CRITERIA"
+      ]
+    },
+    {
+      "rule_id": "R-MIX-002",
+      "rule_version": "1.0.0",
+      "category": "mixing",
+      "severity": "medium",
+      "outcome": "insufficient_evidence",
+      "title": "Mixing-time characterization missing for target vessel",
+      "explanation": "No measured mixing-time evidence is documented for the target vessel. Larger scale typically increases circulation and mixing times, which can cause substrate or pH gradients during fed-batch operation.",
+      "input_refs": [
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "mixing_time_evidence"
+        }
+      ],
+      "evidence_gap": "Target vessel mixing time (t_95) measurement or facility characterization report.",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-MEASURE-MIXING"
+      ]
+    },
+    {
+      "rule_id": "R-MIX-003",
+      "rule_version": "1.0.0",
+      "category": "mixing",
+      "severity": "low",
+      "outcome": "not_configured",
+      "title": "Impeller Reynolds number vs turbulent regime threshold",
+      "explanation": "Minimum computed Reynolds number is 25,208, but 're_turbulent_min' threshold is not configured.",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-RE-001"
+        }
+      ],
+      "evidence_gap": null,
+      "threshold_used": {
+        "re_turbulent_min": null
+      },
+      "validation_task_codes": []
+    },
+    {
+      "rule_id": "R-MIX-004",
+      "rule_version": "1.0.0",
+      "category": "mixing",
+      "severity": "low",
+      "outcome": "not_configured",
+      "title": "Geometric or impeller dissimilarity between source and target vessels",
+      "explanation": "Geometric similarity ratios were computed, but no 'geometric_similarity_tolerance' is configured.",
+      "input_refs": [
+        {
+          "kind": "calculation",
+          "ref_id": null,
+          "key": "F-GEO-001"
+        }
+      ],
+      "evidence_gap": null,
+      "threshold_used": {
+        "geometric_similarity_tolerance": null
+      },
+      "validation_task_codes": []
+    },
+    {
+      "rule_id": "R-THM-001",
+      "rule_version": "1.0.0",
+      "category": "thermal",
+      "severity": "high",
+      "outcome": "insufficient_evidence",
+      "title": "Target vessel cooling capacity undocumented",
+      "explanation": "Target vessel cooling capacity is not documented. Heat removal often becomes limiting at larger scale due to lower surface-area-to-volume ratio.",
+      "input_refs": [
+        {
+          "kind": "vessel_parameter",
+          "ref_id": "v-tgt-1",
+          "key": "cooling_capacity"
+        }
+      ],
+      "evidence_gap": "Obtain target jacket/coil cooling capacity (in W or kW at process temperature) from facility or vendor.",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-DATA-COOLING",
+        "VT-REVIEW-THERMAL"
+      ]
+    },
+    {
+      "rule_id": "R-THM-002",
+      "rule_version": "1.0.0",
+      "category": "thermal",
+      "severity": "medium",
+      "outcome": "insufficient_evidence",
+      "title": "Estimated process heat load vs target vessel cooling capacity",
+      "explanation": "Cannot evaluate thermal balance because estimated heat load or target cooling capacity is not provided.",
+      "input_refs": [
+        {
+          "kind": "scenario_input",
+          "ref_id": null,
+          "key": "estimated_heat_load"
+        }
+      ],
+      "evidence_gap": "Provide estimated peak metabolic + mechanical heat load and target cooling capacity.",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-REVIEW-THERMAL",
+        "VT-DATA-COOLING"
+      ]
+    },
+    {
+      "rule_id": "R-THM-003",
+      "rule_version": "1.0.0",
+      "category": "thermal",
+      "severity": "low",
+      "outcome": "insufficient_evidence",
+      "title": "Source batch temperature deviation from setpoint",
+      "explanation": "Cannot evaluate source batch temperature deviation because measured temperature or temperature setpoint is unavailable.",
+      "input_refs": [
+        {
+          "kind": "measurement_summary",
+          "ref_id": null,
+          "key": "temperature"
+        }
+      ],
+      "evidence_gap": "Provide source batch temperature time series and the process temperature setpoint.",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-REVIEW-THERMAL"
+      ]
+    },
+    {
+      "rule_id": "R-EQP-006",
+      "rule_version": "1.0.0",
+      "category": "equipment",
+      "severity": "medium",
+      "outcome": "insufficient_evidence",
+      "title": "Target vessel capability envelope incomplete for compatibility check",
+      "explanation": "Equipment compatibility check(s) (C-AGIT-RANGE, C-COOLING, C-MOTOR-POWER, C-TEMP-RANGE) could not be evaluated due to missing vessel capability limits or missing operating point inputs.",
+      "input_refs": [
+        {
+          "kind": "compatibility_check",
+          "ref_id": null,
+          "key": "C-AGIT-RANGE"
+        },
+        {
+          "kind": "compatibility_check",
+          "ref_id": null,
+          "key": "C-MOTOR-POWER"
+        },
+        {
+          "kind": "compatibility_check",
+          "ref_id": null,
+          "key": "C-COOLING"
+        },
+        {
+          "kind": "compatibility_check",
+          "ref_id": null,
+          "key": "C-TEMP-RANGE"
+        }
+      ],
+      "evidence_gap": "Complete target vessel capability envelope (min/max agitation, motor power, gas flow, cooling, instrumentation).",
+      "threshold_used": null,
+      "validation_task_codes": [
+        "VT-DATA-VESSEL-SPEC"
+      ]
+    }
+  ],
+  "validation_tasks": [
+    {
+      "task_code": "VT-DATA-COOLING",
+      "task_type": "data_request",
+      "title": "Request target vessel cooling capacity specification from facility/vendor",
+      "description": "Obtain maximum jacket/coil heat removal rate (kW) at the target fermentation temperature and utility chilled-water supply temperature.",
+      "priority": "P1",
+      "triggered_by_rule_ids": [
+        "R-THM-001",
+        "R-THM-002"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-DATA-REAL",
+      "task_type": "experiment",
+      "title": "Replace synthetic/demo dataset with real laboratory fermentation batch data",
+      "description": "Import verified experimental batch exports from the laboratory bioreactor before making pilot transfer decisions.",
+      "priority": "P1",
+      "triggered_by_rule_ids": [
+        "R-DAT-005"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-KLA-TARGET",
+      "task_type": "measurement",
+      "title": "Measure or obtain verified kLa in target vessel across planned (N, Q_g) range",
+      "description": "Conduct dynamic gassing-out or sulfite kLa characterization in the target vessel (or obtain verified facility test data) covering the target agitation and aeration operating point.",
+      "priority": "P1",
+      "triggered_by_rule_ids": [
+        "R-OXY-002",
+        "R-OXY-003"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-MEASURE-OUR",
+      "task_type": "measurement",
+      "title": "Quantify peak oxygen uptake rate (OUR) in laboratory process",
+      "description": "Measure peak OUR via exhaust gas O₂/CO₂ analysis or dynamic DO depletion during peak metabolic phase.",
+      "priority": "P1",
+      "triggered_by_rule_ids": [
+        "R-OXY-003"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-REVIEW-CRITERIA",
+      "task_type": "expert_review",
+      "title": "Bioprocess engineer review of scale-up criterion selection and descriptor trade-offs",
+      "description": "Evaluate trade-offs between preserving constant P/V, tip speed, and vvm/v_s for the organism's shear and oxygen sensitivity.",
+      "priority": "P1",
+      "triggered_by_rule_ids": [
+        "R-MIX-001"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-REVIEW-OXY",
+      "task_type": "expert_review",
+      "title": "Bioprocess engineer review of oxygen transfer balance and gas supply strategy",
+      "description": "Review OTR = kLa(C* - C_L) driving force, headpressure effects, and O₂ enrichment options with a senior bioprocess engineer.",
+      "priority": "P1",
+      "triggered_by_rule_ids": [
+        "R-OXY-001",
+        "R-OXY-003"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-REVIEW-THERMAL",
+      "task_type": "expert_review",
+      "title": "Perform metabolic + agitation heat balance against target cooling capability",
+      "description": "Calculate peak metabolic heat generation (from OUR or sugar consumption) plus mechanical agitation power against target cooling capacity.",
+      "priority": "P1",
+      "triggered_by_rule_ids": [
+        "R-THM-001",
+        "R-THM-002",
+        "R-THM-003"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-DATA-VESSEL-SPEC",
+      "task_type": "data_request",
+      "title": "Obtain missing vessel geometry and capability specifications",
+      "description": "Complete missing vessel profile fields from vendor engineering drawings or facility P&ID / datasheets.",
+      "priority": "P2",
+      "triggered_by_rule_ids": [
+        "R-DAT-001",
+        "R-EQP-006"
+      ],
+      "triggered_by_check_ids": [
+        "C-AGIT-RANGE",
+        "C-MOTOR-POWER",
+        "C-COOLING",
+        "C-TEMP-RANGE"
+      ]
+    },
+    {
+      "task_code": "VT-EXP-DO-PROFILE",
+      "task_type": "experiment",
+      "title": "Verify DO sensitivity and minimum acceptable DO in bench-scale run",
+      "description": "Review bench-scale DO profiles and determine critical DO threshold below which specific productivity or viability degrades.",
+      "priority": "P2",
+      "triggered_by_rule_ids": [
+        "R-OXY-001"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-MEASURE-MIXING",
+      "task_type": "measurement",
+      "title": "Characterize mixing time in target vessel (or review existing facility mixing study)",
+      "description": "Obtain or perform a tracer mixing-time (t_95) study in the target vessel at planned agitation speed to assess substrate/pH gradient risk.",
+      "priority": "P2",
+      "triggered_by_rule_ids": [
+        "R-MIX-002"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-MEASURE-VISCOSITY",
+      "task_type": "measurement",
+      "title": "Measure broth density and dynamic viscosity at process conditions",
+      "description": "Measure end-of-batch broth density and viscosity (and shear-rate dependence if non-Newtonian) to replace assumed medium properties.",
+      "priority": "P2",
+      "triggered_by_rule_ids": [
+        "R-DAT-001",
+        "R-DAT-002"
+      ],
+      "triggered_by_check_ids": []
+    },
+    {
+      "task_code": "VT-REVIEW-FORMULAS",
+      "task_type": "expert_review",
+      "title": "Domain-expert sign-off on pending-review formulas and power-number assumptions",
+      "description": "Have the bioprocess scientific lead and advisor review ungassed power number N_p and pending engineering correlations.",
+      "priority": "P2",
+      "triggered_by_rule_ids": [
+        "R-DAT-006"
+      ],
+      "triggered_by_check_ids": []
+    }
+  ],
+  "summary": {
+    "overall_evidence_level": "mixed",
+    "triggered_by_severity": {
+      "critical": 0,
+      "high": 2,
+      "medium": 1,
+      "low": 0,
+      "info": 2
+    },
+    "insufficient_evidence_flag_count": 8,
+    "not_configured_flag_count": 2,
+    "incompatible_check_count": 0,
+    "cannot_evaluate_check_count": 4,
+    "validation_task_count": 12
+  }
+}
